@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+        <style>
+/*--------------------------------------------------------------------------------------------- * Copyright (c) Microsoft Corporation. All rights reserved. * Licensed under the MIT License. See License.txt in the project root for license information. *--------------------------------------------------------------------------------------------*/ body { font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback"; font-size: 14px; padding: 0 12px; line-height: 22px; word-wrap: break-word; } body.scrollBeyondLastLine { margin-bottom: calc(100vh - 22px); } body.showEditorSelection .code-line { position: relative; } body.showEditorSelection .code-active-line:before, body.showEditorSelection .code-line:hover:before { content: ""; display: block; position: absolute; top: 0; left: -12px; height: 100%; } body.showEditorSelection li.code-active-line:before, body.showEditorSelection li.code-line:hover:before { left: -30px; } .vscode-light.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(0, 0, 0, 0.15); } .vscode-light.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(0, 0, 0, 0.40); } .vscode-dark.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 255, 255, 0.4); } .vscode-dark.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 255, 255, 0.60); } .vscode-high-contrast.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 160, 0, 0.7); } .vscode-high-contrast.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 160, 0, 1); } img { max-width: 100%; max-height: 100%; } a { color: #4080D0; text-decoration: none; } a:focus, input:focus, select:focus, textarea:focus { outline: 1px solid -webkit-focus-ring-color; outline-offset: -1px; } hr { border: 0; height: 2px; border-bottom: 2px solid; } h1 { padding-bottom: 0.3em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; } h1, h2, h3 { font-weight: normal; } h1 code, h2 code, h3 code, h4 code, h5 code, h6 code { font-size: inherit; line-height: auto; } a:hover { color: #4080D0; text-decoration: underline; } table { border-collapse: collapse; } table > thead > tr > th { text-align: left; border-bottom: 1px solid; } table > thead > tr > th, table > thead > tr > td, table > tbody > tr > th, table > tbody > tr > td { padding: 5px 10px; } table > tbody > tr + tr > td { border-top: 1px solid; } blockquote { margin: 0 7px 0 5px; padding: 0 16px 0 10px; border-left: 5px solid; } code { font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback"; font-size: 14px; line-height: 19px; } body.wordWrap pre { white-space: pre-wrap; } .mac code { font-size: 12px; line-height: 18px; } code > div { padding: 16px; border-radius: 3px; overflow: auto; } /** Theming */ .vscode-light { color: rgb(30, 30, 30); } .vscode-dark { color: #DDD; } .vscode-high-contrast { color: white; } .vscode-light code { color: #A31515; } .vscode-dark code { color: #D7BA7D; } .vscode-light code > div { background-color: rgba(220, 220, 220, 0.4); } .vscode-dark code > div { background-color: rgba(10, 10, 10, 0.4); } .vscode-high-contrast code > div { background-color: rgb(0, 0, 0); } .vscode-high-contrast h1 { border-color: rgb(0, 0, 0); } .vscode-light table > thead > tr > th { border-color: rgba(0, 0, 0, 0.69); } .vscode-dark table > thead > tr > th { border-color: rgba(255, 255, 255, 0.69); } .vscode-light h1, .vscode-light hr, .vscode-light table > tbody > tr + tr > td { border-color: rgba(0, 0, 0, 0.18); } .vscode-dark h1, .vscode-dark hr, .vscode-dark table > tbody > tr + tr > td { border-color: rgba(255, 255, 255, 0.18); } .vscode-light blockquote, .vscode-dark blockquote { background: rgba(127, 127, 127, 0.1); border-color: rgba(0, 122, 204, 0.5); } .vscode-high-contrast blockquote { background: transparent; border-color: #fff; }
+</style>
+<style>
+/* Tomorrow Theme */ /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */ /* Original theme - https://github.com/chriskempson/tomorrow-theme */ /* Tomorrow Comment */ .hljs-comment, .hljs-quote { color: #8e908c; } /* Tomorrow Red */ .hljs-variable, .hljs-template-variable, .hljs-tag, .hljs-name, .hljs-selector-id, .hljs-selector-class, .hljs-regexp, .hljs-deletion { color: #c82829; } /* Tomorrow Orange */ .hljs-number, .hljs-built_in, .hljs-builtin-name, .hljs-literal, .hljs-type, .hljs-params, .hljs-meta, .hljs-link { color: #f5871f; } /* Tomorrow Yellow */ .hljs-attribute { color: #eab700; } /* Tomorrow Green */ .hljs-string, .hljs-symbol, .hljs-bullet, .hljs-addition { color: #718c00; } /* Tomorrow Blue */ .hljs-title, .hljs-section { color: #4271ae; } /* Tomorrow Purple */ .hljs-keyword, .hljs-selector-tag { color: #8959a8; } .hljs { display: block; overflow-x: auto; color: #4d4d4c; padding: 0.5em; } .hljs-emphasis { font-style: italic; } .hljs-strong { font-weight: bold; }
+</style>
+<style>
+ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-left: 40px; } .task-list-item { list-style-type: none; } .task-list-item-checkbox { vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 id="chapter-1---basic-concepts">Chapter 1 - Basic Concepts</h1>
+<!-- markdownlint-disable MD025 -->
+<h2 id="convert-binary-to-decimal">Convert <strong>Binary</strong> to <strong>Decimal</strong></h2>
+<p>binary 1011 = decimal 11</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">2^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="base"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></th>
+<th style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">2^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="base"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></th>
+<th style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>1</mn></msup></mrow><annotation encoding="application/x-tex">2^1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="base"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></th>
+<th style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>0</mn></msup></mrow><annotation encoding="application/x-tex">2^0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="base"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup><mo>+</mo><msup><mn>2</mn><mn>1</mn></msup><mo>+</mo><msup><mn>2</mn><mn>0</mn></msup></mrow><annotation encoding="application/x-tex">11 = 2^3 + 2^1 + 2^0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">1</span><span class="mord">1</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></p>
+<h2 id="convert-unsigned-decimal-to-binary">Convert <strong>Unsigned Decimal</strong> to <strong>Binary</strong></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Division</th>
+<th style="text-align:center">Quotient</th>
+<th style="text-align:center">Reminder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">37 / 2</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">18 / 2</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">9 / 2</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">4/2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">2/2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1/2</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p><code>decimal 37 = binary 100101</code></p>
+<h2 id="binary-addition">Binary Addition</h2>
+<p>Start with <em>least</em> significant bit</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">2^4</th>
+<th style="text-align:center">2^3</th>
+<th style="text-align:center">2^2</th>
+<th style="text-align:center">2^1</th>
+<th style="text-align:center">2^0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn><mn>1</mn><mn>0</mn><mn>1</mn><mn>0</mn><mo>+</mo><mn>0</mn><mn>1</mn><mn>1</mn><mn>0</mn><mn>0</mn><mo>=</mo><mn>1</mn><mn>0</mn><mn>1</mn><mn>1</mn><mn>0</mn></mrow><annotation encoding="application/x-tex">01010 + 01100 = 10110</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">0</span><span class="mord">1</span><span class="mord">0</span><span class="mord">1</span><span class="mord">0</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mord">0</span></span></span></span></p>
+<h2 id="binary-to-hex">Binary to Hex</h2>
+<p><strong>Each</strong> <em>Hex</em> digit translates to <strong>4</strong> <em>binary</em> digits</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Binary</th>
+<th style="text-align:center">Decimal</th>
+<th style="text-align:center">Hexadecimal</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">Binary</th>
+<th style="text-align:center">Decimal</th>
+<th style="text-align:center">Hexadecimal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0000</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1000</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:center">0001</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1001</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">9</td>
+</tr>
+<tr>
+<td style="text-align:center">0010</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1010</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">A</td>
+</tr>
+<tr>
+<td style="text-align:center">0011</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1011</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">B</td>
+</tr>
+<tr>
+<td style="text-align:center">0100</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1100</td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">C</td>
+</tr>
+<tr>
+<td style="text-align:center">0101</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1101</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">D</td>
+</tr>
+<tr>
+<td style="text-align:center">0110</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1110</td>
+<td style="text-align:center">14</td>
+<td style="text-align:center">E</td>
+</tr>
+<tr>
+<td style="text-align:center">0111</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1111</td>
+<td style="text-align:center">15</td>
+<td style="text-align:center">F</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hex-to-decimal">Hex to Decimal</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Division</th>
+<th style="text-align:center">Quotient</th>
+<th style="text-align:center">Reminder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">422 / 16</td>
+<td style="text-align:center">26</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">26 / 16</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">A</td>
+</tr>
+<tr>
+<td style="text-align:center">1 / 16</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p><code>decimal 422 = Hex 1A6</code></p>
+<h2 id="signed-integers">Signed Integers</h2>
+<p><strong>Highest</strong> bit indicates sign. <code>1 = negative, 0 = positive</code></p>
+<p>If highest digit of hex &gt; 7, value is negative</p>
+<h2 id="twos-complement">Two's Complement</h2>
+<p>Negative Numbers stored in two's complement notation</p>
+<p>For -1</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Instruction</th>
+<th style="text-align:center">Binary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Starting Value</td>
+<td style="text-align:center">00000001</td>
+</tr>
+<tr>
+<td style="text-align:left">Reverse Bits</td>
+<td style="text-align:center">11111110</td>
+</tr>
+<tr>
+<td style="text-align:left">Plus 1</td>
+<td style="text-align:center">11111111</td>
+</tr>
+</tbody>
+</table>
+<p><code>-1 is represented as 11111111 in a 1 byte binary</code></p>
+<h2 id="binary-subtraction">Binary Subtraction</h2>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mn>1</mn><mn>0</mn><mn>0</mn><mo>−</mo><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mn>1</mn><mo>=</mo><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mn>1</mn><mn>0</mn><mn>0</mn><mo>+</mo><mo>(</mo><mo>−</mo><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">00001100 - 00000011 = 00001100 + (-00000011)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Instruction</th>
+<th style="text-align:center">Binary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Starting Value</td>
+<td style="text-align:center">00000011</td>
+</tr>
+<tr>
+<td style="text-align:left">Reverse Bits</td>
+<td style="text-align:center">11111100</td>
+</tr>
+<tr>
+<td style="text-align:left">Plus 1</td>
+<td style="text-align:center">11111101</td>
+</tr>
+</tbody>
+</table>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mn>1</mn><mn>0</mn><mn>0</mn><mo>+</mo></mrow><annotation encoding="application/x-tex">00001100 +</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">+</span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mn>1</mn><mn>1</mn><mn>1</mn><mn>1</mn><mn>0</mn><mn>1</mn><mo>=</mo></mrow><annotation encoding="application/x-tex">11111101 =</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base"><span class="mord">1</span><span class="mord">1</span><span class="mord">1</span><span class="mord">1</span><span class="mord">1</span><span class="mord">1</span><span class="mord">0</span><span class="mord">1</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mn>0</mn><mn>0</mn><mn>1</mn></mrow><annotation encoding="application/x-tex">00001001</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base"><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mn>1</mn><mn>0</mn><mn>0</mn><mo>−</mo><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mn>1</mn><mo>=</mo><mn>0</mn><mn>0</mn><mn>0</mn><mn>0</mn><mn>1</mn><mn>0</mn><mn>0</mn><mn>1</mn></mrow><annotation encoding="application/x-tex">00001100 - 00000011 = 00001001</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span></span></span></span></p>
+<h2 id="boolean-algebra">Boolean Algebra</h2>
+<h3 id="not">NOT</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">X</th>
+<th style="text-align:center">Not X</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">F</td>
+<td style="text-align:center">T</td>
+</tr>
+<tr>
+<td style="text-align:center">T</td>
+<td style="text-align:center">F</td>
+</tr>
+</tbody>
+</table>
+<h3 id="and">AND</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">X</th>
+<th style="text-align:center">Y</th>
+<th style="text-align:center">X AND Y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">F</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">F</td>
+</tr>
+<tr>
+<td style="text-align:center">F</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">F</td>
+</tr>
+<tr>
+<td style="text-align:center">T</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">F</td>
+</tr>
+<tr>
+<td style="text-align:center">T</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">T</td>
+</tr>
+</tbody>
+</table>
+<h3 id="or">OR</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">X</th>
+<th style="text-align:center">Y</th>
+<th style="text-align:center">X AND Y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">F</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">F</td>
+</tr>
+<tr>
+<td style="text-align:center">F</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">T</td>
+</tr>
+<tr>
+<td style="text-align:center">T</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">T</td>
+</tr>
+<tr>
+<td style="text-align:center">T</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">T</td>
+</tr>
+</tbody>
+</table>
+<h1 id="chapter-2---x86-processor-architecture">Chapter 2 - x86 Processor Architecture</h1>
+
+    </body>
+    </html>

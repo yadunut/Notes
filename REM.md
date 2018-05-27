@@ -1,6 +1,31 @@
-# Chapter 1 - Basic Concepts
+<!-- markdownlint-disable MD025 MD033-->
 
-<!-- markdownlint-disable MD025 -->
+# Reverse Engineering Malware
+
+- [Reverse Engineering Malware](#reverse-engineering-malware)
+- [Chapter 1 - Basic Concepts](#chapter-1---basic-concepts)
+  - [Convert **Binary** to **Decimal**](#convert-binary-to-decimal)
+  - [Convert **Unsigned Decimal** to **Binary**](#convert-unsigned-decimal-to-binary)
+  - [Binary Addition](#binary-addition)
+  - [Binary to Hex](#binary-to-hex)
+  - [Hex to Decimal](#hex-to-decimal)
+  - [Signed Integers](#signed-integers)
+  - [Two's Complement](#twos-complement)
+  - [Binary Subtraction](#binary-subtraction)
+  - [Boolean Algebra](#boolean-algebra)
+    - [NOT](#not)
+    - [AND](#and)
+    - [OR](#or)
+- [Chapter 2 - x86 Processor Architecture](#chapter-2---x86-processor-architecture)
+  - [General Purpose Registers](#general-purpose-registers)
+  - [Accessing Parts of a register](#accessing-parts-of-a-register)
+  - [Specialized Register Uses](#specialized-register-uses)
+    - [General Purpose](#general-purpose)
+    - [Segment](#segment)
+    - [Special](#special)
+- [Chapter 3 - Fundamentals](#chapter-3---fundamentals)
+
+# Chapter 1 - Basic Concepts
 
 ## Convert **Binary** to **Decimal**
 
@@ -109,19 +134,95 @@ $00001100 - 00000011 = 00001001$
 ### AND
 
 | X     | Y     | X AND Y |
-| :---: | :---: | :---: |
-| F     | F     | F     |
-| F     | T     | F     |
-| T     | F     | F     |
-| T     | T     | T     |
+| :---: | :---: | :-----: |
+| F     | F     | F       |
+| F     | T     | F       |
+| T     | F     | F       |
+| T     | T     | T       |
 
 ### OR
 
 | X     | Y     | X AND Y |
-| :---: | :---: | :---: |
-| F     | F     | F     |
-| F     | T     | T     |
-| T     | F     | T     |
-| T     | T     | T     |
+| :---: | :---: | :-----: |
+| F     | F     | F       |
+| F     | T     | T       |
+| T     | F     | T       |
+| T     | T     | T       |
 
 # Chapter 2 - x86 Processor Architecture
+
+## General Purpose Registers
+
+Storage Locations inside CPU, optimized for speed.
+
+| 32 Bit General | Purpose Registers |
+| :------------: | :---------------: |
+| EAX            | EBP               |
+| EBX            | ESP               |
+| ECX            | ESI               |
+| EDX            | EDI               |
+
+| 16 Bit Segment | Registers |
+| :------------: | :-------: |
+| CS             | FS        |
+| DS             | GS        |
+| ES             | SS        |
+
+|Special Registers|
+|:---:|
+|EFLAGS|
+|EIP|
+
+## Accessing Parts of a register
+
+Use 8 bit, 16 bit or 32 bit name
+
+Each `|   |` space represents 8 bits
+
+```demo
+|   |   |   |   |   - EAX
+        |   |   |   - AX
+        |   |       - AL
+            |   |   - AX
+```
+
+***The 16 and 8 Bit registers are accessing the values in the EAX***
+
+The E in EAX stands for `extended`, extending the range of the 16 bit registers to 32 bits
+
+EAX, EBX, ECX, EDX have both 16 bit and 8 bit names
+
+EBP, ESP, ESI, EDI only have 16 bit names
+
+## Specialized Register Uses
+
+### General Purpose
+
+| Register | Use                                 |
+| :------: | :---------------------------------- |
+| E**A**X  | **A**ccumulator                     |
+| E**C**X  | Loop **C**ounter                    |
+| E**SP**  | **S**tack Pointer                   |
+| ES**I**  | Index Register                      |
+| ED**I**  | Index Register                      |
+| EB**P**  | **B**ase **P**ointer(Frame Pointer) |
+
+### Segment
+
+| Register | Use                    |
+| :------: | :--------------------- |
+| CS       | **C**ode **S**egment   |
+| DS       | **D**ata **S**egment   |
+| SS       | **S**tack **S**egment  |
+| ES       | Additional **S**egment |
+| FS       | Additional **S**egment |
+| GS       | Additional **S**egment |
+
+### Special
+
+| Register | Use                                                  |
+| :------: | :--------------------------------------------------- |
+| EIP      | Instruction Pointer                                  |
+| EFLAGS   | Status and Control Flag<br>Each Flag is a single **bit** |
+
+# Chapter 3 - Fundamentals

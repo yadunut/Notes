@@ -21,8 +21,45 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
         </style>
     </head>
     <body>
-        <h1 id="chapter-1---basic-concepts">Chapter 1 - Basic Concepts</h1>
-<!-- markdownlint-disable MD025 -->
+        <!-- markdownlint-disable MD025 MD033-->
+<h1 id="reverse-engineering-malware">Reverse Engineering Malware</h1>
+<ul>
+<li><a href="#reverse-engineering-malware">Reverse Engineering Malware</a></li>
+<li><a href="#chapter-1---basic-concepts">Chapter 1 - Basic Concepts</a>
+<ul>
+<li><a href="#convert-binary-to-decimal">Convert <strong>Binary</strong> to <strong>Decimal</strong></a></li>
+<li><a href="#convert-unsigned-decimal-to-binary">Convert <strong>Unsigned Decimal</strong> to <strong>Binary</strong></a></li>
+<li><a href="#binary-addition">Binary Addition</a></li>
+<li><a href="#binary-to-hex">Binary to Hex</a></li>
+<li><a href="#hex-to-decimal">Hex to Decimal</a></li>
+<li><a href="#signed-integers">Signed Integers</a></li>
+<li><a href="#twos-complement">Two's Complement</a></li>
+<li><a href="#binary-subtraction">Binary Subtraction</a></li>
+<li><a href="#boolean-algebra">Boolean Algebra</a>
+<ul>
+<li><a href="#not">NOT</a></li>
+<li><a href="#and">AND</a></li>
+<li><a href="#or">OR</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#chapter-2---x86-processor-architecture">Chapter 2 - x86 Processor Architecture</a>
+<ul>
+<li><a href="#general-purpose-registers">General Purpose Registers</a></li>
+<li><a href="#accessing-parts-of-a-register">Accessing Parts of a register</a></li>
+<li><a href="#specialized-register-uses">Specialized Register Uses</a>
+<ul>
+<li><a href="#general-purpose">General Purpose</a></li>
+<li><a href="#segment">Segment</a></li>
+<li><a href="#special">Special</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#chapter-3---fundamentals">Chapter 3 - Fundamentals</a></li>
+</ul>
+<h1 id="chapter-1---basic-concepts">Chapter 1 - Basic Concepts</h1>
 <h2 id="convert-binary-to-decimal">Convert <strong>Binary</strong> to <strong>Decimal</strong></h2>
 <p>binary 1011 = decimal 11</p>
 <table>
@@ -383,6 +420,174 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </tbody>
 </table>
 <h1 id="chapter-2---x86-processor-architecture">Chapter 2 - x86 Processor Architecture</h1>
+<h2 id="general-purpose-registers">General Purpose Registers</h2>
+<p>Storage Locations inside CPU, optimized for speed.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">32 Bit General</th>
+<th style="text-align:center">Purpose Registers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">EAX</td>
+<td style="text-align:center">EBP</td>
+</tr>
+<tr>
+<td style="text-align:center">EBX</td>
+<td style="text-align:center">ESP</td>
+</tr>
+<tr>
+<td style="text-align:center">ECX</td>
+<td style="text-align:center">ESI</td>
+</tr>
+<tr>
+<td style="text-align:center">EDX</td>
+<td style="text-align:center">EDI</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">16 Bit Segment</th>
+<th style="text-align:center">Registers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CS</td>
+<td style="text-align:center">FS</td>
+</tr>
+<tr>
+<td style="text-align:center">DS</td>
+<td style="text-align:center">GS</td>
+</tr>
+<tr>
+<td style="text-align:center">ES</td>
+<td style="text-align:center">SS</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Special Registers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">EFLAGS</td>
+</tr>
+<tr>
+<td style="text-align:center">EIP</td>
+</tr>
+</tbody>
+</table>
+<h2 id="accessing-parts-of-a-register">Accessing Parts of a register</h2>
+<p>Use 8 bit, 16 bit or 32 bit name</p>
+<p>Each <code>| |</code> space represents 8 bits</p>
+<pre><code class="language-demo">|   |   |   |   |   - EAX
+        |   |   |   - AX
+        |   |       - AL
+            |   |   - AX
+</code></pre>
+<p><em><strong>The 16 and 8 Bit registers are accessing the values in the EAX</strong></em></p>
+<p>The E in EAX stands for <code>extended</code>, extending the range of the 16 bit registers to 32 bits</p>
+<p>EAX, EBX, ECX, EDX have both 16 bit and 8 bit names</p>
+<p>EBP, ESP, ESI, EDI only have 16 bit names</p>
+<h2 id="specialized-register-uses">Specialized Register Uses</h2>
+<h3 id="general-purpose">General Purpose</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Register</th>
+<th style="text-align:left">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">E<strong>A</strong>X</td>
+<td style="text-align:left"><strong>A</strong>ccumulator</td>
+</tr>
+<tr>
+<td style="text-align:center">E<strong>C</strong>X</td>
+<td style="text-align:left">Loop <strong>C</strong>ounter</td>
+</tr>
+<tr>
+<td style="text-align:center">E<strong>SP</strong></td>
+<td style="text-align:left"><strong>S</strong>tack Pointer</td>
+</tr>
+<tr>
+<td style="text-align:center">ES<strong>I</strong></td>
+<td style="text-align:left">Index Register</td>
+</tr>
+<tr>
+<td style="text-align:center">ED<strong>I</strong></td>
+<td style="text-align:left">Index Register</td>
+</tr>
+<tr>
+<td style="text-align:center">EB<strong>P</strong></td>
+<td style="text-align:left"><strong>B</strong>ase <strong>P</strong>ointer(Frame Pointer)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="segment">Segment</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Register</th>
+<th style="text-align:left">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CS</td>
+<td style="text-align:left"><strong>C</strong>ode <strong>S</strong>egment</td>
+</tr>
+<tr>
+<td style="text-align:center">DS</td>
+<td style="text-align:left"><strong>D</strong>ata <strong>S</strong>egment</td>
+</tr>
+<tr>
+<td style="text-align:center">SS</td>
+<td style="text-align:left"><strong>S</strong>tack <strong>S</strong>egment</td>
+</tr>
+<tr>
+<td style="text-align:center">ES</td>
+<td style="text-align:left">Additional <strong>S</strong>egment</td>
+</tr>
+<tr>
+<td style="text-align:center">FS</td>
+<td style="text-align:left">Additional <strong>S</strong>egment</td>
+</tr>
+<tr>
+<td style="text-align:center">GS</td>
+<td style="text-align:left">Additional <strong>S</strong>egment</td>
+</tr>
+</tbody>
+</table>
+<h3 id="special">Special</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Register</th>
+<th style="text-align:left">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">EIP</td>
+<td style="text-align:left">Instruction Pointer</td>
+</tr>
+<tr>
+<td style="text-align:center">EFLAGS</td>
+<td style="text-align:left">Status and Control Flag<br>Each Flag is a single <strong>bit</strong></td>
+</tr>
+</tbody>
+</table>
+<h1 id="chapter-3---fundamentals">Chapter 3 - Fundamentals</h1>
 
     </body>
     </html>

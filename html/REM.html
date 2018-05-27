@@ -57,7 +57,45 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </li>
 </ul>
 </li>
-<li><a href="#chapter-3---fundamentals">Chapter 3 - Fundamentals</a></li>
+<li><a href="#chapter-3---fundamentals">Chapter 3 - Fundamentals</a>
+<ul>
+<li><a href="#integer-contstants">Integer Contstants</a></li>
+<li><a href="#instruction">Instruction</a>
+<ul>
+<li><a href="#label">Label</a></li>
+<li><a href="#memonic-and-operands">Memonic and Operands</a></li>
+<li><a href="#comments">Comments</a></li>
+<li><a href="#instruction-format-example">Instruction Format Example</a></li>
+</ul>
+</li>
+<li><a href="#defining-data">Defining Data</a>
+<ul>
+<li><a href="#data-types">Data Types</a></li>
+<li><a href="#data-definition-statement">Data Definition Statement</a></li>
+<li><a href="#defining-byte-and-sbyte">Defining BYTE and SBYTE</a></li>
+<li><a href="#defining-byte-arrays">Defining Byte Arrays</a></li>
+<li><a href="#dup-operator">DUP operator</a></li>
+<li><a href="#little-endian-order">Little Endian order</a></li>
+<li><a href="#declaring-uninitialized-data">Declaring uninitialized data</a></li>
+</ul>
+</li>
+<li><a href="#symbolic-constants">Symbolic Constants</a>
+<ul>
+<li><a href="#equals-sign">Equals Sign</a></li>
+<li><a href="#calculate-size-of-arrays-and-strings">Calculate Size of Arrays and strings</a>
+<ul>
+<li><a href="#byte-array">Byte Array</a></li>
+<li><a href="#word-array">Word Array</a></li>
+<li><a href="#dword-array">DWORD Array</a></li>
+</ul>
+</li>
+<li><a href="#equ-directive">EQU Directive</a></li>
+<li><a href="#textequ-directive">TEXTEQU Directive</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#chapter-4---data-transfer--addressing-and-arithmetic">Chapter 4 - Data Transfer, Addressing and Arithmetic</a></li>
 </ul>
 <h1 id="chapter-1---basic-concepts">Chapter 1 - Basic Concepts</h1>
 <h2 id="convert-binary-to-decimal">Convert <strong>Binary</strong> to <strong>Decimal</strong></h2>
@@ -588,6 +626,330 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </tbody>
 </table>
 <h1 id="chapter-3---fundamentals">Chapter 3 - Fundamentals</h1>
+<h2 id="integer-contstants">Integer Contstants</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Letter</th>
+<th style="text-align:center">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Hex</td>
+<td style="text-align:center">h</td>
+<td style="text-align:center">6Ah</td>
+</tr>
+<tr>
+<td style="text-align:center">Dec</td>
+<td style="text-align:center">d</td>
+<td style="text-align:center">88d</td>
+</tr>
+<tr>
+<td style="text-align:center">Dec</td>
+<td style="text-align:center">88</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Bin</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">001010b</td>
+</tr>
+</tbody>
+</table>
+<h2 id="instruction">Instruction</h2>
+<p>Instruction Contains</p>
+<ul>
+<li>Label (Optional)</li>
+<li>Memonic (Required)</li>
+<li>Operand (Dependent on Memonic)</li>
+<li>Comment (Optional)</li>
+</ul>
+<h3 id="label">Label</h3>
+<ul>
+<li>Acts as placemarkers
+<ul>
+<li>Marks offset of code</li>
+</ul>
+</li>
+<li>Follows identifier rules</li>
+<li>Data Label
+<ul>
+<li>Must be Unique</li>
+<li>Example - <code>MyArray</code> (No colon after)</li>
+</ul>
+</li>
+<li>Code Label
+<ul>
+<li>Target of Jump and Loop instruction</li>
+<li>Example - <code>L1:</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="memonic-and-operands">Memonic and Operands</h3>
+<ul>
+<li>Instruction Memonics
+<ul>
+<li>Memory Aid</li>
+<li>Examples - <code>MOV, ADD, SUB, MUL, INC, DEC</code></li>
+</ul>
+</li>
+<li>Operand
+<ul>
+<li>Constant</li>
+<li>Constant Expression</li>
+<li>Register</li>
+<li>Memory (data label)</li>
+</ul>
+</li>
+</ul>
+<p><em>Constants and constant expressions are often called <strong>Immediate Values</strong></em></p>
+<h3 id="comments">Comments</h3>
+<ul>
+<li>Explain programs purpose</li>
+<li>Single Line comments begin with <code>;</code></li>
+<li>Multiline comments begin with COMMENT and a chosen character and ends with the chosen character</li>
+</ul>
+<h3 id="instruction-format-example">Instruction Format Example</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Example</th>
+<th style="text-align:left">Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">No Operand</td>
+<td style="text-align:left"><code>stc ;set carry flag</code></td>
+</tr>
+<tr>
+<td style="text-align:left">One Operand</td>
+<td style="text-align:left"><code>inc eax ;increment register</code><br><code>inc myByte ; increment memory</code></td>
+</tr>
+<tr>
+<td style="text-align:left">Two Operand</td>
+<td style="text-align:left"><code>add eax, ecx ;register, register</code><br><code>sub myByte, 25 ;memory, constant</code><br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="defining-data">Defining Data</h2>
+<h3 id="data-types">Data Types</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Unsigned</th>
+<th style="text-align:left">Signed</th>
+<th style="text-align:left">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">BYTE</td>
+<td style="text-align:left">SBYTE</td>
+<td style="text-align:left">8 bit (un)signed integer</td>
+</tr>
+<tr>
+<td style="text-align:left">WORD</td>
+<td style="text-align:left">SWORD</td>
+<td style="text-align:left">16 bit (un)signed integer</td>
+</tr>
+<tr>
+<td style="text-align:left">DWORD</td>
+<td style="text-align:left">SDWORD</td>
+<td style="text-align:left">32 bit (un)signed integer</td>
+</tr>
+<tr>
+<td style="text-align:left">QWORD</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">64 bit unsigned integer</td>
+</tr>
+<tr>
+<td style="text-align:left">TBYTE</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">80 bit integer</td>
+</tr>
+<tr>
+<td style="text-align:left">REAL4</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">4-byte IEEE short real</td>
+</tr>
+<tr>
+<td style="text-align:left">REAL8</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">8-byte IEEE short real</td>
+</tr>
+<tr>
+<td style="text-align:left">REAL10</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">10-byte IEEE short real</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-definition-statement">Data Definition Statement</h3>
+<ul>
+<li>Sets aside storage in memory for a variable</li>
+<li>Optionally assign a name(label) to the data</li>
+<li>Syntax
+<ul>
+<li><code>Name Type Initializer</code></li>
+<li><code>value1 BYTE 10</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="defining-byte-and-sbyte">Defining BYTE and SBYTE</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Code</th>
+<th style="text-align:left">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>value1 BYTE 'A'</code></td>
+<td style="text-align:left">character constant</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>value2 BYTE 0</code></td>
+<td style="text-align:left">smallest unsigned byte</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>value3 BYTE 255</code></td>
+<td style="text-align:left">largest unsigned byte</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>value4 SBYTE -128</code></td>
+<td style="text-align:left">largest signed byte</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>value5 SBYTE +127</code></td>
+<td style="text-align:left">largest signed byte</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>value6 BYTE ?</code></td>
+<td style="text-align:left">uninitialized byte</td>
+</tr>
+</tbody>
+</table>
+<h3 id="defining-byte-arrays">Defining Byte Arrays</h3>
+<pre><code class="language-asm">list1 BYTE 10, 20, 30, 40
+list2 BYTE 00100010b, ?, 'a', 14h
+list3 BYTE 50, 60, 70, 80
+      BYTE 90, 100, 110, 120
+str1  BYTE "This is a string", 0
+str2  BYTE 'A', 'E', 'I', 'O', 'U'
+str3  BYTE 'The 0 at the end is a null termination'.
+           'This is a multi line string'
+str4 BYTE '0Dh is carriage return, 0Ah is line feed', 0Dh, 0Ah,
+          'This causes it to go to new line'
+</code></pre>
+<h3 id="dup-operator">DUP operator</h3>
+<p>Use DUP to allocate space for array or string</p>
+<p>syntax: <code>count DUP</code></p>
+<pre><code class="language-asm">var1 BYTE 20 DUP(0) ;20 bytes, all equal to 0
+var2 BYTE 20 DUP(?) ;20 bytes, all uninitialized
+var3 BYTE 4 DUP("Hi");8 bytes, "HiHiHiHi"
+</code></pre>
+<h3 id="little-endian-order">Little Endian order</h3>
+<p>All data types larger than a byte store data in little endian order.
+<em>Least Significant Byte</em> Occurs at the first memory address</p>
+<p>val1 DWORD = 12345678h</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Memory Address</th>
+<th style="text-align:left">Data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0000</td>
+<td style="text-align:left">78</td>
+</tr>
+<tr>
+<td style="text-align:left">0001</td>
+<td style="text-align:left">56</td>
+</tr>
+<tr>
+<td style="text-align:left">0002</td>
+<td style="text-align:left">34</td>
+</tr>
+<tr>
+<td style="text-align:left">0003</td>
+<td style="text-align:left">12</td>
+</tr>
+</tbody>
+</table>
+<h3 id="declaring-uninitialized-data">Declaring uninitialized data</h3>
+<ul>
+<li>Use the <code>.data?</code> directive to declare uninitialized data segment</li>
+<li>Within the segment, declare variables with &quot;?&quot; initializer
+<ul>
+<li>Example - <code>smallArray DWORD 10 DUP(?)</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="symbolic-constants">Symbolic Constants</h2>
+<h3 id="equals-sign">Equals Sign</h3>
+<ul>
+<li><code>name = expression</code>
+<ul>
+<li>expression is a 32 bit integer</li>
+<li>may be redefined</li>
+<li>name is called <code>symbolic constant</code></li>
+</ul>
+</li>
+<li>good programming style to use symbols</li>
+</ul>
+<pre><code class="language-asm">COUNT = 500
+...
+mov ax, COUNT
+</code></pre>
+<h3 id="calculate-size-of-arrays-and-strings">Calculate Size of Arrays and strings</h3>
+<ul>
+<li>Current location counter - $
+<ul>
+<li>subtract from address of array</li>
+<li>difference is no of bytes</li>
+</ul>
+</li>
+</ul>
+<h4 id="byte-array">Byte Array</h4>
+<pre><code class="language-asm">list BYTE 10, 20, 30, 40
+listSize = ($ - list)      ; 4
+</code></pre>
+<h4 id="word-array">Word Array</h4>
+<pre><code class="language-asm">list WORD 1000h, 2000h, 3000h, 4000h
+listSize = ($ - list)/2      ; 4
+</code></pre>
+<h4 id="dword-array">DWORD Array</h4>
+<pre><code class="language-asm">list DWORD 1000h, 2000h, 3000h, 4000h
+listSize = ($ - list)/4      ; 4
+</code></pre>
+<h3 id="equ-directive">EQU Directive</h3>
+<p>Define symbol as integer or text expression. <strong>Cannot Be redefined</strong></p>
+<p>Will act as if</p>
+<pre><code class="language-asm">PI EQU <3.1416>
+pressKey EQU <"Press any key to continue", 0>
+.data
+prompt BYTE pressKey
+</code></pre>
+<h3 id="textequ-directive">TEXTEQU Directive</h3>
+<p>Define symbol as integer or text expression. <strong>Can Be redefined</strong></p>
+<p>Called Text Macro</p>
+<pre><code class="language-asm">continueMessage TEXTEQU <"Do You wish to continue (Y/N)?", 0>
+rowSize = 5
+.data
+prompt1 BYTE continueMessage
+count TEXTEQU %(rowSize * 2) ;Evaluaets this expression and sets count to 10
+setupAL TEXTEQU <mov, al, count>
+
+.code
+setupAL ;generates mov al, 10
+</code></pre>
+<h1 id="chapter-4---data-transfer--addressing-and-arithmetic">Chapter 4 - Data Transfer, Addressing and Arithmetic</h1>
 
     </body>
     </html>

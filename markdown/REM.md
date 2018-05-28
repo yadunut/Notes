@@ -343,7 +343,7 @@ Instruction Contains
 
 ### Defining Byte Arrays
 
-```asm
+```x86asm
 list1 BYTE 10, 20, 30, 40
 list2 BYTE 00100010b, ?, 'a', 14h
 list3 BYTE 50, 60, 70, 80
@@ -362,7 +362,7 @@ Use DUP to allocate space for array or string
 
 syntax: `count DUP`
 
-```asm
+```x86asm
 var1 BYTE 20 DUP(0) ;20 bytes, all equal to 0
 var2 BYTE 20 DUP(?) ;20 bytes, all uninitialized
 var3 BYTE 4 DUP("Hi");8 bytes, "HiHiHiHi"
@@ -397,7 +397,7 @@ val1 DWORD = 12345678h
   - name is called `symbolic constant`
 - good programming style to use symbols
 
-```asm
+```x86asm
 COUNT = 500
 ...
 mov ax, COUNT
@@ -411,21 +411,21 @@ mov ax, COUNT
 
 #### Byte Array
 
-```asm
+```x86asm
 list BYTE 10, 20, 30, 40
 listSize = ($ - list)      ; 4
 ```
 
 #### Word Array
 
-```asm
+```x86asm
 list WORD 1000h, 2000h, 3000h, 4000h
 listSize = ($ - list)/2      ; 4
 ```
 
 #### DWORD Array
 
-```asm
+```x86asm
 list DWORD 1000h, 2000h, 3000h, 4000h
 listSize = ($ - list)/4      ; 4
 ```
@@ -436,7 +436,7 @@ Define symbol as integer or text expression. **Cannot Be redefined**
 
 Will act as if 
 
-```asm
+```x86asm
 PI EQU <3.1416>
 pressKey EQU <"Press any key to continue", 0>
 .data
@@ -449,7 +449,7 @@ Define symbol as integer or text expression. **Can Be redefined**
 
 Called Text Macro
 
-```asm
+```x86asm
 continueMessage TEXTEQU <"Do You wish to continue (Y/N)?", 0>
 rowSize = 5
 .data

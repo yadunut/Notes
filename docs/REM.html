@@ -834,24 +834,24 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </tbody>
 </table>
 <h3 id="defining-byte-arrays">Defining Byte Arrays</h3>
-<pre><code class="language-asm">list1 BYTE 10, 20, 30, 40
-list2 BYTE 00100010b, ?, 'a', 14h
-list3 BYTE 50, 60, 70, 80
-      BYTE 90, 100, 110, 120
-str1  BYTE "This is a string", 0
-str2  BYTE 'A', 'E', 'I', 'O', 'U'
-str3  BYTE 'The 0 at the end is a null termination'.
-           'This is a multi line string'
-str4 BYTE '0Dh is carriage return, 0Ah is line feed', 0Dh, 0Ah,
-          'This causes it to go to new line'
-</code></pre>
+<pre class="hljs"><code><div>list1 <span class="hljs-built_in">BYTE</span> <span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>
+list2 <span class="hljs-built_in">BYTE</span> <span class="hljs-number">00100010b</span>, ?, <span class="hljs-string">'a'</span>, <span class="hljs-number">14h</span>
+list3 <span class="hljs-built_in">BYTE</span> <span class="hljs-number">50</span>, <span class="hljs-number">60</span>, <span class="hljs-number">70</span>, <span class="hljs-number">80</span>
+      <span class="hljs-built_in">BYTE</span> <span class="hljs-number">90</span>, <span class="hljs-number">100</span>, <span class="hljs-number">110</span>, <span class="hljs-number">120</span>
+str1  <span class="hljs-built_in">BYTE</span> <span class="hljs-string">"This is a string"</span>, <span class="hljs-number">0</span>
+str2  <span class="hljs-built_in">BYTE</span> <span class="hljs-string">'A'</span>, <span class="hljs-string">'E'</span>, <span class="hljs-string">'I'</span>, <span class="hljs-string">'O'</span>, <span class="hljs-string">'U'</span>
+str3  <span class="hljs-built_in">BYTE</span> <span class="hljs-string">'The 0 at the end is a null termination'</span>.
+           <span class="hljs-string">'This is a multi line string'</span>
+str4 <span class="hljs-built_in">BYTE</span> <span class="hljs-string">'0Dh is carriage return, 0Ah is line feed'</span>, <span class="hljs-number">0Dh</span>, <span class="hljs-number">0Ah</span>,
+          <span class="hljs-string">'This causes it to go to new line'</span>
+</div></code></pre>
 <h3 id="dup-operator">DUP operator</h3>
 <p>Use DUP to allocate space for array or string</p>
 <p>syntax: <code>count DUP</code></p>
-<pre><code class="language-asm">var1 BYTE 20 DUP(0) ;20 bytes, all equal to 0
-var2 BYTE 20 DUP(?) ;20 bytes, all uninitialized
-var3 BYTE 4 DUP("Hi");8 bytes, "HiHiHiHi"
-</code></pre>
+<pre class="hljs"><code><div>var1 <span class="hljs-built_in">BYTE</span> <span class="hljs-number">20</span> DUP(<span class="hljs-number">0</span>) <span class="hljs-comment">;20 bytes, all equal to 0</span>
+var2 <span class="hljs-built_in">BYTE</span> <span class="hljs-number">20</span> DUP(?) <span class="hljs-comment">;20 bytes, all uninitialized</span>
+var3 <span class="hljs-built_in">BYTE</span> <span class="hljs-number">4</span> DUP(<span class="hljs-string">"Hi"</span>)<span class="hljs-comment">;8 bytes, "HiHiHiHi"</span>
+</div></code></pre>
 <h3 id="little-endian-order">Little Endian order</h3>
 <p>All data types larger than a byte store data in little endian order.
 <em>Least Significant Byte</em> Occurs at the first memory address</p>
@@ -903,10 +903,10 @@ var3 BYTE 4 DUP("Hi");8 bytes, "HiHiHiHi"
 </li>
 <li>good programming style to use symbols</li>
 </ul>
-<pre><code class="language-asm">COUNT = 500
+<pre class="hljs"><code><div>COUNT = <span class="hljs-number">500</span>
 ...
-mov ax, COUNT
-</code></pre>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, COUNT
+</div></code></pre>
 <h3 id="calculate-size-of-arrays-and-strings">Calculate Size of Arrays and strings</h3>
 <ul>
 <li>Current location counter - $
@@ -917,38 +917,38 @@ mov ax, COUNT
 </li>
 </ul>
 <h4 id="byte-array">Byte Array</h4>
-<pre><code class="language-asm">list BYTE 10, 20, 30, 40
-listSize = ($ - list)      ; 4
-</code></pre>
+<pre class="hljs"><code><div>list <span class="hljs-built_in">BYTE</span> <span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>
+listSize = ($ - list)      <span class="hljs-comment">; 4</span>
+</div></code></pre>
 <h4 id="word-array">Word Array</h4>
-<pre><code class="language-asm">list WORD 1000h, 2000h, 3000h, 4000h
-listSize = ($ - list)/2      ; 4
-</code></pre>
+<pre class="hljs"><code><div>list <span class="hljs-built_in">WORD</span> <span class="hljs-number">1000h</span>, <span class="hljs-number">2000h</span>, <span class="hljs-number">3000h</span>, <span class="hljs-number">4000h</span>
+listSize = ($ - list)/<span class="hljs-number">2</span>      <span class="hljs-comment">; 4</span>
+</div></code></pre>
 <h4 id="dword-array">DWORD Array</h4>
-<pre><code class="language-asm">list DWORD 1000h, 2000h, 3000h, 4000h
-listSize = ($ - list)/4      ; 4
-</code></pre>
+<pre class="hljs"><code><div>list <span class="hljs-built_in">DWORD</span> <span class="hljs-number">1000h</span>, <span class="hljs-number">2000h</span>, <span class="hljs-number">3000h</span>, <span class="hljs-number">4000h</span>
+listSize = ($ - list)/<span class="hljs-number">4</span>      <span class="hljs-comment">; 4</span>
+</div></code></pre>
 <h3 id="equ-directive">EQU Directive</h3>
 <p>Define symbol as integer or text expression. <strong>Cannot Be redefined</strong></p>
 <p>Will act as if</p>
-<pre><code class="language-asm">PI EQU <3.1416>
-pressKey EQU <"Press any key to continue", 0>
-.data
-prompt BYTE pressKey
-</code></pre>
+<pre class="hljs"><code><div>PI <span class="hljs-built_in">EQU</span> &lt;<span class="hljs-number">3.1416</span>&gt;
+pressKey <span class="hljs-built_in">EQU</span> &lt;<span class="hljs-string">"Press any key to continue"</span>, <span class="hljs-number">0</span>&gt;
+<span class="hljs-meta">.data</span>
+prompt <span class="hljs-built_in">BYTE</span> pressKey
+</div></code></pre>
 <h3 id="textequ-directive">TEXTEQU Directive</h3>
 <p>Define symbol as integer or text expression. <strong>Can Be redefined</strong></p>
 <p>Called Text Macro</p>
-<pre><code class="language-asm">continueMessage TEXTEQU <"Do You wish to continue (Y/N)?", 0>
-rowSize = 5
-.data
-prompt1 BYTE continueMessage
-count TEXTEQU %(rowSize * 2) ;Evaluaets this expression and sets count to 10
-setupAL TEXTEQU <mov, al, count>
-
-.code
-setupAL ;generates mov al, 10
-</code></pre>
+<pre class="hljs"><code><div>continueMessage TEXTEQU &lt;<span class="hljs-string">"Do You wish to continue (Y/N)?"</span>, <span class="hljs-number">0</span>&gt;
+rowSize = <span class="hljs-number">5</span>
+<span class="hljs-meta">.data</span>
+prompt1 <span class="hljs-built_in">BYTE</span> continueMessage
+count TEXTEQU %(rowSize * <span class="hljs-number">2</span>) <span class="hljs-comment">;Evaluaets this expression and sets count to 10</span>
+setupAL TEXTEQU &lt;<span class="hljs-keyword">mov</span>, <span class="hljs-built_in">al</span>, count&gt;
+<span class="hljs-meta">
+.code</span>
+setupAL <span class="hljs-comment">;generates mov al, 10</span>
+</div></code></pre>
 <h1 id="chapter-4---data-transfer--addressing-and-arithmetic">Chapter 4 - Data Transfer, Addressing and Arithmetic</h1>
 
     </body>

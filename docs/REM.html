@@ -95,7 +95,24 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </li>
 </ul>
 </li>
-<li><a href="#chapter-4---data-transfer--addressing-and-arithmetic">Chapter 4 - Data Transfer, Addressing and Arithmetic</a></li>
+<li><a href="#chapter-4---data-transfer--addressing-and-arithmetic">Chapter 4 - Data Transfer, Addressing and Arithmetic</a>
+<ul>
+<li><a href="#data-transfer-instructions">Data Transfer Instructions</a>
+<ul>
+<li><a href="#operand-types">Operand Types</a></li>
+<li><a href="#direct-memory-operands">Direct Memory Operands</a></li>
+<li><a href="#mov-instruction">MOV instruction</a></li>
+<li><a href="#zero-extension">Zero Extension</a></li>
+<li><a href="#sign-extension">Sign Extension</a></li>
+<li><a href="#xchg-instruction">XCHG Instruction</a></li>
+</ul>
+</li>
+<li><a href="#addition-and-subtraction">Addition and Subtraction</a></li>
+<li><a href="#indirect-addressing">Indirect Addressing</a></li>
+<li><a href="#jmp-and-loop-instructions">JMP and LOOP instructions</a></li>
+<li><a href="#64-bit-programming">64-Bit Programming</a></li>
+</ul>
+</li>
 </ul>
 <h1 id="chapter-1---basic-concepts">Chapter 1 - Basic Concepts</h1>
 <h2 id="convert-binary-to-decimal">Convert <strong>Binary</strong> to <strong>Decimal</strong></h2>
@@ -528,8 +545,8 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <p>Each <code>| |</code> space represents 8 bits</p>
 <pre><code class="language-demo">|   |   |   |   |   - EAX
         |   |   |   - AX
-        |   |       - AL
-            |   |   - AX
+        |   |       - AH
+            |   |   - AL
 </code></pre>
 <p><em><strong>The 16 and 8 Bit registers are accessing the values in the EAX</strong></em></p>
 <p>The E in EAX stands for <code>extended</code>, extending the range of the 16 bit registers to 32 bits</p>
@@ -950,6 +967,99 @@ setupAL TEXTEQU &lt;<span class="hljs-keyword">mov</span>, <span class="hljs-bui
 setupAL <span class="hljs-comment">;generates mov al, 10</span>
 </div></code></pre>
 <h1 id="chapter-4---data-transfer--addressing-and-arithmetic">Chapter 4 - Data Transfer, Addressing and Arithmetic</h1>
+<h2 id="data-transfer-instructions">Data Transfer Instructions</h2>
+<h3 id="operand-types">Operand Types</h3>
+<ul>
+<li>Immediate - constant integer
+<ul>
+<li>value encoded within instruction</li>
+</ul>
+</li>
+<li>register - name of register
+<ul>
+<li>register name is converted to a number and encoded within instruction</li>
+</ul>
+</li>
+<li>Memory - Reference to location in memory
+<ul>
+<li>Memory address is encoded within the instruction, or register holds address of memory location</li>
+</ul>
+</li>
+</ul>
+<h3 id="direct-memory-operands">Direct Memory Operands</h3>
+<ul>
+<li>Direct memory operand is a named reference to storage in memory</li>
+<li>Named reference (label) is automatically dereferenced by the assembler</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+var1 <span class="hljs-built_in">BYTE</span> <span class="hljs-number">10h</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, var1
+</div></code></pre>
+<h3 id="mov-instruction">MOV instruction</h3>
+<ul>
+<li>Move from source to destination.
+<ul>
+<li>Syntax - <code>MOV destionation,source</code></li>
+</ul>
+</li>
+<li>No more than 1 memory operand allowed</li>
+<li><strong>CS</strong>, <strong>EIP</strong>, <strong>IP</strong> cannot be the destination</li>
+<li>No immediate to segment mmoves</li>
+</ul>
+<p>TODO: Find out whether endianness affects this</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+count <span class="hljs-built_in">BYTE</span> <span class="hljs-number">100</span>
+wVal  <span class="hljs-built_in">WORD</span> <span class="hljs-number">2</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>,count      <span class="hljs-comment">;bl = 100</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,wVal       <span class="hljs-comment">;ax = 2</span>
+<span class="hljs-keyword">mov</span> count,<span class="hljs-built_in">al</span>      <span class="hljs-comment">;count = ?</span>
+
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,wVal       <span class="hljs-comment">;error since wVal bigger than al</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,count      <span class="hljs-comment">;error ?Type mismatch?</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,count     <span class="hljs-comment">;error ?Type mismatch?</span>
+</div></code></pre>
+<p>More Errors</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+bval  <span class="hljs-built_in">BYTE</span>  <span class="hljs-number">100</span>
+bVal2 <span class="hljs-built_in">BYTE</span>  ?
+wVal  <span class="hljs-built_in">WORD</span>  <span class="hljs-number">2</span>
+dVal  <span class="hljs-built_in">DWORD</span> <span class="hljs-number">5</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>,<span class="hljs-number">45</span>       <span class="hljs-comment">;move to DS not permitted</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,wVal    <span class="hljs-comment">;size mismatch, esi is 32 bits, wVal is 16 bits</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eip</span>,dVal    <span class="hljs-comment">;eip cannot be destination</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-number">25</span>,bVal     <span class="hljs-comment">;immediate value cannot be register</span>
+<span class="hljs-keyword">mov</span> bVal2,bVal  <span class="hljs-comment">;memory to memory move not permitted</span>
+</div></code></pre>
+<h3 id="zero-extension">Zero Extension</h3>
+<p>When you copy a <em>smaller</em> value to a larger destination, the <strong>MOVZX</strong> instruction fills the upper half of destination with <em>Zeros</em></p>
+<p>Destination <strong>MUST</strong> be a register</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>,<span class="hljs-number">10001111b</span>    <span class="hljs-comment">;8 bits</span>
+<span class="hljs-keyword">movzx</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">bl</span>         <span class="hljs-comment">;ax = 0000 0000 1000 1111, upper half filled with 0s</span>
+</div></code></pre>
+<h3 id="sign-extension">Sign Extension</h3>
+<p>The <strong>MOVSX</strong> instruction fills the upper half of the destination with a copy of the souce operand's sign bit</p>
+<p>Destination <strong>MUST</strong> be a register</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>,<span class="hljs-number">10001111b</span>    <span class="hljs-comment">;8 bits</span>
+<span class="hljs-keyword">movsx</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">bl</span>         <span class="hljs-comment">;ax = 1111 1111 1000 1111, upper half filled with sign bit</span>
+</div></code></pre>
+<h3 id="xchg-instruction">XCHG Instruction</h3>
+<p><strong>XCHG</strong> exchanges the values of 2 operands. At least 1 operand must be register. No Immediate Operands permitted.</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+var1 <span class="hljs-built_in">WORD</span> <span class="hljs-number">1000h</span>
+var2 <span class="hljs-built_in">WORD</span> <span class="hljs-number">2000h</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">xchg</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">bx</span>      <span class="hljs-comment">;exchange 16-bit regs</span>
+<span class="hljs-keyword">xchg</span> <span class="hljs-number">ah</span>,<span class="hljs-built_in">al</span>      <span class="hljs-comment">;exchange 8-bit regs</span>
+<span class="hljs-keyword">xchg</span> var1,<span class="hljs-built_in">bx</span>    <span class="hljs-comment">;exchange mem,reg</span>
+<span class="hljs-keyword">xchg</span> var1,var2  <span class="hljs-comment">;error: 2 memory operands</span>
+</div></code></pre>
+<h2 id="addition-and-subtraction">Addition and Subtraction</h2>
+<h2 id="indirect-addressing">Indirect Addressing</h2>
+<h2 id="jmp-and-loop-instructions">JMP and LOOP instructions</h2>
+<h2 id="64-bit-programming">64-Bit Programming</h2>
 
     </body>
     </html>

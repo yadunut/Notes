@@ -47,6 +47,17 @@
     - [EQU Directive](#equ-directive)
     - [TEXTEQU Directive](#textequ-directive)
 - [Chapter 4 - Data Transfer, Addressing and Arithmetic](#chapter-4---data-transfer--addressing-and-arithmetic)
+  - [Data Transfer Instructions](#data-transfer-instructions)
+    - [Operand Types](#operand-types)
+    - [Direct Memory Operands](#direct-memory-operands)
+    - [MOV instruction](#mov-instruction)
+    - [Zero Extension](#zero-extension)
+    - [Sign Extension](#sign-extension)
+    - [XCHG Instruction](#xchg-instruction)
+  - [Addition and Subtraction](#addition-and-subtraction)
+  - [Indirect Addressing](#indirect-addressing)
+  - [JMP and LOOP instructions](#jmp-and-loop-instructions)
+  - [64-Bit Programming](#64-bit-programming)
 
 # Chapter 1 - Basic Concepts
 
@@ -205,8 +216,8 @@ Each `|   |` space represents 8 bits
 ```demo
 |   |   |   |   |   - EAX
         |   |   |   - AX
-        |   |       - AL
-            |   |   - AX
+        |   |       - AH
+            |   |   - AL
 ```
 
 ***The 16 and 8 Bit registers are accessing the values in the EAX***
@@ -462,3 +473,111 @@ setupAL ;generates mov al, 10
 ```
 
 # Chapter 4 - Data Transfer, Addressing and Arithmetic
+
+## Data Transfer Instructions
+
+### Operand Types
+
+- Immediate - constant integer
+  - value encoded within instruction
+- register - name of register
+  - register name is converted to a number and encoded within instruction
+- Memory - Reference to location in memory
+  - Memory address is encoded within the instruction, or register holds address of memory location
+
+### Direct Memory Operands
+
+- Direct memory operand is a named reference to storage in memory
+- Named reference (label) is automatically dereferenced by the assembler
+
+```x86asm
+.data
+var1 BYTE 10h
+.code
+mov al, var1
+```
+
+### MOV instruction
+
+- Move from source to destination.
+  - Syntax - `MOV destionation,source`
+- No more than 1 memory operand allowed
+- **CS**, **EIP**, **IP** cannot be the destination
+- No immediate to segment mmoves
+
+TODO: Find out whether endianness affects this
+
+```x86asm
+.data
+count BYTE 100
+wVal  WORD 2
+.code
+mov bl,count      ;bl = 100
+mov ax,wVal       ;ax = 2
+mov count,al      ;count = ?
+
+mov al,wVal       ;error since wVal bigger than al
+mov ax,count      ;error ?Type mismatch?
+mov eax,count     ;error ?Type mismatch?
+```
+
+More Errors
+
+```x86asm
+.data
+bval  BYTE  100
+bVal2 BYTE  ?
+wVal  WORD  2
+dVal  DWORD 5
+.code
+mov ds,45       ;move to DS not permitted
+mov esi,wVal    ;size mismatch, esi is 32 bits, wVal is 16 bits
+mov eip,dVal    ;eip cannot be destination
+mov 25,bVal     ;immediate value cannot be register
+mov bVal2,bVal  ;memory to memory move not permitted
+```
+
+### Zero Extension
+
+When you copy a *smaller* value to a larger destination, the **MOVZX** instruction fills the upper half of destination with *Zeros*
+
+Destination **MUST** be a register
+
+```x86asm
+mov bl,10001111b    ;8 bits
+movzx ax,bl         ;ax = 0000 0000 1000 1111, upper half filled with 0s
+```
+
+### Sign Extension
+
+The **MOVSX** instruction fills the upper half of the destination with a copy of the souce operand's sign bit
+
+Destination **MUST** be a register
+
+```x86asm
+mov bl,10001111b    ;8 bits
+movsx ax,bl         ;ax = 1111 1111 1000 1111, upper half filled with sign bit
+```
+
+### XCHG Instruction
+
+**XCHG** exchanges the values of 2 operands. At least 1 operand must be register. No Immediate Operands permitted. 
+
+```x86asm
+.data
+var1 WORD 1000h
+var2 WORD 2000h
+.code
+xchg ax,bx      ;exchange 16-bit regs
+xchg ah,al      ;exchange 8-bit regs
+xchg var1,bx    ;exchange mem,reg
+xchg var1,var2  ;error: 2 memory operands
+```
+
+## Addition and Subtraction
+
+## Indirect Addressing
+
+## JMP and LOOP instructions
+
+## 64-Bit Programming

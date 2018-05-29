@@ -54,7 +54,18 @@
     - [Zero Extension](#zero-extension)
     - [Sign Extension](#sign-extension)
     - [XCHG Instruction](#xchg-instruction)
+    - [Direct-Offset Operands](#direct-offset-operands)
+    - [Challenge - Program that makes a array of 1,2,3 to 3,1,2](#challenge---program-that-makes-a-array-of-1-2-3-to-3-1-2)
   - [Addition and Subtraction](#addition-and-subtraction)
+    - [INC and DEC Instructions](#inc-and-dec-instructions)
+    - [ADD and SUB operations](#add-and-sub-operations)
+    - [NEG (negate) operation](#neg-negate-operation)
+  - [Flags affected by arithmetic](#flags-affected-by-arithmetic)
+    - [Zero Flag (ZF)](#zero-flag-zf)
+    - [Sign Flag (SF)](#sign-flag-sf)
+    - [Hardware viewpoint on signed and unsigned](#hardware-viewpoint-on-signed-and-unsigned)
+    - [Carry Flag (CF)](#carry-flag-cf)
+    - [Overflow Flag (OF)](#overflow-flag-of)
   - [Indirect Addressing](#indirect-addressing)
   - [JMP and LOOP instructions](#jmp-and-loop-instructions)
   - [64-Bit Programming](#64-bit-programming)
@@ -189,12 +200,16 @@ $00001100 - 00000011 = 00001001$
 
 Storage Locations inside CPU, optimized for speed.
 
+Can store a **DWORD**
+
 | 32 Bit General | Purpose Registers |
 | :------------: | :---------------: |
 | EAX            | EBP               |
 | EBX            | ESP               |
 | ECX            | ESI               |
 | EDX            | EDI               |
+
+Can store a **WORD**
 
 | 16 Bit Segment | Registers |
 | :------------: | :-------: |
@@ -322,13 +337,13 @@ Instruction Contains
 
 ### Data Types
 
-| Unsigned | Signed | Definition                |
-| :------- | :----- | :------------------------ |
-| BYTE     | SBYTE  | 8 bit (un)signed integer  |
-| WORD     | SWORD  | 16 bit (un)signed integer |
-| DWORD    | SDWORD | 32 bit (un)signed integer |
-| QWORD    |        | 64 bit unsigned integer   |
-| TBYTE    |        | 80 bit integer            |
+| Unsigned | Signed | Definition                | Unsigned Range | Signed Range            |
+| :------- | :----- | :------------------------ | :------------: | :---------------------- |
+| BYTE     | SBYTE  | 8 bit (un)signed integer  | 0 to 255       | -128 to 127             |
+| WORD     | SWORD  | 16 bit (un)signed integer | 0 to $2^{16}$  | -$2^{15}$ to $2^{15}-1$ |
+| DWORD    | SDWORD | 32 bit (un)signed integer | 0 to $2^{32}$  | -$2^{31}$ to $2^{31}-1$ |
+| QWORD    |        | 64 bit unsigned integer   | 0 to $2^{64}$  | -$2^{63}$ to $2^{63}-1$ |
+| TBYTE    |        | 80 bit integer            | 0 to $2^{80}   |
 | REAL4    |        | 4-byte IEEE short real    |
 | REAL8    |        | 8-byte IEEE short real    |
 | REAL10   |        | 10-byte IEEE short real   |
@@ -489,12 +504,14 @@ setupAL ;generates mov al, 10
 
 - Direct memory operand is a named reference to storage in memory
 - Named reference (label) is automatically dereferenced by the assembler
+- `[var]` is similar to `*var` in c.
 
 ```x86asm
 .data
-var1 BYTE 10h
+var1 BYTE 10h   ;var1 points to the memory location of the array
 .code
-mov al, var1
+mov al,var1
+mov al,[var1]   ;Alternate notation
 ```
 
 ### MOV instruction
@@ -574,7 +591,139 @@ xchg var1,bx    ;exchange mem,reg
 xchg var1,var2  ;error: 2 memory operands
 ```
 
+### Direct-Offset Operands
+
+constant offset is added to data label to produce an effective address. The address is dereferenced to get value inside its memory location.
+
+Byte example
+
+```x86asm
+.data
+arrayB BYTE 10h, 20h, 30h, 40h
+.code
+mov al,arrayB+1   ;AL = 20h
+mov al,[arrayB+1] ;Alternate notation.
+```
+
+Word/DWord Example
+
+```x86asm
+.data
+arrayW WORD   1000h,2000h,3000h,4000h
+arrayD DWORD  1,2,3,4
+.code
+mov ax,[arrayW+2]   ;ax = 2000h
+mov ax,[arrayW+4]   ;ax = 3000h
+mov eax,[arrayD+4]  ;eax = 2
+```
+
+### Challenge - Program that makes a array of 1,2,3 to 3,1,2
+
+```x86asm
+.data
+arrayD DWORD 1,2,3
+.code
+mov  eax,[arrayD]     ;eax = 1
+xchg eax,[arrayD+4]   ;eax = 2, arrayD = 1,1,3
+xchg eax,[arrayD+8]   ;eax = 3, arrayD = 1,1,2
+mov [arrayD],eax      ;arrayD = 3,1,2
+```
+
 ## Addition and Subtraction
+
+### INC and DEC Instructions
+
+- `inc destination`
+  - Logic <-- Destination + 1
+- `dec destination`
+  - Logic <-- Destination - 1
+
+```x86asm
+.data
+myWord  WORD  1000h
+.code
+inc myWord    ;myWord = 1001h
+mov ax,00ffh
+inc ax        ;ax = 0100h
+```
+
+### ADD and SUB operations
+
+- `add destionation source`
+  - Logic <-- destionation + source
+- `sub destionation source`
+  - Logic <-- destionation - source
+- **Same rules as the `mov` instruction**
+
+```x86asm
+.data
+var1 DWORD 10000h
+var2 DWORD 20000h
+.code
+mov eax, var1   ;eax = 10000h
+add eax,var2    ;eax = 30000h
+```
+
+### NEG (negate) operation
+
+Reverses the sign of an operand. Can be register or memory
+
+```x86asm
+.data
+valB BYTE -1
+valW WORD +32767
+.code
+mov al,valB     ;al = -1
+neg al          ;al = 1
+```
+
+## Flags affected by arithmetic
+
+- ALU has status flags that reflect outcome of arithmetic and bitwise operations based on content of destination operand
+  - Zero Flag - When destination = 0
+  - Sign Flag - Destination is negative
+  - Carry Flag - when unsigned value out of range
+  - Overflow Flag - when signed value out of range
+- `mov` instruction never affects the flags
+
+### Zero Flag (ZF)
+
+occurs when result of operation produces zero in destination
+
+```x86asm
+mov cx,1
+sub cx,1        ;cx = 0, ZF = 1
+mov ax,0FFFFh
+inc ax          ; ax = 0; ZF = 1
+inc ax          ; ax = 1; ZF = 0
+```
+
+### Sign Flag (SF)
+
+set when destination operand is negative. Flag is cleared when destination is positive
+
+```x86asm
+mov cx,0      ;cx = 0
+dec cx        ;cx = -1, SF = 1
+add cx,2      ;cx = 1, SF = 0
+```
+
+*Signed flag is **Destionations** highest bit*
+
+```x86asm
+mov al,0        ;al = 0
+sub al,1        ;al = 1111 1111b, SF = 1
+add al,2        ;al = 0000 0001b, SF = 0
+```
+
+### Hardware viewpoint on signed and unsigned
+
+CPU operations work exactly the same on unsigned and signed operations. *It doesnt care whether the value is signed or unsigned*. It just sets the appropriate sign flags.
+
+### Carry Flag (CF)
+
+
+### Overflow Flag (OF)
 
 ## Indirect Addressing
 

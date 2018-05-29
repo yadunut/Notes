@@ -65,10 +65,30 @@
     - [Sign Flag (SF)](#sign-flag-sf)
     - [Hardware viewpoint on signed and unsigned](#hardware-viewpoint-on-signed-and-unsigned)
     - [Carry Flag (CF)](#carry-flag-cf)
+      - [Too Big](#too-big)
+      - [Too Small](#too-small)
+    - [SF,ZF,CF Demo](#sf-zf-cf-demo)
     - [Overflow Flag (OF)](#overflow-flag-of)
+  - [Data-related addressing](#data-related-addressing)
+    - [OFFSET Operator](#offset-operator)
+    - [PTR Operator](#ptr-operator)
+    - [TYPE Operator](#type-operator)
+    - [LENGTHOF Operator](#lengthof-operator)
+    - [SIZEOF Operator](#sizeof-operator)
+    - [Spanning Multiple lines](#spanning-multiple-lines)
+    - [LABEL Directive](#label-directive)
   - [Indirect Addressing](#indirect-addressing)
+    - [Indirect Operands](#indirect-operands)
+    - [Array Sum Example](#array-sum-example)
+    - [Indexed Operands](#indexed-operands)
   - [JMP and LOOP instructions](#jmp-and-loop-instructions)
-  - [64-Bit Programming](#64-bit-programming)
+    - [JMP instruction](#jmp-instruction)
+    - [LOOP instruction](#loop-instruction)
+    - [LOOP Example](#loop-example)
+    - [Nested Loop](#nested-loop)
+    - [Summing integer array](#summing-integer-array)
+    - [Copying a string](#copying-a-string)
+- [Chapter 5 - Procedures](#chapter-5---procedures)
 
 # Chapter 1 - Basic Concepts
 
@@ -135,7 +155,7 @@ $01010 + 01100 = 10110$
 
 **Highest** bit indicates sign. `1 = negative, 0 = positive`
 
-If highest digit of hex > 7, value is negative
+If highest digit of **hex > 7**, value is **negative**
 
 ## Two's Complement
 
@@ -722,11 +742,368 @@ CPU operations work exactly the same on unsigned and signed operations. *It does
 
 ### Carry Flag (CF)
 
+set when results of operation generates unsigned value that is out of range
+
+#### Too Big
+
+```x86asm
+mov al,0FFh
+inc al          ;AL = 0, CF = 1
+```
+
+#### Too Small
+
+```x86asm
+mov al,0
+dec al      ;AL = FF, CF = 1
+```
+
+### SF,ZF,CF Demo
+
+```x86asm
+mov ax,00FFh      ; ax = 00FFh, SF = 0, ZF = 0, CF = 0
+add ax,1
+sub ax,1
+add al,1
+mov bh,6Ch
+add bh,95h
+
+mov al,2
+sub al,3
+```
 
 ### Overflow Flag (OF)
 
+set when signed result of operation is invalid / out of range
+
+```x86asm
+mov al,127    ;al = 127, OF = 0
+inc al        ;al = -128, OF = 1, Harder to read. 
+```
+
+```x86asm
+mov al,7Fh    ;al = 7Fh = 127, OF = 0
+inc al        ;al = 80h = 128, OF = 1
+```
+
+2nd one is easier to check whether negative cause If highest digit of hex > 7, value is negative
+
+- Overflow flags are only set when
+  - 2 positive operands are added and their sum is negative
+  - 2 negative operands are added and their sum is positive
+
+```x86asm
+mov al,80h      ;al = 80h, OF = 0
+add al,92h      ;al = 3, OF = 1  ;overflow cause al is only 8 bits and result is 9 bits
+```
+
+## Data-related addressing
+
+### OFFSET Operator
+
+returns distance in bytes, of a label from beginning of its enclosing statements
+
+```x86asm
+;Assume data segment begins at 0040 4000h
+.data
+bVal  BYTE  ?
+wVal  WORD  ?
+dVal  DWORD ?
+dVal2 DWORD ?
+.code
+mov esi,OFFSET bVal     ;esi = 0040 4000h
+mov esi,OFFSET wVal     ;esi = 0040 4001h
+mov esi,OFFSET dVal     ;esi = 0040 4003h
+mov esi,OFFSET dVal2     ;esi = 0040 4007h
+```
+
+Value returned by OFFSET is a pointer
+
+```c
+char array[1000];
+char *p = array;
+```
+
+```x86asm
+.data
+array BYTE 1000 DUP(?)
+.code
+mov esi, OFFSET array
+```
+
+### PTR Operator
+
+overrides the default type of label(variable). allows you to access part of the variable
+
+```x86asm
+.data
+myDouble DWORD 12345678h
+.code
+mov ax,myDouble           ;error cause myDouble 32 bits, ax 16 bits
+mov ax,WORD PTR myDouble  ;ax = 5678h cause little endian
+mov WORD PTR myDouble,1234h ;saves 1234h, myDouble = 12341234h (TODO: PLS CHECK)
+```
+
+```x86asm
+.data
+myDouble DWORD 12345678h
+mov al,BYTE PTR myDouble        ;al = 78h
+mov al,BYTE PTR [myDouble+1]    ;al = 56h
+mov al,BYTE PTR [myDouble+2]    ;al = 34h
+mov ax,WORD PTR myDouble        ;ax = 5678h
+mov ax,WORD PTR [myDouble+2]    ;ax = 1234h
+```
+
+PTR can be used to combine elements of smaller data type and move them to larger operand
+
+```x86asm
+.data
+myBytes BYTE 12h,34h,56h,78h
+.code
+mov ax,WORD PTR [myBytes]     ;ax = 3412h
+mov ax,WORD PTR [myBytes+2]   ;ax = 7856h
+mov eax,DWORD PTR myBytes     ;eax = 78563412h
+```
+
+### TYPE Operator
+
+returns size, in bytes, of a single element of a data declaration
+
+```x86asm
+.data
+var1 BYTE   ?
+var2 WORD   ?
+var3 DWORD  ?
+var4 QWORD  ?
+
+.code
+mov eax, TYPE var1    ;eax = 1
+mov eax, TYPE var2    ;eax = 2
+mov eax, TYPE var3    ;eax = 4
+mov eax, TYPE var4    ;eax = 8
+```
+
+### LENGTHOF Operator
+
+counts no of elements in a single data declaration
+
+```x86asm
+.data
+                                  ;LENGTHOF
+byte1     BYTE  10,20,30          ;3
+array1    WORD  30 DUP(?),0,0     ;30 + 2 = 32
+array2    WORD  5 DUP(3 DUP(?))   ;3 * 5 = 15
+array3    DWORD 1,2,3,4           ;4
+digitstr  BYTE  "12345678",0      ;9
+
+.code
+mov eax,LENGTHOF array1           ;32
+
+```
+
+### SIZEOF Operator
+
+equals to lengthof * type
+
+```x86asm
+.data
+                                  ;SIZEOF
+byte1     BYTE  10,20,30          ;3
+array1    WORD  30 DUP(?),0,0     ;30 + 2 = 32 * 2 = 64
+array2    WORD  5 DUP(3 DUP(?))   ;3 * 5 = 15 * 2 = 30
+array3    DWORD 1,2,3,4           ;4 * 4 = 16
+digitstr  BYTE  "12345678",0      ;9
+
+.code
+mov eax,LENGTHOF array1           ;32 * 4 = 64
+```
+
+### Spanning Multiple lines
+
+- data declaration can span multiple lines if each line ends with comma
+
+```x86asm
+.data
+array WORD  10,20,
+            30,40,
+            50,60
+.code
+eax,LENGTHOF array    ;eax = 6
+eax,SIZEOF array      ;eax = 12
+```
+
+### LABEL Directive
+
+TODO: ASK HOW THIS WORKS
+
 ## Indirect Addressing
+
+### Indirect Operands
+
+Indirect operand holds the address of a variable, usually an address or string. It can be dereferenced. 
+
+```x86asm
+.data
+val1 BYTE 10h,20h,30h
+.code
+mov esi,OFFSET val1   ;stores the address of val1
+mov al,[esi]          ;al = 10h, dereferences ESI and gets the value out
+
+inc esi
+mov al,[esi]          ;al = 20h, dereferences ESI and gets the value out
+
+inc esi
+mov al,[esi]          ;al = 30h, dereferences ESI and gets the value out
+```
+
+Use `PTR` to clarify the size attribute of memory operand
+
+TODO: ASK ABOUT THIS
+
+```x86asm
+.data
+myCount WORD 0
+
+.code
+mov esi,OFFSET myCount    ;stores the address of myCount
+inc [esi]                 ;error since inc doesn't know the type of the value underneath
+inc WORD PTR [esi]        ;ok as inc now knows the value underneath
+```
+
+### Array Sum Example
+
+indirect operands are optimal for traversing arrays. 
+
+**Note:** *Register in brackets must be incremented by a value that matches array type*
+
+```x86asm
+.data
+arrayW  WORD  1000h,2000h,3000h
+.code
+mov esi, OFFSET arrayW        ;esi stores address of arrayW
+mov ax,[esi]                  ;ax stores 1000h
+add esi,TYPE arrayW           ;esi now has the address of the next element of arrayW
+add ax,[esi]                  ;ax = 3000h
+add esi,TYPE arrayW           ;esi now has the address of the next element of arrayW
+add ax,[esi]                  ;ax = 6000h
+```
+
+### Indexed Operands
+
+index operands add a constant to a register to generate an effective address. There are 2 notation forms
+
+```x86asm
+[label + reg]
+label[reg]
+```
+
+```x86asm
+.data
+arrayW  WORD  1000h,2000h,3000h
+.code
+mov esi,0
+mov ax,[arrayW + esi]     ;ax = 1000h
+add esi,2
+mov ax,array[esi]         ;ax = 4000h
+```
 
 ## JMP and LOOP instructions
 
-## 64-Bit Programming
+### JMP instruction
+
+- JMP is an unconditional jump to a label that is usually within the same procedure.
+  - Syntax - `JMP target`
+  - Logic - EIP <-- Target
+
+```x86asm
+top:
+  .
+  .
+  jmp top
+```
+
+### LOOP instruction
+
+- Loop creates a counting loop
+  - Syntax - `LOOP target`
+  - Logic
+    - ECX <-- ECX -1
+    - if ECX !=0, jump to target
+  - Implementation
+    - assembler calculates distance(in bytes) between the offset of the following instruction and offset of target label. It is called relative offset.
+    - Relative offset added to EIP.
+
+### LOOP Example
+
+The following loop calculates 1+2+3+4+5
+
+```x86asm
+mov eax,0     ;set value of accumulator to 0
+mov ecx,5     ;set value of counter to 5
+
+L1:
+add eax,ecx   ;add ecx into eax
+loop L1       ;goes back to L1 after subtracting 1 from ecx
+;adds 5+4+3+2+1
+```
+
+### Nested Loop
+
+If you need to create loop within a loop, you must save the outer loop's counter's ECX value.
+
+In the following loop, outer loop executes 100 times, inner loop 20 times
+
+```x86asm
+.data
+count DWORD ?     ;stores the counter for outer loop
+.code
+mov ecx,100       ;set the value for the outer loop
+L1:
+  mov count,ecx   ;store value of the ecx for outer loop in count
+  mov ecx,20      ;set the inner loop counter
+L2:
+  .
+  .
+  loop L2         ;Loops L2 20 times
+mov ecx,count     ;restores the outer loop counter. only runs after L2 has loopedk
+loop L1           ;repeat the outer loop
+```
+
+### Summing integer array
+
+```x86asm
+.data
+intArray WORD 100h,200h,300h,400
+.code
+                            ;edi is the destination register
+mov edi,OFFSET intArray     ;stores the pointer to the start of intArray
+mov ecx,LENGTHOF intArray   ;stores the no. of elements in intArray in the counter
+mov ax,0                    ;the accumulator
+L1:
+  add ax,[edi]              ;adds the value at the address of edi
+  add edi,TYPE intArray     ;incremenst edi by 2 cause WORD
+  loop L1                   ;Goes back to L1 and loops until ecx = 0
+```
+
+### Copying a string
+
+Copy's string from source to target
+
+```x86asm
+.data
+source BYTE "This is the source string",0
+target BYTE SIZEOF source DUP(0)
+
+.code
+mov esi,0               ;set the index register to 0
+mov ecx,SIZEOF source   ;sets the counter to the size of source
+L1:
+mov al,source[esi]      ;get the char from source
+mov ecx[esi],al         ;store it in the target
+inc esi                 ;go to next character.
+                        ;No need to use add esi,TYPE source` as strings are stored in bytes
+loop L1
+
+```
+
+# Chapter 5 - Procedures

@@ -121,15 +121,47 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <li><a href="#zero-flag-zf">Zero Flag (ZF)</a></li>
 <li><a href="#sign-flag-sf">Sign Flag (SF)</a></li>
 <li><a href="#hardware-viewpoint-on-signed-and-unsigned">Hardware viewpoint on signed and unsigned</a></li>
-<li><a href="#carry-flag-cf">Carry Flag (CF)</a></li>
+<li><a href="#carry-flag-cf">Carry Flag (CF)</a>
+<ul>
+<li><a href="#too-big">Too Big</a></li>
+<li><a href="#too-small">Too Small</a></li>
+</ul>
+</li>
+<li><a href="#sf-zf-cf-demo">SF,ZF,CF Demo</a></li>
 <li><a href="#overflow-flag-of">Overflow Flag (OF)</a></li>
 </ul>
 </li>
-<li><a href="#indirect-addressing">Indirect Addressing</a></li>
-<li><a href="#jmp-and-loop-instructions">JMP and LOOP instructions</a></li>
-<li><a href="#64-bit-programming">64-Bit Programming</a></li>
+<li><a href="#data-related-addressing">Data-related addressing</a>
+<ul>
+<li><a href="#offset-operator">OFFSET Operator</a></li>
+<li><a href="#ptr-operator">PTR Operator</a></li>
+<li><a href="#type-operator">TYPE Operator</a></li>
+<li><a href="#lengthof-operator">LENGTHOF Operator</a></li>
+<li><a href="#sizeof-operator">SIZEOF Operator</a></li>
+<li><a href="#spanning-multiple-lines">Spanning Multiple lines</a></li>
+<li><a href="#label-directive">LABEL Directive</a></li>
 </ul>
 </li>
+<li><a href="#indirect-addressing">Indirect Addressing</a>
+<ul>
+<li><a href="#indirect-operands">Indirect Operands</a></li>
+<li><a href="#array-sum-example">Array Sum Example</a></li>
+<li><a href="#indexed-operands">Indexed Operands</a></li>
+</ul>
+</li>
+<li><a href="#jmp-and-loop-instructions">JMP and LOOP instructions</a>
+<ul>
+<li><a href="#jmp-instruction">JMP instruction</a></li>
+<li><a href="#loop-instruction">LOOP instruction</a></li>
+<li><a href="#loop-example">LOOP Example</a></li>
+<li><a href="#nested-loop">Nested Loop</a></li>
+<li><a href="#summing-integer-array">Summing integer array</a></li>
+<li><a href="#copying-a-string">Copying a string</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#chapter-5---procedures">Chapter 5 - Procedures</a></li>
 </ul>
 <h1 id="chapter-1---basic-concepts">Chapter 1 - Basic Concepts</h1>
 <h2 id="convert-binary-to-decimal">Convert <strong>Binary</strong> to <strong>Decimal</strong></h2>
@@ -352,7 +384,7 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <p><code>decimal 422 = Hex 1A6</code></p>
 <h2 id="signed-integers">Signed Integers</h2>
 <p><strong>Highest</strong> bit indicates sign. <code>1 = negative, 0 = positive</code></p>
-<p>If highest digit of hex &gt; 7, value is negative</p>
+<p>If highest digit of <strong>hex &gt; 7</strong>, value is <strong>negative</strong></p>
 <h2 id="twos-complement">Two's Complement</h2>
 <p>Negative Numbers stored in two's complement notation</p>
 <p>For -1</p>
@@ -1207,10 +1239,294 @@ valW <span class="hljs-built_in">WORD</span> +<span class="hljs-number">32767</s
 <h3 id="hardware-viewpoint-on-signed-and-unsigned">Hardware viewpoint on signed and unsigned</h3>
 <p>CPU operations work exactly the same on unsigned and signed operations. <em>It doesnt care whether the value is signed or unsigned</em>. It just sets the appropriate sign flags.</p>
 <h3 id="carry-flag-cf">Carry Flag (CF)</h3>
+<p>set when results of operation generates unsigned value that is out of range</p>
+<h4 id="too-big">Too Big</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">0FFh</span>
+<span class="hljs-keyword">inc</span> <span class="hljs-built_in">al</span>          <span class="hljs-comment">;AL = 0, CF = 1</span>
+</div></code></pre>
+<h4 id="too-small">Too Small</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">0</span>
+<span class="hljs-keyword">dec</span> <span class="hljs-built_in">al</span>      <span class="hljs-comment">;AL = FF, CF = 1</span>
+</div></code></pre>
+<h3 id="sf-zf-cf-demo">SF,ZF,CF Demo</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">00FFh</span>      <span class="hljs-comment">; ax = 00FFh, SF = 0, ZF = 0, CF = 0</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">1</span>
+<span class="hljs-keyword">sub</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">1</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">1</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-number">bh</span>,<span class="hljs-number">6Ch</span>
+<span class="hljs-keyword">add</span> <span class="hljs-number">bh</span>,<span class="hljs-number">95h</span>
+
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">2</span>
+<span class="hljs-keyword">sub</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">3</span>
+</div></code></pre>
 <h3 id="overflow-flag-of">Overflow Flag (OF)</h3>
+<p>set when signed result of operation is invalid / out of range</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">127</span>    <span class="hljs-comment">;al = 127, OF = 0</span>
+<span class="hljs-keyword">inc</span> <span class="hljs-built_in">al</span>        <span class="hljs-comment">;al = -128, OF = 1, Harder to read. </span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">7Fh</span>    <span class="hljs-comment">;al = 7Fh = 127, OF = 0</span>
+<span class="hljs-keyword">inc</span> <span class="hljs-built_in">al</span>        <span class="hljs-comment">;al = 80h = 128, OF = 1</span>
+</div></code></pre>
+<p>2nd one is easier to check whether negative cause If highest digit of hex &gt; 7, value is negative</p>
+<ul>
+<li>Overflow flags are only set when
+<ul>
+<li>2 positive operands are added and their sum is negative</li>
+<li>2 negative operands are added and their sum is positive</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">80h</span>      <span class="hljs-comment">;al = 80h, OF = 0</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">92h</span>      <span class="hljs-comment">;al = 3, OF = 1  ;overflow cause al is only 8 bits and result is 9 bits</span>
+</div></code></pre>
+<h2 id="data-related-addressing">Data-related addressing</h2>
+<h3 id="offset-operator">OFFSET Operator</h3>
+<p>returns distance in bytes, of a label from beginning of its enclosing statements</p>
+<pre class="hljs"><code><div><span class="hljs-comment">;Assume data segment begins at 0040 4000h</span>
+<span class="hljs-meta">.data</span>
+bVal  <span class="hljs-built_in">BYTE</span>  ?
+wVal  <span class="hljs-built_in">WORD</span>  ?
+dVal  <span class="hljs-built_in">DWORD</span> ?
+dVal2 <span class="hljs-built_in">DWORD</span> ?
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,OFFSET bVal     <span class="hljs-comment">;esi = 0040 4000h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,OFFSET wVal     <span class="hljs-comment">;esi = 0040 4001h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,OFFSET dVal     <span class="hljs-comment">;esi = 0040 4003h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,OFFSET dVal2     <span class="hljs-comment">;esi = 0040 4007h</span>
+</div></code></pre>
+<p>Value returned by OFFSET is a pointer</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">char</span> <span class="hljs-built_in">array</span>[<span class="hljs-number">1000</span>];
+<span class="hljs-keyword">char</span> *p = <span class="hljs-built_in">array</span>;
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+array <span class="hljs-built_in">BYTE</span> <span class="hljs-number">1000</span> DUP(?)
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>, OFFSET array
+</div></code></pre>
+<h3 id="ptr-operator">PTR Operator</h3>
+<p>overrides the default type of label(variable). allows you to access part of the variable</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+myDouble <span class="hljs-built_in">DWORD</span> <span class="hljs-number">12345678h</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,myDouble           <span class="hljs-comment">;error cause myDouble 32 bits, ax 16 bits</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">WORD</span> <span class="hljs-built_in">PTR</span> myDouble  <span class="hljs-comment">;ax = 5678h cause little endian</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">WORD</span> <span class="hljs-built_in">PTR</span> myDouble,<span class="hljs-number">1234h</span> <span class="hljs-comment">;saves 1234h, myDouble = 12341234h (<span class="hljs-doctag">TODO:</span> PLS CHECK)</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+myDouble <span class="hljs-built_in">DWORD</span> <span class="hljs-number">12345678h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-built_in">BYTE</span> <span class="hljs-built_in">PTR</span> myDouble        <span class="hljs-comment">;al = 78h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-built_in">BYTE</span> <span class="hljs-built_in">PTR</span> [myDouble+<span class="hljs-number">1</span>]    <span class="hljs-comment">;al = 56h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-built_in">BYTE</span> <span class="hljs-built_in">PTR</span> [myDouble+<span class="hljs-number">2</span>]    <span class="hljs-comment">;al = 34h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">WORD</span> <span class="hljs-built_in">PTR</span> myDouble        <span class="hljs-comment">;ax = 5678h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">WORD</span> <span class="hljs-built_in">PTR</span> [myDouble+<span class="hljs-number">2</span>]    <span class="hljs-comment">;ax = 1234h</span>
+</div></code></pre>
+<p>PTR can be used to combine elements of smaller data type and move them to larger operand</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+myBytes <span class="hljs-built_in">BYTE</span> <span class="hljs-number">12h</span>,<span class="hljs-number">34h</span>,<span class="hljs-number">56h</span>,<span class="hljs-number">78h</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">WORD</span> <span class="hljs-built_in">PTR</span> [myBytes]     <span class="hljs-comment">;ax = 3412h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">WORD</span> <span class="hljs-built_in">PTR</span> [myBytes+<span class="hljs-number">2</span>]   <span class="hljs-comment">;ax = 7856h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,<span class="hljs-built_in">DWORD</span> <span class="hljs-built_in">PTR</span> myBytes     <span class="hljs-comment">;eax = 78563412h</span>
+</div></code></pre>
+<h3 id="type-operator">TYPE Operator</h3>
+<p>returns size, in bytes, of a single element of a data declaration</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+var1 <span class="hljs-built_in">BYTE</span>   ?
+var2 <span class="hljs-built_in">WORD</span>   ?
+var3 <span class="hljs-built_in">DWORD</span>  ?
+var4 <span class="hljs-built_in">QWORD</span>  ?
+<span class="hljs-meta">
+.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, TYPE var1    <span class="hljs-comment">;eax = 1</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, TYPE var2    <span class="hljs-comment">;eax = 2</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, TYPE var3    <span class="hljs-comment">;eax = 4</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, TYPE var4    <span class="hljs-comment">;eax = 8</span>
+</div></code></pre>
+<h3 id="lengthof-operator">LENGTHOF Operator</h3>
+<p>counts no of elements in a single data declaration</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+                                  <span class="hljs-comment">;LENGTHOF</span>
+byte1     <span class="hljs-built_in">BYTE</span>  <span class="hljs-number">10</span>,<span class="hljs-number">20</span>,<span class="hljs-number">30</span>          <span class="hljs-comment">;3</span>
+array1    <span class="hljs-built_in">WORD</span>  <span class="hljs-number">30</span> DUP(?),<span class="hljs-number">0</span>,<span class="hljs-number">0</span>     <span class="hljs-comment">;30 + 2 = 32</span>
+array2    <span class="hljs-built_in">WORD</span>  <span class="hljs-number">5</span> DUP(<span class="hljs-number">3</span> DUP(?))   <span class="hljs-comment">;3 * 5 = 15</span>
+array3    <span class="hljs-built_in">DWORD</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>           <span class="hljs-comment">;4</span>
+digitstr  <span class="hljs-built_in">BYTE</span>  <span class="hljs-string">"12345678"</span>,<span class="hljs-number">0</span>      <span class="hljs-comment">;9</span>
+<span class="hljs-meta">
+.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,LENGTHOF array1           <span class="hljs-comment">;32</span>
+
+</div></code></pre>
+<h3 id="sizeof-operator">SIZEOF Operator</h3>
+<p>equals to lengthof * type</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+                                  <span class="hljs-comment">;SIZEOF</span>
+byte1     <span class="hljs-built_in">BYTE</span>  <span class="hljs-number">10</span>,<span class="hljs-number">20</span>,<span class="hljs-number">30</span>          <span class="hljs-comment">;3</span>
+array1    <span class="hljs-built_in">WORD</span>  <span class="hljs-number">30</span> DUP(?),<span class="hljs-number">0</span>,<span class="hljs-number">0</span>     <span class="hljs-comment">;30 + 2 = 32 * 2 = 64</span>
+array2    <span class="hljs-built_in">WORD</span>  <span class="hljs-number">5</span> DUP(<span class="hljs-number">3</span> DUP(?))   <span class="hljs-comment">;3 * 5 = 15 * 2 = 30</span>
+array3    <span class="hljs-built_in">DWORD</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>           <span class="hljs-comment">;4 * 4 = 16</span>
+digitstr  <span class="hljs-built_in">BYTE</span>  <span class="hljs-string">"12345678"</span>,<span class="hljs-number">0</span>      <span class="hljs-comment">;9</span>
+<span class="hljs-meta">
+.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,LENGTHOF array1           <span class="hljs-comment">;32 * 4 = 64</span>
+</div></code></pre>
+<h3 id="spanning-multiple-lines">Spanning Multiple lines</h3>
+<ul>
+<li>data declaration can span multiple lines if each line ends with comma</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+array <span class="hljs-built_in">WORD</span>  <span class="hljs-number">10</span>,<span class="hljs-number">20</span>,
+            <span class="hljs-number">30</span>,<span class="hljs-number">40</span>,
+            <span class="hljs-number">50</span>,<span class="hljs-number">60</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-built_in">eax</span>,LENGTHOF array    <span class="hljs-comment">;eax = 6</span>
+<span class="hljs-built_in">eax</span>,SIZEOF array      <span class="hljs-comment">;eax = 12</span>
+</div></code></pre>
+<h3 id="label-directive">LABEL Directive</h3>
+<p>TODO: ASK HOW THIS WORKS</p>
 <h2 id="indirect-addressing">Indirect Addressing</h2>
+<h3 id="indirect-operands">Indirect Operands</h3>
+<p>Indirect operand holds the address of a variable, usually an address or string. It can be dereferenced.</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+val1 <span class="hljs-built_in">BYTE</span> <span class="hljs-number">10h</span>,<span class="hljs-number">20h</span>,<span class="hljs-number">30h</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,OFFSET val1   <span class="hljs-comment">;stores the address of val1</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,[<span class="hljs-built_in">esi</span>]          <span class="hljs-comment">;al = 10h, dereferences ESI and gets the value out</span>
+
+<span class="hljs-keyword">inc</span> <span class="hljs-built_in">esi</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,[<span class="hljs-built_in">esi</span>]          <span class="hljs-comment">;al = 20h, dereferences ESI and gets the value out</span>
+
+<span class="hljs-keyword">inc</span> <span class="hljs-built_in">esi</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,[<span class="hljs-built_in">esi</span>]          <span class="hljs-comment">;al = 30h, dereferences ESI and gets the value out</span>
+</div></code></pre>
+<p>Use <code>PTR</code> to clarify the size attribute of memory operand</p>
+<p>TODO: ASK ABOUT THIS</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+myCount <span class="hljs-built_in">WORD</span> <span class="hljs-number">0</span>
+<span class="hljs-meta">
+.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,OFFSET myCount    <span class="hljs-comment">;stores the address of myCount</span>
+<span class="hljs-keyword">inc</span> [<span class="hljs-built_in">esi</span>]                 <span class="hljs-comment">;error since inc doesn't know the type of the value underneath</span>
+<span class="hljs-keyword">inc</span> <span class="hljs-built_in">WORD</span> <span class="hljs-built_in">PTR</span> [<span class="hljs-built_in">esi</span>]        <span class="hljs-comment">;ok as inc now knows the value underneath</span>
+</div></code></pre>
+<h3 id="array-sum-example">Array Sum Example</h3>
+<p>indirect operands are optimal for traversing arrays.</p>
+<p><strong>Note:</strong> <em>Register in brackets must be incremented by a value that matches array type</em></p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+arrayW  <span class="hljs-built_in">WORD</span>  <span class="hljs-number">1000h</span>,<span class="hljs-number">2000h</span>,<span class="hljs-number">3000h</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>, OFFSET arrayW        <span class="hljs-comment">;esi stores address of arrayW</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">esi</span>]                  <span class="hljs-comment">;ax stores 1000h</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">esi</span>,TYPE arrayW           <span class="hljs-comment">;esi now has the address of the next element of arrayW</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">esi</span>]                  <span class="hljs-comment">;ax = 3000h</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">esi</span>,TYPE arrayW           <span class="hljs-comment">;esi now has the address of the next element of arrayW</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">esi</span>]                  <span class="hljs-comment">;ax = 6000h</span>
+</div></code></pre>
+<h3 id="indexed-operands">Indexed Operands</h3>
+<p>index operands add a constant to a register to generate an effective address. There are 2 notation forms</p>
+<pre class="hljs"><code><div>[label + reg]
+label[reg]
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+arrayW  <span class="hljs-built_in">WORD</span>  <span class="hljs-number">1000h</span>,<span class="hljs-number">2000h</span>,<span class="hljs-number">3000h</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,<span class="hljs-number">0</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[arrayW + <span class="hljs-built_in">esi</span>]     <span class="hljs-comment">;ax = 1000h</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">esi</span>,<span class="hljs-number">2</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,array[<span class="hljs-built_in">esi</span>]         <span class="hljs-comment">;ax = 4000h</span>
+</div></code></pre>
 <h2 id="jmp-and-loop-instructions">JMP and LOOP instructions</h2>
-<h2 id="64-bit-programming">64-Bit Programming</h2>
+<h3 id="jmp-instruction">JMP instruction</h3>
+<ul>
+<li>JMP is an unconditional jump to a label that is usually within the same procedure.
+<ul>
+<li>Syntax - <code>JMP target</code></li>
+<li>Logic - EIP &lt;-- Target</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-symbol">top:</span>
+  .
+  .
+  <span class="hljs-keyword">jmp</span> top
+</div></code></pre>
+<h3 id="loop-instruction">LOOP instruction</h3>
+<ul>
+<li>Loop creates a counting loop
+<ul>
+<li>Syntax - <code>LOOP target</code></li>
+<li>Logic
+<ul>
+<li>ECX &lt;-- ECX -1</li>
+<li>if ECX !=0, jump to target</li>
+</ul>
+</li>
+<li>Implementation
+<ul>
+<li>assembler calculates distance(in bytes) between the offset of the following instruction and offset of target label. It is called relative offset.</li>
+<li>Relative offset added to EIP.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="loop-example">LOOP Example</h3>
+<p>The following loop calculates 1+2+3+4+5</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,<span class="hljs-number">0</span>     <span class="hljs-comment">;set value of accumulator to 0</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>,<span class="hljs-number">5</span>     <span class="hljs-comment">;set value of counter to 5</span>
+<span class="hljs-symbol">
+L1:</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">eax</span>,<span class="hljs-built_in">ecx</span>   <span class="hljs-comment">;add ecx into eax</span>
+<span class="hljs-keyword">loop</span> L1       <span class="hljs-comment">;goes back to L1 after subtracting 1 from ecx</span>
+<span class="hljs-comment">;adds 5+4+3+2+1</span>
+</div></code></pre>
+<h3 id="nested-loop">Nested Loop</h3>
+<p>If you need to create loop within a loop, you must save the outer loop's counter's ECX value.</p>
+<p>In the following loop, outer loop executes 100 times, inner loop 20 times</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+count <span class="hljs-built_in">DWORD</span> ?     <span class="hljs-comment">;stores the counter for outer loop</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>,<span class="hljs-number">100</span>       <span class="hljs-comment">;set the value for the outer loop</span>
+<span class="hljs-symbol">L1:</span>
+  <span class="hljs-keyword">mov</span> count,<span class="hljs-built_in">ecx</span>   <span class="hljs-comment">;store value of the ecx for outer loop in count</span>
+  <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>,<span class="hljs-number">20</span>      <span class="hljs-comment">;set the inner loop counter</span>
+<span class="hljs-symbol">L2:</span>
+  .
+  .
+  <span class="hljs-keyword">loop</span> L2         <span class="hljs-comment">;Loops L2 20 times</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>,count     <span class="hljs-comment">;restores the outer loop counter. only runs after L2 has loopedk</span>
+<span class="hljs-keyword">loop</span> L1           <span class="hljs-comment">;repeat the outer loop</span>
+</div></code></pre>
+<h3 id="summing-integer-array">Summing integer array</h3>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+intArray <span class="hljs-built_in">WORD</span> <span class="hljs-number">100h</span>,<span class="hljs-number">200h</span>,<span class="hljs-number">300h</span>,<span class="hljs-number">400</span>
+<span class="hljs-meta">.code</span>
+                            <span class="hljs-comment">;edi is the destination register</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">edi</span>,OFFSET intArray     <span class="hljs-comment">;stores the pointer to the start of intArray</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>,LENGTHOF intArray   <span class="hljs-comment">;stores the no. of elements in intArray in the counter</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">0</span>                    <span class="hljs-comment">;the accumulator</span>
+<span class="hljs-symbol">L1:</span>
+  <span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">edi</span>]              <span class="hljs-comment">;adds the value at the address of edi</span>
+  <span class="hljs-keyword">add</span> <span class="hljs-built_in">edi</span>,TYPE intArray     <span class="hljs-comment">;incremenst edi by 2 cause WORD</span>
+  <span class="hljs-keyword">loop</span> L1                   <span class="hljs-comment">;Goes back to L1 and loops until ecx = 0</span>
+</div></code></pre>
+<h3 id="copying-a-string">Copying a string</h3>
+<p>Copy's string from source to target</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+source <span class="hljs-built_in">BYTE</span> <span class="hljs-string">"This is the source string"</span>,<span class="hljs-number">0</span>
+target <span class="hljs-built_in">BYTE</span> SIZEOF source DUP(<span class="hljs-number">0</span>)
+<span class="hljs-meta">
+.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,<span class="hljs-number">0</span>               <span class="hljs-comment">;set the index register to 0</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>,SIZEOF source   <span class="hljs-comment">;sets the counter to the size of source</span>
+<span class="hljs-symbol">L1:</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,source[<span class="hljs-built_in">esi</span>]      <span class="hljs-comment">;get the char from source</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>[<span class="hljs-built_in">esi</span>],<span class="hljs-built_in">al</span>         <span class="hljs-comment">;store it in the target</span>
+<span class="hljs-keyword">inc</span> <span class="hljs-built_in">esi</span>                 <span class="hljs-comment">;go to next character.</span>
+                        <span class="hljs-comment">;No need to use add esi,TYPE source` as strings are stored in bytes</span>
+<span class="hljs-keyword">loop</span> L1
+
+</div></code></pre>
+<h1 id="chapter-5---procedures">Chapter 5 - Procedures</h1>
 
     </body>
     </html>

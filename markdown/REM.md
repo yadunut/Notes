@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD025 MD033-->
+<!-- markdownlint-disable MD025 MD033 MD024-->
 
 # Reverse Engineering Malware
 
@@ -104,6 +104,38 @@
     - [CALL-RET Example](#call-ret-example)
     - [Local and Global Labels](#local-and-global-labels)
     - [Procedure Parameters](#procedure-parameters)
+- [Conditional Processing](#conditional-processing)
+  - [Boolean and Comparison Instructions](#boolean-and-comparison-instructions)
+    - [Status Flags Review](#status-flags-review)
+    - [AND instruction](#and-instruction)
+    - [OR Instruction](#or-instruction)
+    - [XOR Instruction](#xor-instruction)
+    - [NOT Instruction](#not-instruction)
+    - [Applications](#applications)
+    - [Test](#test)
+    - [CMP Instruction](#cmp-instruction)
+      - [Destination == Source](#destination-source)
+      - [Destination < Source](#destination-source)
+      - [Destination > Source](#destination-source)
+    - [Comparison with signed integers](#comparison-with-signed-integers)
+      - [Destination > Source](#destination-source)
+      - [Destination < Source](#destination-source)
+  - [Conditional Jumps](#conditional-jumps)
+    - [Jump Based on Specific Flags](#jump-based-on-specific-flags)
+    - [Jump based on Equality](#jump-based-on-equality)
+    - [Jump based on Unsigned Comparisons](#jump-based-on-unsigned-comparisons)
+    - [Jump based on Signed comparisons](#jump-based-on-signed-comparisons)
+    - [Applications](#applications)
+    - [Encrypting a string](#encrypting-a-string)
+  - [Conditional Loop instructions](#conditional-loop-instructions)
+    - [LOOPZ and LOOPE](#loopz-and-loope)
+    - [LOOPNZ and LOOPNE](#loopnz-and-loopne)
+  - [Conditional Control flow Drectives](#conditional-control-flow-drectives)
+    - [Runtime Expressions](#runtime-expressions)
+    - [Relational and Logical Operators](#relational-and-logical-operators)
+    - [MASM generated code](#masm-generated-code)
+    - [.REPEAT directive](#repeat-directive)
+    - [.WHILE directive](#while-directive)
 
 # Chapter 1 - Basic Concepts
 
@@ -265,9 +297,9 @@ Each `|   |` space represents 8 bits
 
 ```demo
 |   |   |   |   |   - EAX
-        |   |   |   - AX
-        |   |       - AH
-            |   |   - AL
+|   |   |           - AX
+|   |               - AL
+    |   |           - AH
 ```
 
 ***The 16 and 8 Bit registers are accessing the values in the EAX***
@@ -495,7 +527,7 @@ listSize = ($ - list)/4      ; 4
 
 Define symbol as integer or text expression. **Cannot Be redefined**
 
-Will act as if 
+Will act as if
 
 ```x86asm
 PI EQU <3.1416>
@@ -613,7 +645,7 @@ movsx ax,bl         ;ax = 1111 1111 1000 1111, upper half filled with sign bit
 
 ### XCHG Instruction
 
-**XCHG** exchanges the values of 2 operands. At least 1 operand must be register. No Immediate Operands permitted. 
+**XCHG** exchanges the values of 2 operands. At least 1 operand must be register. No Immediate Operands permitted.
 
 ```x86asm
 .data
@@ -793,7 +825,7 @@ set when signed result of operation is invalid / out of range
 
 ```x86asm
 mov al,127    ;al = 127, OF = 0
-inc al        ;al = -128, OF = 1, Harder to read. 
+inc al        ;al = -128, OF = 1, Harder to read.
 ```
 
 ```x86asm
@@ -955,7 +987,7 @@ TODO: ASK HOW THIS WORKS
 
 ### Indirect Operands
 
-Indirect operand holds the address of a variable, usually an address or string. It can be dereferenced. 
+Indirect operand holds the address of a variable, usually an address or string. It can be dereferenced.
 
 ```x86asm
 .data
@@ -987,7 +1019,7 @@ inc WORD PTR [esi]        ;ok as inc now knows the value underneath
 
 ### Array Sum Example
 
-indirect operands are optimal for traversing arrays. 
+indirect operands are optimal for traversing arrays.
 
 **Note:** *Register in brackets must be incremented by a value that matches array type*
 
@@ -1258,7 +1290,7 @@ SumOf ENDP
 
 ```x86asm
 main PROC
-  00000020 call MySub       
+  00000020 call MySub
   ;0000 0025 is the offset of the instruction immediately after the call instruction. This is added to the stack
   ; EIP is set to 0000 0040
   00000025 mov eax,ebx
@@ -1314,4 +1346,365 @@ ArraySum  PROC
   mov theSum, eax           ;stores the sum
   ret
 Arraysum ENDP
+```
+
+# Conditional Processing
+
+## Boolean and Comparison Instructions
+
+### Status Flags Review
+
+- `Zero` flag is set when the result of an operation equals 0
+- `Carry` flag is set when result is too large for the destination operand
+- `Sign` flag is set if the destination operand is negative, and clear if destination is negative
+- `Overflow` flag is set when an instruction generates invalid sign result
+
+### AND instruction
+
+- Perform a Boolean AND operation between each pair of matching bits in two operands
+- Syntax
+  - AND destination,source
+
+| X     | Y     | X AND Y |
+| :---: | :---: | :-----: |
+| 0     | 0     | 0       |
+| 0     | 1     | 0       |
+| 1     | 0     | 0       |
+| 1     | 1     | 1       |
+
+### OR Instruction
+
+- Perform a Boolean OR operation between each pair of matching bits in two operands
+- Syntax
+  - OR destination,source
+
+| X     | Y     | X OR Y |
+| :---: | :---: | :----: |
+| 0     | 0     | 0      |
+| 0     | 1     | 1      |
+| 1     | 0     | 1      |
+| 1     | 1     | 1      |
+
+### XOR Instruction
+
+- Perform a Boolean E**x**clusive-OR operation between each pair of matching bits in two operands
+- Syntax
+  - XOR destination,source
+
+| X     | Y     | X XOR Y |
+| :---: | :---: | :-----: |
+| 0     | 0     | 0       |
+| 0     | 1     | 1       |
+| 1     | 0     | 1       |
+| 1     | 1     | 0       |
+
+Useful way to toggle(invert) the bits in an operand
+
+### NOT Instruction
+
+- Perform a Boolean NOT operation on a single destination operand
+- Syntax
+  - NOT destination,source
+
+| X     | NOT X |
+| :---: | :---: |
+| 0     | 1     |
+| 1     | 0     |
+
+### Applications
+
+```x86asm
+;convert character in AL to upper case
+;use and instruction to clear bit 5
+mov al,'a'
+AND al,11011111b        ;use AND to clear bit 6
+```
+
+```x86asm
+;convert binary decimal byte into its equivalent ascii decimal digit
+;use or instruction to set bits 4 and 5
+mov al,6
+or al,00110000b        ;use or to clear bit 6
+```
+
+### Test
+
+- Performs a non-destructive AND Operation between each pair of matching bits in two operands
+- No Operands are modified, but `Zero` flag is modified
+
+```x86asm
+;This program jumps to label if either bit 0 or bit 1 in al is set
+test al,00000011b     ;AND al,0000 0011b
+jnz ValueFound        ;JNZ will be taught later on(Conditional Jumps) jnz = jump not zero
+```
+
+### CMP Instruction
+
+- Compares destination operand to the source operand
+  - Non destructive subtraction of source from destionation (destination operand is not changed)
+- Syntax: `cmp destionation,source`
+
+#### Destination == Source
+
+**Zero flag** is *set*
+
+```x86asm
+mov al,5
+cmp al,5          ;zero flag *set*
+```
+
+#### Destination < Source
+
+**Carry flag** is *set*
+
+```x86asm
+mov al,4
+cmp al,5          ;carry flag *set*
+```
+
+#### Destination > Source
+
+**Zero and Carry flag** is *clear*
+
+```x86asm
+mov al,6
+cmp al,5          ;ZF = 0, CF = 0
+```
+
+### Comparison with signed integers
+
+#### Destination > Source
+
+```x86asm
+mov al,5
+cmp al,-2         ;Sign flag == Overflow flag
+```
+
+#### Destination < Source
+
+```x86asm
+mov al,-1
+cmp al,5         ;Sign flag != Overflow flag
+```
+
+## Conditional Jumps
+
+J**cond** - A conditional jump instruction branches to a label when specific register or flag condition are met
+
+### Jump Based on Specific Flags
+
+| Memonic | Description             | Flags  |
+| :------ | :---------------------- | :----: |
+| JZ      | Jump if Zero            | ZF = 1 |
+| JNZ     | Jump if Not Zero        | ZF = 0 |
+| JC      | Jump if Carry           | CF = 1 |
+| JNC     | Jump if Not Carry       | CF = 0 |
+| JO      | Jump if Overflow        | OF = 1 |
+| JNO     | Jump if Not Overflow    | OF = 0 |
+| JS      | Jump if Signed          | SF = 1 |
+| JNS     | Jump if Not Signed      | SF = 0 |
+| JP      | Jump if Parity(even)    | PF = 1 |
+| JNP     | Jump if Not Parity(odd) | PF = 0 |
+
+### Jump based on Equality
+
+| Memonic | Description                           |
+| :------ | :------------------------------------ |
+| JE      | Jump if Equal (leftOp = rightOp)      |
+| JNE     | Jump if Not Equal (leftOp != rightOp) |
+| JCXZ    | Jump if CX = 0                        |
+| JCXZ    | Jump if ECX = 0                       |
+
+### Jump based on Unsigned Comparisons
+
+| Memonic | Description                               |
+| :------ | :---------------------------------------- |
+| JA      | Jump if above(if leftOp > rightOp)        |
+| JNBE    | Jump if not below or equal(Same as JA)    |
+| JAE     | Jump if above or equal(leftOp >= rightOp) |
+| JNB     | Jump if not below (Same as JAE)           |
+| JB      | Jump if below(leftOp < rightOp)           |
+| JNAE    | Jump if not above or equal(Same as JB)    |
+| JBE     | Jump if below or equal(leftOp <= rightOp) |
+| JNA     | Jump if not above(Same as JBE)            |
+
+### Jump based on Signed comparisons
+
+| Memonic | Description                                 |
+| :------ | :------------------------------------------ |
+| JG      | Jump if greater(if leftOp > rightOp)        |
+| JNLE    | Jump if not less or equal(Same as JA)       |
+| JGE     | Jump if greater or equal(leftOp >= rightOp) |
+| JNL     | Jump if not less (Same as JAE)              |
+| JL      | Jump if less(leftOp < rightOp)              |
+| JNGE    | Jump if not greater or equal(Same as JB)    |
+| JLE     | Jump if less or equal(leftOp <= rightOp)    |
+| JNG     | Jump if not greater(Same as JBE)            |
+
+### Applications
+
+```x86asm
+;Jump to label if unsigned EAX is greater than EBX
+cmp eax,ebx
+ja larger
+```
+
+```x86asm
+;Jump to label if signed EAX is greater than EBX
+cmp eax,ebx
+jg greater
+```
+
+```x86asm
+;Jump to label if unsigned EAX is lesser than or equal to EBX
+cmp eax,ebx
+jbe L1
+```
+
+```x86asm
+;Jump to label if signed EAX is lesser than or equal to EBX
+cmp eax,ebx
+jg greater
+```
+
+```x86asm
+;Compare unsigned AX and BX, and copy the larger to variable named large
+mov large,ax       ;large = ax
+cmp ax,bx          ;compare ax,bx
+jnb L1             ;jump to L1 if ax is not below bx (ax > bx)
+mov large,bx       ;move large = bx if bx is greater than ax
+L1:
+```
+
+```x86asm
+;Compare signed AX and BX, and copy the smaller to variable named small
+mov small,ax     ;small = =ax
+cmp ax,bx        ;compare ax and bx
+jng L1           ;jump to L1 if ax is not greater than bx (ax <= bx)
+mov large,bx
+L1:
+```
+
+### Encrypting a string
+
+```x86asm
+;The following loop uses  the XOR instruction to transform 
+;every character in a string to a new value 
+
+KEY = 239
+BUFMAX = 128
+
+.data
+buffer  BYTE  BUFMAX+1 DUP(0)
+bufSize DWORD BUFMAX
+
+.code
+mov ecx,bufSize           ;loop counter to buffer size
+mov esi,0                 ;set index register to 0
+
+L1:
+  xor buffer[esi],KEY     ;translate a byte of data with key
+  inc esi                 ;esi now points to next byte
+  loop L1
+```
+
+## Conditional Loop instructions
+
+### LOOPZ and LOOPE
+
+- Synax
+  - LOOPE destination
+  - LOOPZ destination
+- LOOPZ(loop if *zero*)   instruction works just like the loop instruction except it has 1 more condition. Zero flag must be set
+- LOOPE(loop if *equal*)  instruction is equivalent to LOOPZ (cmp sets Zero flag when both values are equal)
+- Logic:
+  - ECX <-- ECX - 1
+  - If ECX > 0 and ZF = 1, jump to destination
+- Useful for scanning an array for the first element that does not match a given value
+
+### LOOPNZ and LOOPNE
+
+- Syntax
+  - LOOPNZ destination
+  - LOOPNE destination
+- Logic:
+  - ECX <-- ECX - 1
+  - If ECX > 0 and ZF = 0, jump to destination
+- Useful when scanning an array for the first element that matches a given value
+
+## Conditional Control flow Drectives
+
+Creating **IF** statements
+
+### Runtime Expressions
+
+`.IF`, `.ELSE`, `.ELSEIF`, and `.ENDIF` can be used to evaluate runtime expressions and create block-structured IF statements
+
+```x86asm
+.IF eax > ebx
+  mov edx,1
+.ELSE
+  move edx,2
+.ENDIF
+```
+
+```x86asm
+.IF eax > ebx && eax > ecx
+  mov edx,1
+.ELSE
+  move edx,2
+.ENDIF
+```
+
+MASM generates hidden code for you, consisting of code labels, CMP and conditional jumps
+
+### Relational and Logical Operators
+
+| Operator             | Description                                       |
+| :------------------- | :------------------------------------------------ |
+| expr1 == expr2       | true when 1 equal 2                               |
+| expr1 != expr2       | true when 1 not equal 2                           |
+| expr1 > or < expr2   | true when 1 greater / lesser than than 2          |
+| expr1 >= or <= expr2 | true when 1 greater / lesser than than or equal 2 |
+| !expr1               | true when expr1 equals false                      |
+| expr1 && expr2       | logical AND on 1 and 2                            |
+| expr1 \|\| expr2     | logical OR between 1 and 2                        |
+| expr1 & expr2        | bitwise AND between 1 and 2                       |
+| CARRY?               | true if carry flag set                            |
+| OVERFLOW?            | true if overflow flag set                         |
+| PARITY?              | true if parity flag set                           |
+| SIGN?                | true if sign flag set                             |
+| ZERO?                | true if zero flag set                             |
+
+### MASM generated code
+
+- when *unsigned* values are compared, MASM automatically generates unsigned jump (.IF register > val(where val is unsigned (WORD))
+- when *signed* values are compared, MASM automatically generates a signed jump (.IF register > val(where val is signed (SWORD))
+
+### .REPEAT directive
+
+Execute the loop body before testing the loop condition associated with the `.UNTIL` directive
+
+```x86asm
+;display integers from 1-10:
+mov eax,0
+.REPEAT
+  inc eax
+  call WriteDec
+  call Crlf
+.UNTIL eax == 10
+```
+
+### .WHILE directive
+
+Tests the loop condition before executing the loop body. The `ENDW` directive marks the end of the loop
+
+```x86asm
+;display integers from 1-10:
+mov eax,0
+.WHILE eax < 10
+  inc eax
+  call WriteDec
+  call Crlf
+.ENDW
 ```

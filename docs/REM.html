@@ -21,7 +21,7 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
         </style>
     </head>
     <body>
-        <!-- markdownlint-disable MD025 MD033-->
+        <!-- markdownlint-disable MD025 MD033 MD024-->
 <h1 id="reverse-engineering-malware">Reverse Engineering Malware</h1>
 <ul>
 <li><a href="#reverse-engineering-malware">Reverse Engineering Malware</a></li>
@@ -182,6 +182,59 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <li><a href="#call-ret-example">CALL-RET Example</a></li>
 <li><a href="#local-and-global-labels">Local and Global Labels</a></li>
 <li><a href="#procedure-parameters">Procedure Parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#conditional-processing">Conditional Processing</a>
+<ul>
+<li><a href="#boolean-and-comparison-instructions">Boolean and Comparison Instructions</a>
+<ul>
+<li><a href="#status-flags-review">Status Flags Review</a></li>
+<li><a href="#and-instruction">AND instruction</a></li>
+<li><a href="#or-instruction">OR Instruction</a></li>
+<li><a href="#xor-instruction">XOR Instruction</a></li>
+<li><a href="#not-instruction">NOT Instruction</a></li>
+<li><a href="#applications">Applications</a></li>
+<li><a href="#test">Test</a></li>
+<li><a href="#cmp-instruction">CMP Instruction</a>
+<ul>
+<li><a href="#destination-source">Destination == Source</a></li>
+<li><a href="#destination-source">Destination &lt; Source</a></li>
+<li><a href="#destination-source">Destination &gt; Source</a></li>
+</ul>
+</li>
+<li><a href="#comparison-with-signed-integers">Comparison with signed integers</a>
+<ul>
+<li><a href="#destination-source">Destination &gt; Source</a></li>
+<li><a href="#destination-source">Destination &lt; Source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#conditional-jumps">Conditional Jumps</a>
+<ul>
+<li><a href="#jump-based-on-specific-flags">Jump Based on Specific Flags</a></li>
+<li><a href="#jump-based-on-equality">Jump based on Equality</a></li>
+<li><a href="#jump-based-on-unsigned-comparisons">Jump based on Unsigned Comparisons</a></li>
+<li><a href="#jump-based-on-signed-comparisons">Jump based on Signed comparisons</a></li>
+<li><a href="#applications">Applications</a></li>
+<li><a href="#encrypting-a-string">Encrypting a string</a></li>
+</ul>
+</li>
+<li><a href="#conditional-loop-instructions">Conditional Loop instructions</a>
+<ul>
+<li><a href="#loopz-and-loope">LOOPZ and LOOPE</a></li>
+<li><a href="#loopnz-and-loopne">LOOPNZ and LOOPNE</a></li>
+</ul>
+</li>
+<li><a href="#conditional-control-flow-drectives">Conditional Control flow Drectives</a>
+<ul>
+<li><a href="#runtime-expressions">Runtime Expressions</a></li>
+<li><a href="#relational-and-logical-operators">Relational and Logical Operators</a></li>
+<li><a href="#masm-generated-code">MASM generated code</a></li>
+<li><a href="#repeat-directive">.REPEAT directive</a></li>
+<li><a href="#while-directive">.WHILE directive</a></li>
 </ul>
 </li>
 </ul>
@@ -619,9 +672,9 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <p>Use 8 bit, 16 bit or 32 bit name</p>
 <p>Each <code>| |</code> space represents 8 bits</p>
 <pre><code class="language-demo">|   |   |   |   |   - EAX
-        |   |   |   - AX
-        |   |       - AH
-            |   |   - AL
+|   |   |           - AX
+|   |               - AL
+    |   |           - AH
 </code></pre>
 <p><em><strong>The 16 and 8 Bit registers are accessing the values in the EAX</strong></em></p>
 <p>The E in EAX stands for <code>extended</code>, extending the range of the 16 bit registers to 32 bits</p>
@@ -1286,7 +1339,7 @@ valW <span class="hljs-built_in">WORD</span> +<span class="hljs-number">32767</s
 <h3 id="overflow-flag-of">Overflow Flag (OF)</h3>
 <p>set when signed result of operation is invalid / out of range</p>
 <pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">127</span>    <span class="hljs-comment">;al = 127, OF = 0</span>
-<span class="hljs-keyword">inc</span> <span class="hljs-built_in">al</span>        <span class="hljs-comment">;al = -128, OF = 1, Harder to read. </span>
+<span class="hljs-keyword">inc</span> <span class="hljs-built_in">al</span>        <span class="hljs-comment">;al = -128, OF = 1, Harder to read.</span>
 </div></code></pre>
 <pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">7Fh</span>    <span class="hljs-comment">;al = 7Fh = 127, OF = 0</span>
 <span class="hljs-keyword">inc</span> <span class="hljs-built_in">al</span>        <span class="hljs-comment">;al = 80h = 128, OF = 1</span>
@@ -1756,7 +1809,7 @@ SumOf ENDP
 </ul>
 <h3 id="call-ret-example">CALL-RET Example</h3>
 <pre class="hljs"><code><div>main PROC
-  <span class="hljs-number">00000020</span> <span class="hljs-keyword">call</span> MySub       
+  <span class="hljs-number">00000020</span> <span class="hljs-keyword">call</span> MySub
   <span class="hljs-comment">;0000 0025 is the offset of the instruction immediately after the call instruction. This is added to the stack</span>
   <span class="hljs-comment">; EIP is set to 0000 0040</span>
   <span class="hljs-number">00000025</span> <span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,<span class="hljs-built_in">ebx</span>
@@ -1806,6 +1859,584 @@ ArraySum  PROC
   <span class="hljs-keyword">mov</span> theSum, <span class="hljs-built_in">eax</span>           <span class="hljs-comment">;stores the sum</span>
   <span class="hljs-keyword">ret</span>
 Arraysum ENDP
+</div></code></pre>
+<h1 id="conditional-processing">Conditional Processing</h1>
+<h2 id="boolean-and-comparison-instructions">Boolean and Comparison Instructions</h2>
+<h3 id="status-flags-review">Status Flags Review</h3>
+<ul>
+<li><code>Zero</code> flag is set when the result of an operation equals 0</li>
+<li><code>Carry</code> flag is set when result is too large for the destination operand</li>
+<li><code>Sign</code> flag is set if the destination operand is negative, and clear if destination is negative</li>
+<li><code>Overflow</code> flag is set when an instruction generates invalid sign result</li>
+</ul>
+<h3 id="and-instruction">AND instruction</h3>
+<ul>
+<li>Perform a Boolean AND operation between each pair of matching bits in two operands</li>
+<li>Syntax
+<ul>
+<li>AND destination,source</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">X</th>
+<th style="text-align:center">Y</th>
+<th style="text-align:center">X AND Y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="or-instruction">OR Instruction</h3>
+<ul>
+<li>Perform a Boolean OR operation between each pair of matching bits in two operands</li>
+<li>Syntax
+<ul>
+<li>OR destination,source</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">X</th>
+<th style="text-align:center">Y</th>
+<th style="text-align:center">X OR Y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="xor-instruction">XOR Instruction</h3>
+<ul>
+<li>Perform a Boolean E<strong>x</strong>clusive-OR operation between each pair of matching bits in two operands</li>
+<li>Syntax
+<ul>
+<li>XOR destination,source</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">X</th>
+<th style="text-align:center">Y</th>
+<th style="text-align:center">X XOR Y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<p>Useful way to toggle(invert) the bits in an operand</p>
+<h3 id="not-instruction">NOT Instruction</h3>
+<ul>
+<li>Perform a Boolean NOT operation on a single destination operand</li>
+<li>Syntax
+<ul>
+<li>NOT destination,source</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">X</th>
+<th style="text-align:center">NOT X</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="applications">Applications</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">;convert character in AL to upper case</span>
+<span class="hljs-comment">;use and instruction to clear bit 5</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-string">'a'</span>
+<span class="hljs-keyword">AND</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">11011111b</span>        <span class="hljs-comment">;use AND to clear bit 6</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">;convert binary decimal byte into its equivalent ascii decimal digit</span>
+<span class="hljs-comment">;use or instruction to set bits 4 and 5</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">6</span>
+<span class="hljs-keyword">or</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">00110000b</span>        <span class="hljs-comment">;use or to clear bit 6</span>
+</div></code></pre>
+<h3 id="test">Test</h3>
+<ul>
+<li>Performs a non-destructive AND Operation between each pair of matching bits in two operands</li>
+<li>No Operands are modified, but <code>Zero</code> flag is modified</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment">;This program jumps to label if either bit 0 or bit 1 in al is set</span>
+<span class="hljs-keyword">test</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">00000011b</span>     <span class="hljs-comment">;AND al,0000 0011b</span>
+<span class="hljs-keyword">jnz</span> ValueFound        <span class="hljs-comment">;JNZ will be taught later on(Conditional Jumps) jnz = jump not zero</span>
+</div></code></pre>
+<h3 id="cmp-instruction">CMP Instruction</h3>
+<ul>
+<li>Compares destination operand to the source operand
+<ul>
+<li>Non destructive subtraction of source from destionation (destination operand is not changed)</li>
+</ul>
+</li>
+<li>Syntax: <code>cmp destionation,source</code></li>
+</ul>
+<h4 id="destination-source">Destination == Source</h4>
+<p><strong>Zero flag</strong> is <em>set</em></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">5</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">5</span>          <span class="hljs-comment">;zero flag *set*</span>
+</div></code></pre>
+<h4 id="destination-source">Destination &lt; Source</h4>
+<p><strong>Carry flag</strong> is <em>set</em></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">4</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">5</span>          <span class="hljs-comment">;carry flag *set*</span>
+</div></code></pre>
+<h4 id="destination-source">Destination &gt; Source</h4>
+<p><strong>Zero and Carry flag</strong> is <em>clear</em></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">6</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">5</span>          <span class="hljs-comment">;ZF = 0, CF = 0</span>
+</div></code></pre>
+<h3 id="comparison-with-signed-integers">Comparison with signed integers</h3>
+<h4 id="destination-source">Destination &gt; Source</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">5</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>,-<span class="hljs-number">2</span>         <span class="hljs-comment">;Sign flag == Overflow flag</span>
+</div></code></pre>
+<h4 id="destination-source">Destination &lt; Source</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,-<span class="hljs-number">1</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">5</span>         <span class="hljs-comment">;Sign flag != Overflow flag</span>
+</div></code></pre>
+<h2 id="conditional-jumps">Conditional Jumps</h2>
+<p>J<strong>cond</strong> - A conditional jump instruction branches to a label when specific register or flag condition are met</p>
+<h3 id="jump-based-on-specific-flags">Jump Based on Specific Flags</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Memonic</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:center">Flags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">JZ</td>
+<td style="text-align:left">Jump if Zero</td>
+<td style="text-align:center">ZF = 1</td>
+</tr>
+<tr>
+<td style="text-align:left">JNZ</td>
+<td style="text-align:left">Jump if Not Zero</td>
+<td style="text-align:center">ZF = 0</td>
+</tr>
+<tr>
+<td style="text-align:left">JC</td>
+<td style="text-align:left">Jump if Carry</td>
+<td style="text-align:center">CF = 1</td>
+</tr>
+<tr>
+<td style="text-align:left">JNC</td>
+<td style="text-align:left">Jump if Not Carry</td>
+<td style="text-align:center">CF = 0</td>
+</tr>
+<tr>
+<td style="text-align:left">JO</td>
+<td style="text-align:left">Jump if Overflow</td>
+<td style="text-align:center">OF = 1</td>
+</tr>
+<tr>
+<td style="text-align:left">JNO</td>
+<td style="text-align:left">Jump if Not Overflow</td>
+<td style="text-align:center">OF = 0</td>
+</tr>
+<tr>
+<td style="text-align:left">JS</td>
+<td style="text-align:left">Jump if Signed</td>
+<td style="text-align:center">SF = 1</td>
+</tr>
+<tr>
+<td style="text-align:left">JNS</td>
+<td style="text-align:left">Jump if Not Signed</td>
+<td style="text-align:center">SF = 0</td>
+</tr>
+<tr>
+<td style="text-align:left">JP</td>
+<td style="text-align:left">Jump if Parity(even)</td>
+<td style="text-align:center">PF = 1</td>
+</tr>
+<tr>
+<td style="text-align:left">JNP</td>
+<td style="text-align:left">Jump if Not Parity(odd)</td>
+<td style="text-align:center">PF = 0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="jump-based-on-equality">Jump based on Equality</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Memonic</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">JE</td>
+<td style="text-align:left">Jump if Equal (leftOp = rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JNE</td>
+<td style="text-align:left">Jump if Not Equal (leftOp != rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JCXZ</td>
+<td style="text-align:left">Jump if CX = 0</td>
+</tr>
+<tr>
+<td style="text-align:left">JCXZ</td>
+<td style="text-align:left">Jump if ECX = 0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="jump-based-on-unsigned-comparisons">Jump based on Unsigned Comparisons</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Memonic</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">JA</td>
+<td style="text-align:left">Jump if above(if leftOp &gt; rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JNBE</td>
+<td style="text-align:left">Jump if not below or equal(Same as JA)</td>
+</tr>
+<tr>
+<td style="text-align:left">JAE</td>
+<td style="text-align:left">Jump if above or equal(leftOp &gt;= rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JNB</td>
+<td style="text-align:left">Jump if not below (Same as JAE)</td>
+</tr>
+<tr>
+<td style="text-align:left">JB</td>
+<td style="text-align:left">Jump if below(leftOp &lt; rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JNAE</td>
+<td style="text-align:left">Jump if not above or equal(Same as JB)</td>
+</tr>
+<tr>
+<td style="text-align:left">JBE</td>
+<td style="text-align:left">Jump if below or equal(leftOp &lt;= rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JNA</td>
+<td style="text-align:left">Jump if not above(Same as JBE)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="jump-based-on-signed-comparisons">Jump based on Signed comparisons</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Memonic</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">JG</td>
+<td style="text-align:left">Jump if greater(if leftOp &gt; rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JNLE</td>
+<td style="text-align:left">Jump if not less or equal(Same as JA)</td>
+</tr>
+<tr>
+<td style="text-align:left">JGE</td>
+<td style="text-align:left">Jump if greater or equal(leftOp &gt;= rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JNL</td>
+<td style="text-align:left">Jump if not less (Same as JAE)</td>
+</tr>
+<tr>
+<td style="text-align:left">JL</td>
+<td style="text-align:left">Jump if less(leftOp &lt; rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JNGE</td>
+<td style="text-align:left">Jump if not greater or equal(Same as JB)</td>
+</tr>
+<tr>
+<td style="text-align:left">JLE</td>
+<td style="text-align:left">Jump if less or equal(leftOp &lt;= rightOp)</td>
+</tr>
+<tr>
+<td style="text-align:left">JNG</td>
+<td style="text-align:left">Jump if not greater(Same as JBE)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="applications">Applications</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">;Jump to label if unsigned EAX is greater than EBX</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">eax</span>,<span class="hljs-built_in">ebx</span>
+<span class="hljs-keyword">ja</span> larger
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">;Jump to label if signed EAX is greater than EBX</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">eax</span>,<span class="hljs-built_in">ebx</span>
+<span class="hljs-keyword">jg</span> greater
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">;Jump to label if unsigned EAX is lesser than or equal to EBX</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">eax</span>,<span class="hljs-built_in">ebx</span>
+<span class="hljs-keyword">jbe</span> L1
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">;Jump to label if signed EAX is lesser than or equal to EBX</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">eax</span>,<span class="hljs-built_in">ebx</span>
+<span class="hljs-keyword">jg</span> greater
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">;Compare unsigned AX and BX, and copy the larger to variable named large</span>
+<span class="hljs-keyword">mov</span> large,<span class="hljs-built_in">ax</span>       <span class="hljs-comment">;large = ax</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">bx</span>          <span class="hljs-comment">;compare ax,bx</span>
+<span class="hljs-keyword">jnb</span> L1             <span class="hljs-comment">;jump to L1 if ax is not below bx (ax &gt; bx)</span>
+<span class="hljs-keyword">mov</span> large,<span class="hljs-built_in">bx</span>       <span class="hljs-comment">;move large = bx if bx is greater than ax</span>
+<span class="hljs-symbol">L1:</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">;Compare signed AX and BX, and copy the smaller to variable named small</span>
+<span class="hljs-keyword">mov</span> small,<span class="hljs-built_in">ax</span>     <span class="hljs-comment">;small = =ax</span>
+<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">bx</span>        <span class="hljs-comment">;compare ax and bx</span>
+<span class="hljs-keyword">jng</span> L1           <span class="hljs-comment">;jump to L1 if ax is not greater than bx (ax &lt;= bx)</span>
+<span class="hljs-keyword">mov</span> large,<span class="hljs-built_in">bx</span>
+<span class="hljs-symbol">L1:</span>
+</div></code></pre>
+<h3 id="encrypting-a-string">Encrypting a string</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">;The following loop uses  the XOR instruction to transform </span>
+<span class="hljs-comment">;every character in a string to a new value </span>
+
+KEY = <span class="hljs-number">239</span>
+BUFMAX = <span class="hljs-number">128</span>
+<span class="hljs-meta">
+.data</span>
+buffer  <span class="hljs-built_in">BYTE</span>  BUFMAX+<span class="hljs-number">1</span> DUP(<span class="hljs-number">0</span>)
+bufSize <span class="hljs-built_in">DWORD</span> BUFMAX
+<span class="hljs-meta">
+.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>,bufSize           <span class="hljs-comment">;loop counter to buffer size</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>,<span class="hljs-number">0</span>                 <span class="hljs-comment">;set index register to 0</span>
+<span class="hljs-symbol">
+L1:</span>
+  <span class="hljs-keyword">xor</span> buffer[<span class="hljs-built_in">esi</span>],KEY     <span class="hljs-comment">;translate a byte of data with key</span>
+  <span class="hljs-keyword">inc</span> <span class="hljs-built_in">esi</span>                 <span class="hljs-comment">;esi now points to next byte</span>
+  <span class="hljs-keyword">loop</span> L1
+</div></code></pre>
+<h2 id="conditional-loop-instructions">Conditional Loop instructions</h2>
+<h3 id="loopz-and-loope">LOOPZ and LOOPE</h3>
+<ul>
+<li>Synax
+<ul>
+<li>LOOPE destination</li>
+<li>LOOPZ destination</li>
+</ul>
+</li>
+<li>LOOPZ(loop if <em>zero</em>)   instruction works just like the loop instruction except it has 1 more condition. Zero flag must be set</li>
+<li>LOOPE(loop if <em>equal</em>)  instruction is equivalent to LOOPZ (cmp sets Zero flag when both values are equal)</li>
+<li>Logic:
+<ul>
+<li>ECX &lt;-- ECX - 1</li>
+<li>If ECX &gt; 0 and ZF = 1, jump to destination</li>
+</ul>
+</li>
+<li>Useful for scanning an array for the first element that does not match a given value</li>
+</ul>
+<h3 id="loopnz-and-loopne">LOOPNZ and LOOPNE</h3>
+<ul>
+<li>Syntax
+<ul>
+<li>LOOPNZ destination</li>
+<li>LOOPNE destination</li>
+</ul>
+</li>
+<li>Logic:
+<ul>
+<li>ECX &lt;-- ECX - 1</li>
+<li>If ECX &gt; 0 and ZF = 0, jump to destination</li>
+</ul>
+</li>
+<li>Useful when scanning an array for the first element that matches a given value</li>
+</ul>
+<h2 id="conditional-control-flow-drectives">Conditional Control flow Drectives</h2>
+<p>Creating <strong>IF</strong> statements</p>
+<h3 id="runtime-expressions">Runtime Expressions</h3>
+<p><code>.IF</code>, <code>.ELSE</code>, <code>.ELSEIF</code>, and <code>.ENDIF</code> can be used to evaluate runtime expressions and create block-structured IF statements</p>
+<pre class="hljs"><code><div><span class="hljs-meta">.IF</span> <span class="hljs-built_in">eax</span> &gt; <span class="hljs-built_in">ebx</span>
+  <span class="hljs-keyword">mov</span> <span class="hljs-built_in">edx</span>,<span class="hljs-number">1</span>
+<span class="hljs-meta">.ELSE</span>
+  move <span class="hljs-built_in">edx</span>,<span class="hljs-number">2</span>
+<span class="hljs-meta">.ENDIF</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-meta">.IF</span> <span class="hljs-built_in">eax</span> &gt; <span class="hljs-built_in">ebx</span> &amp;&amp; <span class="hljs-built_in">eax</span> &gt; <span class="hljs-built_in">ecx</span>
+  <span class="hljs-keyword">mov</span> <span class="hljs-built_in">edx</span>,<span class="hljs-number">1</span>
+<span class="hljs-meta">.ELSE</span>
+  move <span class="hljs-built_in">edx</span>,<span class="hljs-number">2</span>
+<span class="hljs-meta">.ENDIF</span>
+</div></code></pre>
+<p>MASM generates hidden code for you, consisting of code labels, CMP and conditional jumps</p>
+<h3 id="relational-and-logical-operators">Relational and Logical Operators</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Operator</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">expr1 == expr2</td>
+<td style="text-align:left">true when 1 equal 2</td>
+</tr>
+<tr>
+<td style="text-align:left">expr1 != expr2</td>
+<td style="text-align:left">true when 1 not equal 2</td>
+</tr>
+<tr>
+<td style="text-align:left">expr1 &gt; or &lt; expr2</td>
+<td style="text-align:left">true when 1 greater / lesser than than 2</td>
+</tr>
+<tr>
+<td style="text-align:left">expr1 &gt;= or &lt;= expr2</td>
+<td style="text-align:left">true when 1 greater / lesser than than or equal 2</td>
+</tr>
+<tr>
+<td style="text-align:left">!expr1</td>
+<td style="text-align:left">true when expr1 equals false</td>
+</tr>
+<tr>
+<td style="text-align:left">expr1 &amp;&amp; expr2</td>
+<td style="text-align:left">logical AND on 1 and 2</td>
+</tr>
+<tr>
+<td style="text-align:left">expr1 || expr2</td>
+<td style="text-align:left">logical OR between 1 and 2</td>
+</tr>
+<tr>
+<td style="text-align:left">expr1 &amp; expr2</td>
+<td style="text-align:left">bitwise AND between 1 and 2</td>
+</tr>
+<tr>
+<td style="text-align:left">CARRY?</td>
+<td style="text-align:left">true if carry flag set</td>
+</tr>
+<tr>
+<td style="text-align:left">OVERFLOW?</td>
+<td style="text-align:left">true if overflow flag set</td>
+</tr>
+<tr>
+<td style="text-align:left">PARITY?</td>
+<td style="text-align:left">true if parity flag set</td>
+</tr>
+<tr>
+<td style="text-align:left">SIGN?</td>
+<td style="text-align:left">true if sign flag set</td>
+</tr>
+<tr>
+<td style="text-align:left">ZERO?</td>
+<td style="text-align:left">true if zero flag set</td>
+</tr>
+</tbody>
+</table>
+<h3 id="masm-generated-code">MASM generated code</h3>
+<ul>
+<li>when <em>unsigned</em> values are compared, MASM automatically generates unsigned jump (.IF register &gt; val(where val is unsigned (WORD))</li>
+<li>when <em>signed</em> values are compared, MASM automatically generates a signed jump (.IF register &gt; val(where val is signed (SWORD))</li>
+</ul>
+<h3 id="repeat-directive">.REPEAT directive</h3>
+<p>Execute the loop body before testing the loop condition associated with the <code>.UNTIL</code> directive</p>
+<pre class="hljs"><code><div><span class="hljs-comment">;display integers from 1-10:</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,<span class="hljs-number">0</span>
+<span class="hljs-meta">.REPEAT</span>
+  <span class="hljs-keyword">inc</span> <span class="hljs-built_in">eax</span>
+  <span class="hljs-keyword">call</span> WriteDec
+  <span class="hljs-keyword">call</span> Crlf
+<span class="hljs-meta">.UNTIL</span> <span class="hljs-built_in">eax</span> == <span class="hljs-number">10</span>
+</div></code></pre>
+<h3 id="while-directive">.WHILE directive</h3>
+<p>Tests the loop condition before executing the loop body. The <code>ENDW</code> directive marks the end of the loop</p>
+<pre class="hljs"><code><div><span class="hljs-comment">;display integers from 1-10:</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,<span class="hljs-number">0</span>
+<span class="hljs-meta">.WHILE</span> <span class="hljs-built_in">eax</span> &lt; <span class="hljs-number">10</span>
+  <span class="hljs-keyword">inc</span> <span class="hljs-built_in">eax</span>
+  <span class="hljs-keyword">call</span> WriteDec
+  <span class="hljs-keyword">call</span> Crlf
+<span class="hljs-meta">.ENDW</span>
 </div></code></pre>
 
     </body>

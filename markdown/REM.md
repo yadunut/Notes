@@ -808,15 +808,15 @@ dec al      ;AL = FF, CF = 1
 ### SF,ZF,CF Demo
 
 ```x86asm
-mov ax,00FFh      ; ax = 00FFh, SF = 0, ZF = 0, CF = 0
-add ax,1
-sub ax,1
-add al,1
-mov bh,6Ch
-add bh,95h
+mov ax,00FFh      ;ax = 00FFh, SF = 0, ZF = 0, CF = 0
+add ax,1          ;ax = 0100h, SF = 0, ZF = 0, CF = 0
+sub ax,1          ;ax = 00FFh, SF = 0, ZF = 0, CF = 0
+add al,1          ;al = 00h,   SF = 0, ZF = 1, CF = 1
+mov bh,6Ch        ;bh = 6Ch,   SF = 0, ZF = 0, CF = 0
+add bh,95h        ;bh = 01h,   SF = 0, ZF = 0, CF = 1
 
-mov al,2
-sub al,3
+mov al,2          ;al = 2,     SF = 0, ZF = 0, CF = 0
+sub al,3          ;al = FFh,   SF = 1, ZF = 0, CF = 1
 ```
 
 ### Overflow Flag (OF)

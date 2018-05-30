@@ -1313,7 +1313,7 @@ local label is only visible to statements inside the same procedure. A global va
 
 ```x86asm
 main PROC
-  jmp L2      ;error since L2 is a local label
+  jmp L2      ;error since L2 is a local label in another procedure
   L1::        ;Global Label
   exit
 main ENDP

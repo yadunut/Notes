@@ -1828,7 +1828,7 @@ MySub ENDP
 <h3 id="local-and-global-labels">Local and Global Labels</h3>
 <p>local label is only visible to statements inside the same procedure. A global variable is visible everywhere</p>
 <pre class="hljs"><code><div>main PROC
-  <span class="hljs-keyword">jmp</span> L2      <span class="hljs-comment">;error since L2 is a local label</span>
+  <span class="hljs-keyword">jmp</span> L2      <span class="hljs-comment">;error since L2 is a local label in another procedure</span>
 <span class="hljs-symbol">  L1:</span>:        <span class="hljs-comment">;Global Label</span>
   exit
 main ENDP

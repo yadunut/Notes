@@ -1326,15 +1326,15 @@ valW <span class="hljs-built_in">WORD</span> +<span class="hljs-number">32767</s
 <span class="hljs-keyword">dec</span> <span class="hljs-built_in">al</span>      <span class="hljs-comment">;AL = FF, CF = 1</span>
 </div></code></pre>
 <h3 id="sf-zf-cf-demo">SF,ZF,CF Demo</h3>
-<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">00FFh</span>      <span class="hljs-comment">; ax = 00FFh, SF = 0, ZF = 0, CF = 0</span>
-<span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">1</span>
-<span class="hljs-keyword">sub</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">1</span>
-<span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">1</span>
-<span class="hljs-keyword">mov</span> <span class="hljs-number">bh</span>,<span class="hljs-number">6Ch</span>
-<span class="hljs-keyword">add</span> <span class="hljs-number">bh</span>,<span class="hljs-number">95h</span>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">00FFh</span>      <span class="hljs-comment">;ax = 00FFh, SF = 0, ZF = 0, CF = 0</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">1</span>          <span class="hljs-comment">;ax = 0100h, SF = 0, ZF = 0, CF = 0</span>
+<span class="hljs-keyword">sub</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">1</span>          <span class="hljs-comment">;ax = 00FFh, SF = 0, ZF = 0, CF = 0</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">1</span>          <span class="hljs-comment">;al = 00h,   SF = 0, ZF = 1, CF = 1</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-number">bh</span>,<span class="hljs-number">6Ch</span>        <span class="hljs-comment">;bh = 6Ch,   SF = 0, ZF = 0, CF = 0</span>
+<span class="hljs-keyword">add</span> <span class="hljs-number">bh</span>,<span class="hljs-number">95h</span>        <span class="hljs-comment">;bh = 01h,   SF = 0, ZF = 0, CF = 1</span>
 
-<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">2</span>
-<span class="hljs-keyword">sub</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">3</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">2</span>          <span class="hljs-comment">;al = 2,     SF = 0, ZF = 0, CF = 0</span>
+<span class="hljs-keyword">sub</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">3</span>          <span class="hljs-comment">;al = FFh,   SF = 1, ZF = 0, CF = 1</span>
 </div></code></pre>
 <h3 id="overflow-flag-of">Overflow Flag (OF)</h3>
 <p>set when signed result of operation is invalid / out of range</p>

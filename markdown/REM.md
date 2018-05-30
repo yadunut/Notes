@@ -88,7 +88,22 @@
     - [Nested Loop](#nested-loop)
     - [Summing integer array](#summing-integer-array)
     - [Copying a string](#copying-a-string)
-- [Chapter 5 - Procedures](#chapter-5---procedures)
+- [Chapter 5 - Procedure](#chapter-5---procedure)
+  - [Stack operations](#stack-operations)
+    - [Runtime stack](#runtime-stack)
+    - [PUSH Operation](#push-operation)
+    - [POP Operation](#pop-operation)
+    - [Using PUSH and POP](#using-push-and-pop)
+    - [Example - Nested Loops](#example---nested-loops)
+    - [Related Instructions](#related-instructions)
+  - [Defining and using Procedures](#defining-and-using-procedures)
+    - [Creating Procedures](#creating-procedures)
+    - [Documenting Procedues](#documenting-procedues)
+    - [Example](#example)
+    - [CALL and RET instructions](#call-and-ret-instructions)
+    - [CALL-RET Example](#call-ret-example)
+    - [Local and Global Labels](#local-and-global-labels)
+    - [Procedure Parameters](#procedure-parameters)
 
 # Chapter 1 - Basic Concepts
 
@@ -396,7 +411,7 @@ list3 BYTE 50, 60, 70, 80
       BYTE 90, 100, 110, 120
 str1  BYTE "This is a string", 0
 str2  BYTE 'A', 'E', 'I', 'O', 'U'
-str3  BYTE 'The 0 at the end is a null termination'.
+str3  BYTE 'The 0 at the end is a null termination' .
            'This is a multi line string'
 str4 BYTE '0Dh is carriage return, 0Ah is line feed', 0Dh, 0Ah,
           'This causes it to go to new line'
@@ -1106,4 +1121,197 @@ loop L1
 
 ```
 
-# Chapter 5 - Procedures
+# Chapter 5 - Procedure
+
+## Stack operations
+
+### Runtime stack
+
+- Is a stack
+  - Last in First Out (LIFO)
+- Managed by CPU using 2 registers
+  - Stack Segment(**SS**)
+  - Stack Pointer(**ESP**)
+
+
+
+### PUSH Operation
+
+- 32-bit push operation decrements the `stack pointer` **by 4** and copies a value into the location pointed by the `stack pointer`
+- The stack grows downwards. The area below ESP is always available (unless stack has overflowed)
+
+|           | Before |      |      |           | After |      |
+| :-------- | :----- | :--- | :--- | :-------- | :---- | :--- |
+| Address   | Value  | ESP  |      | Address   | Value | ESP  |
+| 0000 1000 | 6      | <--  |      | 0000 1000 | 6     |      |
+|           |        |      |      | 0000 0FFC | 9     | <--  |
+
+### POP Operation
+
+- Copies value at `stack[ESP]` into register or variable
+- adds *n* to ESP, where n is either 2 or 4
+  - value of *n* depends on the attribute of the operand receiving the data
+
+|           | Before |      |      |           | After |      |
+| :-------- | :----- | :--- | :--- | :-------- | :---- | :--- |
+| Address   | Value  | ESP  |      | Address   | Value | ESP  |
+| 0000 1000 | 6      |      |      | 0000 1000 | 6     | <--  |
+| 0000 0FFC | 9      | <--  |      |           |       |      |
+
+### Using PUSH and POP
+
+Save and restore registers when they contain important values.
+
+***Push** and **Pop** instructions occur in opposite order*
+
+```x86asm
+;push the registers into the stack
+push esi
+push ecx
+push ebx
+
+;display some stuff
+mov esi,OFFSET dWordVal
+mov ecx,LENGTHOF dWordVal
+mov ebx,TYPE dWordVal
+call dumpmem
+
+;restore the registers
+pop ebx
+pop ecx
+pop esi
+```
+
+### Example - Nested Loops
+
+When creating nested loop, push the outer loop counter to the stack before entering the inner loop
+
+```x86asm
+mov ecx,100         ;set the outer loop counter to 100
+L1:                 ;begin the outer loop
+push ecx            ;store the loop counter
+mov ecx,20          ;set the inner loop counter
+L2:
+.
+.
+
+loop L2             ;repeat the inner loop
+pop ecx             ;restore the value of the outer loop
+```
+
+### Related Instructions
+
+- PUSHFD and POPFD
+  - push and pop EFLAGS register
+- PUSHAD pushes the 32bit general purpose registers onto the stack
+
+## Defining and using Procedures
+
+### Creating Procedures
+
+- Large problems can be divide to smaller tasks to make them more manageable
+- ASM equivalent of functions in other languages
+
+```x86asm
+;Creates a procedure called sample
+sample PROC
+.
+.
+.
+ret
+sample ENDP
+```
+
+### Documenting Procedues
+
+- A description of all tasks accomplished by the procedure
+- `Receives` - A list of input parameters; state their usage and requirements
+- `Returns` - A description of values returned by the procedur
+- `Requires` - Optional list of requirements called *preconditions* that must be satisfied before procedure is called
+- *If Procedure is called without preconditions satisfied, it will probably not produce expected output*
+
+### Example
+
+```x86asm
+;-------------------------------------------------------------------------------
+SumOf PROC
+;Calculates and returns the sum of 3 32 bit integers
+;Receives:  EAX, EBX, ECX , the 3 integers to be added. May be signed or unsigned
+;Returns:   EAX = sum, and status flags (Carry, Overflow, etc) are changed
+;Requires:  Nothing
+;-------------------------------------------------------------------------------
+  add  eax,ebx
+  add eax,ecx
+  ret
+SumOf ENDP
+```
+
+### CALL and RET instructions
+
+- Call instruction calls a procedure
+  - pushes offset of next index onto the stack
+  - copies address of procedure into the `EIP`(Instruction Pointer)
+- The RET instruction returns from a procedure
+  - pops top of stack into EIP
+
+### CALL-RET Example
+
+```x86asm
+main PROC
+  00000020 call MySub       
+  ;0000 0025 is the offset of the instruction immediately after the call instruction. This is added to the stack
+  ; EIP is set to 0000 0040
+  00000025 mov eax,ebx
+  .
+  .
+main ENDP
+
+MySub PROC
+  00000040 mov eax,edx
+  .
+  .
+  ret
+  ;the stack is popped and EIP is now set to 0000 0025
+MySub ENDP
+```
+
+### Local and Global Labels
+
+local label is only visible to statements inside the same procedure. A global variable is visible everywhere
+
+```x86asm
+main PROC
+  jmp L2      ;error since L2 is a local label
+  L1::        ;Global Label
+  exit
+main ENDP
+
+sub2 PROC
+  L2:         ;local label
+  jmp L1      ;ok since L1 is global label
+  ret
+sub2 PROC
+```
+
+### Procedure Parameters
+
+- A good procedure might be usable in many different programs
+- Parameters help make procedures flexible because parameter values can change at runtime
+
+```x86asm
+;This procedure calculates the sum of an array
+;This program references 2 variables - myArray and theSum
+ArraySum  PROC
+  mov esi,0                 ;array index      (ESI is the index register)
+  mov eax,0                 ;set the sum to 0 (EAX is the accumulator)
+  mov ecx,LENGTHOF myArray  ;set no of elements
+
+  L1:
+  add eax,myArray[esi]      ;add the value of myArray into the accumulator
+  add esi,TYPE myArray      ;increments the esi value to point to the next element
+  loop L1
+
+  mov theSum, eax           ;stores the sum
+  ret
+Arraysum ENDP
+```

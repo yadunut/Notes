@@ -702,10 +702,11 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <h2 id="accessing-parts-of-a-register">Accessing Parts of a register</h2>
 <p>Use 8 bit, 16 bit or 32 bit name</p>
 <p>Each <code>| |</code> space represents 8 bits</p>
-<pre><code class="language-demo">|   |   |   |   |   - EAX
-|   |   |           - AX
-|   |               - AL
-    |   |           - AH
+<pre><code class="language-demo">32  24  16  8   0   - bit
+|   |   |   |   |   - EAX
+        |   |   |           - AX
+        |   |               - AH
+            |   |           - AL
 </code></pre>
 <p><em><strong>The 16 and 8 Bit registers are accessing the values in the EAX</strong></em></p>
 <p>The E in EAX stands for <code>extended</code>, extending the range of the 16 bit registers to 32 bits</p>

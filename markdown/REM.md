@@ -318,10 +318,11 @@ Use 8 bit, 16 bit or 32 bit name
 Each `|   |` space represents 8 bits
 
 ```demo
+32  24  16  8   0   - bit
 |   |   |   |   |   - EAX
-|   |   |           - AX
-|   |               - AL
-    |   |           - AH
+        |   |   |           - AX
+        |   |               - AH
+            |   |           - AL
 ```
 
 ***The 16 and 8 Bit registers are accessing the values in the EAX***

@@ -985,7 +985,7 @@ array3    DWORD 1,2,3,4           ;4 * 4 = 16
 digitstr  BYTE  "12345678",0      ;9
 
 .code
-mov eax,LENGTHOF array1           ;32 * 4 = 64
+mov eax,SIZEOF array1           ;32 * 4 = 128
 ```
 
 ### Spanning Multiple lines

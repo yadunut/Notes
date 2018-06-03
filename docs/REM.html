@@ -1385,7 +1385,7 @@ valW <span class="hljs-built_in">WORD</span> +<span class="hljs-number">32767</s
 </li>
 </ul>
 <pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">80h</span>      <span class="hljs-comment">;al = 80h, OF = 0</span>
-<span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">92h</span>      <span class="hljs-comment">;al = 3, OF = 1  ;overflow cause al is only 8 bits and result is 9 bits</span>
+<span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">92h</span>      <span class="hljs-comment">;al = 12, OF = 1  ;overflow cause al is only 8 bits and result is 9 bits</span>
 </div></code></pre>
 <h2 id="data-related-addressing">Data-related addressing</h2>
 <h3 id="offset-operator">OFFSET Operator</h3>

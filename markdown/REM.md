@@ -863,7 +863,7 @@ inc al        ;al = 80h = 128, OF = 1
 
 ```x86asm
 mov al,80h      ;al = 80h, OF = 0
-add al,92h      ;al = 3, OF = 1  ;overflow cause al is only 8 bits and result is 9 bits
+add al,92h      ;al = 12, OF = 1  ;overflow cause al is only 8 bits and result is 9 bits
 ```
 
 ## Data-related addressing

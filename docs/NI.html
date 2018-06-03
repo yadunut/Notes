@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+        <style>
+/*--------------------------------------------------------------------------------------------- * Copyright (c) Microsoft Corporation. All rights reserved. * Licensed under the MIT License. See License.txt in the project root for license information. *--------------------------------------------------------------------------------------------*/ body { font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback"; font-size: 14px; padding: 0 12px; line-height: 22px; word-wrap: break-word; } body.scrollBeyondLastLine { margin-bottom: calc(100vh - 22px); } body.showEditorSelection .code-line { position: relative; } body.showEditorSelection .code-active-line:before, body.showEditorSelection .code-line:hover:before { content: ""; display: block; position: absolute; top: 0; left: -12px; height: 100%; } body.showEditorSelection li.code-active-line:before, body.showEditorSelection li.code-line:hover:before { left: -30px; } .vscode-light.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(0, 0, 0, 0.15); } .vscode-light.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(0, 0, 0, 0.40); } .vscode-dark.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 255, 255, 0.4); } .vscode-dark.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 255, 255, 0.60); } .vscode-high-contrast.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 160, 0, 0.7); } .vscode-high-contrast.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 160, 0, 1); } img { max-width: 100%; max-height: 100%; } a { color: #4080D0; text-decoration: none; } a:focus, input:focus, select:focus, textarea:focus { outline: 1px solid -webkit-focus-ring-color; outline-offset: -1px; } hr { border: 0; height: 2px; border-bottom: 2px solid; } h1 { padding-bottom: 0.3em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; } h1, h2, h3 { font-weight: normal; } h1 code, h2 code, h3 code, h4 code, h5 code, h6 code { font-size: inherit; line-height: auto; } a:hover { color: #4080D0; text-decoration: underline; } table { border-collapse: collapse; } table > thead > tr > th { text-align: left; border-bottom: 1px solid; } table > thead > tr > th, table > thead > tr > td, table > tbody > tr > th, table > tbody > tr > td { padding: 5px 10px; } table > tbody > tr + tr > td { border-top: 1px solid; } blockquote { margin: 0 7px 0 5px; padding: 0 16px 0 10px; border-left: 5px solid; } code { font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback"; font-size: 14px; line-height: 19px; } body.wordWrap pre { white-space: pre-wrap; } .mac code { font-size: 12px; line-height: 18px; } code > div { padding: 16px; border-radius: 3px; overflow: auto; } /** Theming */ .vscode-light { color: rgb(30, 30, 30); } .vscode-dark { color: #DDD; } .vscode-high-contrast { color: white; } .vscode-light code { color: #A31515; } .vscode-dark code { color: #D7BA7D; } .vscode-light code > div { background-color: rgba(220, 220, 220, 0.4); } .vscode-dark code > div { background-color: rgba(10, 10, 10, 0.4); } .vscode-high-contrast code > div { background-color: rgb(0, 0, 0); } .vscode-high-contrast h1 { border-color: rgb(0, 0, 0); } .vscode-light table > thead > tr > th { border-color: rgba(0, 0, 0, 0.69); } .vscode-dark table > thead > tr > th { border-color: rgba(255, 255, 255, 0.69); } .vscode-light h1, .vscode-light hr, .vscode-light table > tbody > tr + tr > td { border-color: rgba(0, 0, 0, 0.18); } .vscode-dark h1, .vscode-dark hr, .vscode-dark table > tbody > tr + tr > td { border-color: rgba(255, 255, 255, 0.18); } .vscode-light blockquote, .vscode-dark blockquote { background: rgba(127, 127, 127, 0.1); border-color: rgba(0, 122, 204, 0.5); } .vscode-high-contrast blockquote { background: transparent; border-color: #fff; }
+</style>
+<style>
+/* Tomorrow Theme */ /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */ /* Original theme - https://github.com/chriskempson/tomorrow-theme */ /* Tomorrow Comment */ .hljs-comment, .hljs-quote { color: #8e908c; } /* Tomorrow Red */ .hljs-variable, .hljs-template-variable, .hljs-tag, .hljs-name, .hljs-selector-id, .hljs-selector-class, .hljs-regexp, .hljs-deletion { color: #c82829; } /* Tomorrow Orange */ .hljs-number, .hljs-built_in, .hljs-builtin-name, .hljs-literal, .hljs-type, .hljs-params, .hljs-meta, .hljs-link { color: #f5871f; } /* Tomorrow Yellow */ .hljs-attribute { color: #eab700; } /* Tomorrow Green */ .hljs-string, .hljs-symbol, .hljs-bullet, .hljs-addition { color: #718c00; } /* Tomorrow Blue */ .hljs-title, .hljs-section { color: #4271ae; } /* Tomorrow Purple */ .hljs-keyword, .hljs-selector-tag { color: #8959a8; } .hljs { display: block; overflow-x: auto; color: #4d4d4c; padding: 0.5em; } .hljs-emphasis { font-style: italic; } .hljs-strong { font-weight: bold; }
+</style>
+<style>
+ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-left: 40px; } .task-list-item { list-style-type: none; } .task-list-item-checkbox { vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- markdownlint-disable MD025 MD033 MD024-->
+<h1 id="networking-infrastructure">Networking Infrastructure</h1>
+<ul>
+<li><a href="#networking-infrastructure">Networking Infrastructure</a></li>
+<li><a href="#chapter-1---overview">Chapter 1 - Overview</a>
+<ul>
+<li><a href="#transmission-media-network-cables">Transmission Media &amp; Network Cables</a></li>
+<li><a href="#structured-cabling">Structured Cabling</a>
+<ul>
+<li><a href="#demarcation-point">Demarcation Point</a></li>
+<li><a href="#equipment-room-er">Equipment Room (ER)</a></li>
+<li><a href="#telecommunications-room-tr">Telecommunications Room (TR)</a></li>
+<li><a href="#backbone---vertical-cabling">Backbone / Vertical Cabling</a></li>
+<li><a href="#distribution---horizontal-cabling">Distribution / Horizontal Cabling</a></li>
+<li><a href="#work-area">Work Area</a>
+<ul>
+<li><a href="#servicing-work-area">Servicing Work Area</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#chapter-2---ethernet-switching">Chapter 2 - Ethernet Switching</a></li>
+</ul>
+<h1 id="chapter-1---overview">Chapter 1 - Overview</h1>
+<h2 id="transmission-media-network-cables">Transmission Media &amp; Network Cables</h2>
+<ul>
+<li>Twisted Pair</li>
+<li>Optical Fibre</li>
+<li>Coaxial Cable</li>
+</ul>
+<h2 id="structured-cabling">Structured Cabling</h2>
+<p>Installation of cables in building / campus in structured manner</p>
+<ul>
+<li><strong>Demarcation Point</strong>
+<ul>
+<li>Point where telecom prover network ends and connects with on-premise wiring at customer premise</li>
+</ul>
+</li>
+<li><strong>Equipment Room</strong>
+<ul>
+<li>Large Telecom room that may hourse servers, routers, switch, etc.</li>
+</ul>
+</li>
+<li>*<em>Telecommunications Room</em>
+<ul>
+<li>House Equipment and wiring consolidation points that serve users inside building</li>
+</ul>
+</li>
+<li><strong>Backbone / Vertical / Riser Wiring</strong>
+<ul>
+<li>Connects between telecommunication rooms, as rooms are nomally on different floors</li>
+</ul>
+</li>
+<li><strong>Horizontal Wiring</strong>
+<ul>
+<li>Connects telecommunications rooms (may use wiring closets) to individual outlets / work areas, through wireways / conduits / ceiling spaces</li>
+</ul>
+</li>
+<li><strong>Work Area Components</strong>
+<ul>
+<li>Connect end-user equipment to outlets of horizontal cabling systems</li>
+</ul>
+</li>
+</ul>
+<h3 id="demarcation-point">Demarcation Point</h3>
+<ul>
+<li>Point which outdoor cabling interfaces with intrabuilding backbone cabling</li>
+<li>Boundary between service provider and responsibility of customer</li>
+</ul>
+<h3 id="equipment-room-er">Equipment Room (ER)</h3>
+<ul>
+<li>After cable enters through Demarcation point, it travels to equipment room (ER)</li>
+<li>Centre of voice and data network</li>
+<li>Effectively a large Telco room that may house servers, routers, switches, etc.</li>
+<li>Equipment room is different from Telco room as ER is building / campus serving vs floor serving</li>
+</ul>
+<h3 id="telecommunications-room-tr">Telecommunications Room (TR)</h3>
+<ul>
+<li>ER feeds to one or more TRs</li>
+<li>TRs are where backbone cabling transitions to horizontal cabling</li>
+</ul>
+<h3 id="backbone---vertical-cabling">Backbone / Vertical Cabling</h3>
+<ul>
+<li>Any cabling between ER and another TR throughout the facility
+<ul>
+<li>Includes TRs on same floor</li>
+<li>Vertical Connection(risers) between TRs on different floors</li>
+<li>Inter-buildings cabling in a multibuilding campus</li>
+</ul>
+</li>
+<li>Usually Fibre Optic cables</li>
+</ul>
+<h3 id="distribution---horizontal-cabling">Distribution / Horizontal Cabling</h3>
+<ul>
+<li>Distributes cables from TR to work areas
+<ul>
+<li>Usually UTP cables</li>
+<li>Protects against pairs that might fail during installation</li>
+</ul>
+</li>
+</ul>
+<h3 id="work-area">Work Area</h3>
+<ul>
+<li>Area serviced by individual TR</li>
+<li>usually occupies 1 floor / part of 1 floor of building</li>
+</ul>
+<h4 id="servicing-work-area">Servicing Work Area</h4>
+<ul>
+<li>Uniform wiring plan must be used through patch panel system</li>
+</ul>
+<h1 id="chapter-2---ethernet-switching">Chapter 2 -  Ethernet Switching</h1>
+<hr>
+
+    </body>
+    </html>

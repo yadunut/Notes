@@ -21,13 +21,14 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
         </style>
     </head>
     <body>
-        <!-- markdownlint-disable MD025 MD033 MD024-->
+        <!-- markdownlint-disable MD025 MD033 MD024 MD006 MD029-->
 <h1 id="networking-infrastructure">Networking Infrastructure</h1>
 <ul>
 <li><a href="#networking-infrastructure">Networking Infrastructure</a></li>
 <li><a href="#chapter-1---overview">Chapter 1 - Overview</a>
 <ul>
 <li><a href="#transmission-media-network-cables">Transmission Media &amp; Network Cables</a></li>
+<li><a href="#osi-7-layers">OSI 7 Layers</a></li>
 <li><a href="#structured-cabling">Structured Cabling</a>
 <ul>
 <li><a href="#demarcation-point">Demarcation Point</a></li>
@@ -44,7 +45,48 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </li>
 </ul>
 </li>
-<li><a href="#chapter-2---ethernet-switching">Chapter 2 - Ethernet Switching</a></li>
+<li><a href="#chapter-2---ethernet-switching">Chapter 2 - Ethernet Switching</a>
+<ul>
+<li><a href="#hubs">Hubs</a></li>
+<li><a href="#switches">Switches</a></li>
+<li><a href="#domains">Domains</a>
+<ul>
+<li><a href="#collision-domain">Collision Domain</a></li>
+<li><a href="#broadcast-domain">Broadcast Domain</a></li>
+</ul>
+</li>
+<li><a href="#ethernet-switching">Ethernet Switching</a></li>
+<li><a href="#switching-operations">Switching Operations</a>
+<ul>
+<li><a href="#address-learning">Address Learning</a></li>
+<li><a href="#flooding">Flooding</a></li>
+<li><a href="#forwarding">Forwarding</a></li>
+<li><a href="#filter">Filter</a></li>
+</ul>
+</li>
+<li><a href="#switching-modes">Switching Modes</a>
+<ul>
+<li><a href="#store-and-forward-switching">Store-and-Forward Switching</a></li>
+<li><a href="#cut-through-switching">Cut Through Switching</a></li>
+<li><a href="#fragment-free-switching">Fragment-Free Switching</a></li>
+</ul>
+</li>
+<li><a href="#redundancy">Redundancy</a>
+<ul>
+<li><a href="#problems">Problems</a></li>
+<li><a href="#solution">Solution</a></li>
+</ul>
+</li>
+<li><a href="#spanning-tree-protocol">Spanning Tree Protocol</a>
+<ul>
+<li><a href="#rules">Rules</a></li>
+<li><a href="#switches">Switches</a></li>
+<li><a href="#algorithm">Algorithm</a></li>
+</ul>
+</li>
+<li><a href="#ethernet">Ethernet</a></li>
+</ul>
+</li>
 </ul>
 <h1 id="chapter-1---overview">Chapter 1 - Overview</h1>
 <h2 id="transmission-media-network-cables">Transmission Media &amp; Network Cables</h2>
@@ -53,6 +95,16 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <li>Optical Fibre</li>
 <li>Coaxial Cable</li>
 </ul>
+<h2 id="osi-7-layers">OSI 7 Layers</h2>
+<ol>
+<li>Physical Layer</li>
+<li>Data Link Layer</li>
+<li>Network Layer</li>
+<li>Transport Layer</li>
+<li>Session Layer</li>
+<li>Presentation Layer</li>
+<li>Application Layer</li>
+</ol>
 <h2 id="structured-cabling">Structured Cabling</h2>
 <p>Installation of cables in building / campus in structured manner</p>
 <ul>
@@ -134,7 +186,203 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <li>Uniform wiring plan must be used through patch panel system</li>
 </ul>
 <h1 id="chapter-2---ethernet-switching">Chapter 2 -  Ethernet Switching</h1>
-<hr>
+<h2 id="hubs">Hubs</h2>
+<ul>
+<li>Operates at Layer 1</li>
+<li>Only 1 PC can transmit at a time</li>
+<li>Physical star logical bus topoligies</li>
+<li>Collison possible in the hub</li>
+</ul>
+<h2 id="switches">Switches</h2>
+<ul>
+<li>Operate at Layer 2 (including Layer 1)</li>
+<li>More than 1 PC can transmit at the same time</li>
+<li>Dedicated paths between pairs of communicating PCs</li>
+<li>No collision in the switch</li>
+</ul>
+<h2 id="domains">Domains</h2>
+<h3 id="collision-domain">Collision Domain</h3>
+<ul>
+<li>Collision occur when 2 or more ethernet hosts transmit simultaneously</li>
+<li>Logical area in network where data packets can collide with one another</li>
+<li>range in size from single segment of cable to entire network</li>
+<li>Layer 1 devices, such as repeaters and hubs do not break up collision domains as these devices automatically forward all data sent on cable / other media</li>
+<li>Layer 2 and 3 devices, such as bridges, switches, routers break up collision domains</li>
+</ul>
+<h3 id="broadcast-domain">Broadcast Domain</h3>
+<ul>
+<li>area of network composed of all computers and networking devices that can be reached by sending frame to broadcast address</li>
+<li>Ethernet LANs are broadcast domain - any device connected to LAN can transmit frame to any other device</li>
+</ul>
+<h2 id="ethernet-switching">Ethernet Switching</h2>
+<ul>
+<li>Break large collision domains into parts using switch
+<ul>
+<li>reduces collisions and increases reliability</li>
+</ul>
+</li>
+<li>Switching - technologies that decrease congestion in LAN by reducing traffic and increasing bandwidth</li>
+<li>LAN switches - Operating at Layer 2, forward frames based on MAC address</li>
+</ul>
+<h2 id="switching-operations">Switching Operations</h2>
+<h3 id="address-learning">Address Learning</h3>
+<ul>
+<li>Reads source MAC address of each data frame that is transmitted and noting the port where the frame enters the switch
+<ul>
+<li>Eg. Port 1 -&gt; MAC address AA:AA:AA:AA:AA:AA, Port 2 -&gt; MAC address BB:BB:BB:BB:BB:BB, etc</li>
+</ul>
+</li>
+<li>Stored in MAC Address Table</li>
+<li>Learnt Dynamically</li>
+</ul>
+<h3 id="flooding">Flooding</h3>
+<ul>
+<li>Sends out on all ports(except the port that frame entered from), when destination address is broadcast / unknown address</li>
+</ul>
+<h3 id="forwarding">Forwarding</h3>
+<ul>
+<li>Forwards when destination is known</li>
+<li>Forwards frame to appropriate segment</li>
+</ul>
+<h3 id="filter">Filter</h3>
+<ul>
+<li>Filter happens when destination is located on same interface</li>
+<li>Blocks frame from going on to other segments</li>
+</ul>
+<h2 id="switching-modes">Switching Modes</h2>
+<h3 id="store-and-forward-switching">Store-and-Forward Switching</h3>
+<ul>
+<li>Reads entire / complete frame into memory buffer &amp; determine whether frame is valid / invalid</li>
+<li>Determine whether port is available before it switches the valid frames to outgoing destination port / segment
+<ul>
+<li>Frames are corrupted by checking CFC code field</li>
+</ul>
+</li>
+<li>Advantage
+<ul>
+<li>Prevent wasting of bandwidth on destination by invalid / bad frames that can adversly affect network performance</li>
+</ul>
+</li>
+<li>Disadvantage
+<ul>
+<li>Increases latency / delay due to frame integrity checking and memory buffering</li>
+</ul>
+</li>
+</ul>
+<h3 id="cut-through-switching">Cut Through Switching</h3>
+<ul>
+<li>Fast forward switching / On the fly switching</li>
+<li>Reads beginning of frame up to destination MAC address field in frams as traffic flows through switch</li>
+<li>Does not wait for entire data frame to be read in before switching frame to destination port - <strong>Cut Through</strong></li>
+<li>Advantage
+<ul>
+<li>Fast and minimum latency between ports</li>
+<li>Requires less memory</li>
+</ul>
+</li>
+<li>Disadvantage
+<ul>
+<li>Lacks error detection / frame error checking</li>
+<li>Forwards corrupted and truncated frames &amp; could congest network traffic with unwanted invalid frames</li>
+</ul>
+</li>
+</ul>
+<h3 id="fragment-free-switching">Fragment-Free Switching</h3>
+<ul>
+<li>Frames are buffered until first 64 bytes have been received</li>
+<li>Can check for any bad frames due to collision but will not be able to check for bad frames due to CRC errors</li>
+<li>Results in lesser latency as frame is sent after it has read 64 bytes</li>
+<li>Faster switching speeds</li>
+<li>Advantage
+<ul>
+<li>No frames less than 64 bytes forwarded</li>
+<li>Disadvantage - Errors can be forwarded</li>
+</ul>
+</li>
+</ul>
+<h2 id="redundancy">Redundancy</h2>
+<ul>
+<li>Multiple switches and trunk links</li>
+<li>If one device fails, another one takes over</li>
+</ul>
+<h3 id="problems">Problems</h3>
+<ul>
+<li>Switching loops give problems if all links are active
+<ul>
+<li>Broadcast storms
+<ul>
+<li>Flood broadcast through non source ports</li>
+</ul>
+</li>
+<li>Multiple frams transmission
+<ul>
+<li>Since A doesn't know where B is, flood, causing broadcast storm</li>
+</ul>
+</li>
+<li>Inconsistent switch tables
+<ul>
+<li>End device apprears to be on multiple ports</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="solution">Solution</h3>
+<ul>
+<li>1 path ata time</li>
+<li>Redundant parths must be shutdown, but ready to be opened when needed</li>
+<li>Done quickly and automatically</li>
+<li><strong>Spanning Tree Protocol(STP)</strong> Does this</li>
+</ul>
+<h2 id="spanning-tree-protocol">Spanning Tree Protocol</h2>
+<h3 id="rules">Rules</h3>
+<ul>
+<li>Tree topology
+<ul>
+<li>Has no loops</li>
+</ul>
+</li>
+<li>All devices are connected</li>
+</ul>
+<h3 id="switches">Switches</h3>
+<ul>
+<li>Used by switches to turn redundant topology to spanning tree</li>
+<li>Disables unwanted links by blocking ports</li>
+<li>Switch runs STP by default - no config needed</li>
+</ul>
+<h3 id="algorithm">Algorithm</h3>
+<ol>
+<li>Select 1 switch to be <strong>root bridge</strong></li>
+</ol>
+<ul>
+<li>Bridge ID (BID) of priority value followed by MAC address</li>
+<li>Switches exchange Bridge Protocol Data Units (BPDU) to compare bridge IDs</li>
+<li>Switch with lowest bridge ID becomes root bridge</li>
+<li>Admins can set priority to fix selection</li>
+</ul>
+<ol start="2">
+<li>Select a <strong>root port</strong> on each switch</li>
+</ol>
+<ul>
+<li>Every non-root switch selects a root port</li>
+<li>Port with shortest distance / lowest cost path to root bridge</li>
+<li>If same distance, use lowest ID</li>
+</ul>
+<ol start="3">
+<li>Select a <strong>designated port</strong> on each segment</li>
+</ol>
+<ul>
+<li>Port with lowest cost path to root bridge becomes designated port</li>
+<li>If same cost, use lowest ID</li>
+</ul>
+<ol start="4">
+<li>Close down all other redundant ports</li>
+</ol>
+<ul>
+<li>Any port not a root port / designated port is put in blocking state</li>
+</ul>
+<h2 id="ethernet">Ethernet</h2>
+<p>Too lazy to fill this up</p>
 
     </body>
     </html>

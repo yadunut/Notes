@@ -136,6 +136,28 @@
     - [MASM generated code](#masm-generated-code)
     - [.REPEAT directive](#repeat-directive)
     - [.WHILE directive](#while-directive)
+- [Chapter 7 - Integer Arithmetic](#chapter-7---integer-arithmetic)
+  - [Shift and Rotate Instructions](#shift-and-rotate-instructions)
+    - [Logical Shift](#logical-shift)
+    - [Arthmetic Shift](#arthmetic-shift)
+    - [SHL instruction](#shl-instruction)
+    - [Fast Multiplication](#fast-multiplication)
+    - [SHR instruction](#shr-instruction)
+    - [SAL and SAR](#sal-and-sar)
+    - [ROL instruction](#rol-instruction)
+    - [ROR Instruction](#ror-instruction)
+    - [RCL Instruction](#rcl-instruction)
+    - [RCR Instruction](#rcr-instruction)
+    - [SHLD Instruction](#shld-instruction)
+    - [SHRD Instruction](#shrd-instruction)
+  - [Shift and Rotate Applications](#shift-and-rotate-applications)
+  - [Multiplication and division instructions](#multiplication-and-division-instructions)
+    - [MUL Instruction](#mul-instruction)
+    - [IMUL Instruction](#imul-instruction)
+    - [DIV Instruction](#div-instruction)
+    - [Signed Integer Division (IDIV)](#signed-integer-division-idiv)
+    - [CBW, CWD, CDQ Instruction](#cbw--cwd--cdq-instruction)
+    - [IDIV Instruction](#idiv-instruction)
 
 # Chapter 1 - Basic Concepts
 
@@ -1708,3 +1730,284 @@ mov eax,0
   call Crlf
 .ENDW
 ```
+
+# Chapter 7 - Integer Arithmetic
+
+## Shift and Rotate Instructions
+
+### Logical Shift
+
+From `11001111`, shifted right and the newly created bit is 0. `01100111` shifted bit is moved into carry flag
+
+### Arthmetic Shift
+
+From `11001111`, shifted right and newly created bit is the copy of sign bit. `11100111` and shifted bit is moved into carry flag
+
+### SHL instruction
+
+performs logical left shift on destination operand, filling lowest bit with 0 `11001111` to `10011110` and the shifted bit is moved into CF
+
+### Fast Multiplication
+
+Shifting left by 1 multiplies the number by 2 
+
+```x86asm
+mov dl, 5   ;dl = 00000101 = 5
+shl dl, 1   ;dl = 00001010 = 10
+```
+
+Shifting left by n bits multiplies the operand by $2^n$
+
+```x86asm
+; 5 * 2^2
+mov dl,5    ;dl = 0000101 = 5
+shl dl,2    ;dl = 0010100 = 20
+```
+
+### SHR instruction
+
+performs logical right shift on destination operand
+
+highest bit position is filled with a zero
+
+```x86asm
+mov dl,80       ;dl = 0101 0000 = 80
+shr dl,1        ;dl = 0010 1000 = 40
+shr dl,2        ;dl = 0000 1010 = 10
+```
+
+### SAL and SAR
+
+- SAL (**S**hift **A**rithmetic **L**eft) is identical to SHL
+- SAR (**S**hift **A**rithmetic **R**ight) performs right arithmetic shift on desination operand
+
+```x86asm
+;arithmetic shift preserves the number's sign
+
+mov dl,-80      ;DL = -80
+sar dl,1        ;dl = -40
+sar dl,2        ;dl = -10
+```
+
+### ROL instruction
+
+- ROL(rotate left) shifts each bit to the left
+- Highest bit is compied into both carry flag and lowest bit
+- No Bits lost
+
+```x86asm
+mov al,11110000b      ;al = 11110000b
+rot al,1              ;al = 11100001b
+rot al,4              ;al = 00011110b
+
+mov dl,3Fh            ;dl = 3Fh
+rot dl,4              ;dl = F3h
+```
+
+### ROR Instruction
+
+- ROR (rotate right) shifts each bit to the right
+- lowest bit copied to both carry flag and highest bit
+- No bits lost
+
+```x86asm
+mov al,11110000b      ;al = 11110000b
+ror al,1              ;al = 01111000b
+ror al,4              ;al = 10000111b
+
+mov dl 3Fh            ;dl = 3Fh
+ror dl,4              ;dl = F3h
+```
+
+### RCL Instruction
+
+- RCL (rotate carry left) shifts each bit to the left
+- Copies the carry flag to least significant bit
+- Copies most significant bit to carry flag
+
+```x86asm
+clc           ;CF = 0; clear carry flag
+mov bl,88h    ;CF,BL = 0, 10001000b
+rcl bl,1      ;CF,BL = 1, 00010000b
+rcl bl,1      ;CF,BL = 0, 00100001b
+```
+
+### RCR Instruction
+
+- RCR (rotate carry right) shifts each bit to the right
+- Copies the carry flag to the most significant bit
+- Copies least significant bit to carry flag
+
+```x86asm
+stc           ;CF = 1; set carry flag
+mov ah,10h    ;CF,AH = 1 00010000b
+rcr ah,1      ;CF,AH = 0 10001000b
+```
+
+### SHLD Instruction
+
+- Shift destination operand a given no. of bits to the left
+- Bit positions opened up by sihft are filled by most significant bit of source operand
+- Source operand is not affected
+- Syntax
+  - `SHLD destionation, source, count`
+
+```x86asm
+mov al,11100000b
+mov bl,10011101b
+shld al,bl,1        ;CF,al = 1 11000001b
+```
+
+### SHRD Instruction
+
+- Shift destination operand a given no. of bits to the right
+- Bit positions opened up by sihft are filled by least significant bit of source operand
+- Source operand is not affected
+- Syntax
+  - `SHRD destionation, source, count`
+
+```x86asm
+mov al,11000001b
+mov bl,00011101b
+shld al,bl,1        ;CF,al = 1 11100000b
+```
+
+## Shift and Rotate Applications
+
+```x86asm
+;Binary Multiplication
+;123 = 01111011b
+;36 =  00100100b
+;123 * 36
+
+mov ax,123
+shl ax,2
+shl ax,5
+```
+
+```x86asm
+;Isolate bit string
+;MS-DOS file date field packs year month day into 16 bits
+;day    = bit 0 to bit 4
+;month  = bit 5 to bit 8
+;year   = bit 9 to bit 15 
+
+;Isolate month field which is stored in dx
+
+mov ax,dx
+shr ax,5          ;mov month to beginning of ax
+and al,00001111b  ;clear bits 4-7
+mov month,al      ;save month in variable
+```
+
+## Multiplication and division instructions
+
+### MUL Instruction
+
+- MUL(Unsigned multiply) instruction multiplies an 8,16,32 bit operand by AL,AX,EAX
+
+| Multiplicand | Multiplier | Product |
+| :----------: | :--------: | :-----: |
+| AL           | reg/mem8   | AX      |
+| AX           | reg/mem16  | DX:AX   |
+| EAX          | reg/mem32  | EDX:EAX |
+
+DX:AX refers to upper half is stored in DX and lower half is in AX. 
+When this occurs *Carry flag* is set
+
+```x86asm
+;100h * 2000h using 16 bit operands
+.data
+val1 WORD 2000h
+val2 WORD 100h
+.code
+mov ax,val1
+mul val2        ;DX:AX = 00200000h, CF = 1
+
+;12345h * 1000h using 32 bit operands
+
+mov eax,12345h
+mov ebx,1000h
+mul ebx           ;EDX:EAX = 0000000012345000h, CF = 0
+```
+
+### IMUL Instruction
+
+- IMUL(Signed Integer Multiply) multiplies 8,16,32 bit signed uperand by AL,AX,EAX
+- Preserves the sign of product by sign-extending it into upper half of destionation register
+
+Overflow Flag is set when sign extention *does not* occur
+
+```x86asm
+;multiply 48*4 using 8-bit operands
+mov al,48
+mov bl,4
+imul bl       ;AX = 00C0h, OF=1
+```
+
+### DIV Instruction
+
+- DIV(Unsigned Divide) instruction performs 8,16,32 bit division on unsigned integers
+- Single operand is supplied, which is assumed to be the divisor
+
+| Diveident | Divisor   | Quotient | Remainder |
+| :-------: | :-------: | :------: | :-------: |
+| AX        | reg/mem8  | AL       | AH        |
+| DX:AX     | reg/mem16 | AX       | DX        |
+| EDX:EAX   | reg/mem32 | EAX      | EDX       |
+
+```x86asm
+;Divide 8003h by 100h using 16 bit operands
+mov dx,0        ;clear divident, high
+mov ax,8003h    ;set divident,   low
+mov cx,100h     ;divisor
+div cx          ;ax = 0080h, dx = 3, ax is quotient, dx is remainder
+
+;Same as above, but using 32 bit operands
+mov edx,9
+mov eax,8003h
+mov ecx,100h
+div ecx
+```
+
+### Signed Integer Division (IDIV)
+
+- Signed integers must be sign extended before division takes place
+  - Fill high byte/word/doubleword with copy of low b/w/dw sign bit
+- EG: high byte contains copy of sign bit from low byte
+
+### CBW, CWD, CDQ Instruction
+
+Before we do sign division, we need the help of these instructions
+
+- CBW, CWD, CDQ instructionr provide important sign-extension operations
+  - CBW (convert byte to word) extends AL into AH
+  - CWD (convert word to doubleword) extends AX into DX
+  - CDQ (convert doubleword to quadword) extends EAX to EDX
+
+```x86asm
+.data
+dwordVal SDWORD -101    ;FFFFFF9Bh
+.code
+mov eax,dWordVal
+cdq                     ;EDX:EAX = FFFFFFFFFFFFFF9Bh
+```
+
+### IDIV Instruction
+
+- IDIV (Signed Divide) performs signed integer division
+- Same syntax and operands as DIV
+
+```x86asm
+;8 bit division of -48 by 5
+
+mov al,-48
+cbw         ;extend AL into AH
+mov bl,5    ;divident
+idiv bl     ;AL = -9, AH = -3
+
+;16 bit division of -48 by 5
+mov ax,-48
+cwd         ;extend AX into DX
+mov bx,5    ;divident
+idiv bx     ;AX = -9, DX = -3

@@ -239,6 +239,37 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </li>
 </ul>
 </li>
+<li><a href="#chapter-7---integer-arithmetic">Chapter 7 - Integer Arithmetic</a>
+<ul>
+<li><a href="#shift-and-rotate-instructions">Shift and Rotate Instructions</a>
+<ul>
+<li><a href="#logical-shift">Logical Shift</a></li>
+<li><a href="#arthmetic-shift">Arthmetic Shift</a></li>
+<li><a href="#shl-instruction">SHL instruction</a></li>
+<li><a href="#fast-multiplication">Fast Multiplication</a></li>
+<li><a href="#shr-instruction">SHR instruction</a></li>
+<li><a href="#sal-and-sar">SAL and SAR</a></li>
+<li><a href="#rol-instruction">ROL instruction</a></li>
+<li><a href="#ror-instruction">ROR Instruction</a></li>
+<li><a href="#rcl-instruction">RCL Instruction</a></li>
+<li><a href="#rcr-instruction">RCR Instruction</a></li>
+<li><a href="#shld-instruction">SHLD Instruction</a></li>
+<li><a href="#shrd-instruction">SHRD Instruction</a></li>
+</ul>
+</li>
+<li><a href="#shift-and-rotate-applications">Shift and Rotate Applications</a></li>
+<li><a href="#multiplication-and-division-instructions">Multiplication and division instructions</a>
+<ul>
+<li><a href="#mul-instruction">MUL Instruction</a></li>
+<li><a href="#imul-instruction">IMUL Instruction</a></li>
+<li><a href="#div-instruction">DIV Instruction</a></li>
+<li><a href="#signed-integer-division-idiv">Signed Integer Division (IDIV)</a></li>
+<li><a href="#cbw--cwd--cdq-instruction">CBW, CWD, CDQ Instruction</a></li>
+<li><a href="#idiv-instruction">IDIV Instruction</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h1 id="chapter-1---basic-concepts">Chapter 1 - Basic Concepts</h1>
 <h2 id="convert-binary-to-decimal">Convert <strong>Binary</strong> to <strong>Decimal</strong></h2>
@@ -2437,6 +2468,291 @@ L1:</span>
   <span class="hljs-keyword">call</span> WriteDec
   <span class="hljs-keyword">call</span> Crlf
 <span class="hljs-meta">.ENDW</span>
+</div></code></pre>
+<h1 id="chapter-7---integer-arithmetic">Chapter 7 - Integer Arithmetic</h1>
+<h2 id="shift-and-rotate-instructions">Shift and Rotate Instructions</h2>
+<h3 id="logical-shift">Logical Shift</h3>
+<p>From <code>11001111</code>, shifted right and the newly created bit is 0. <code>01100111</code> shifted bit is moved into carry flag</p>
+<h3 id="arthmetic-shift">Arthmetic Shift</h3>
+<p>From <code>11001111</code>, shifted right and newly created bit is the copy of sign bit. <code>11100111</code> and shifted bit is moved into carry flag</p>
+<h3 id="shl-instruction">SHL instruction</h3>
+<p>performs logical left shift on destination operand, filling lowest bit with 0 <code>11001111</code> to <code>10011110</code> and the shifted bit is moved into CF</p>
+<h3 id="fast-multiplication">Fast Multiplication</h3>
+<p>Shifting left by 1 multiplies the number by 2</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span>, <span class="hljs-number">5</span>   <span class="hljs-comment">;dl = 00000101 = 5</span>
+<span class="hljs-keyword">shl</span> <span class="hljs-built_in">dl</span>, <span class="hljs-number">1</span>   <span class="hljs-comment">;dl = 00001010 = 10</span>
+</div></code></pre>
+<p>Shifting left by n bits multiplies the operand by <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.664392em;"></span><span class="strut bottom" style="height:0.664392em;vertical-align:0em;"></span><span class="base"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">n</span></span></span></span></span></span></span></span></span></span></span></p>
+<pre class="hljs"><code><div><span class="hljs-comment">; 5 * 2^2</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">5</span>    <span class="hljs-comment">;dl = 0000101 = 5</span>
+<span class="hljs-keyword">shl</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">2</span>    <span class="hljs-comment">;dl = 0010100 = 20</span>
+</div></code></pre>
+<h3 id="shr-instruction">SHR instruction</h3>
+<p>performs logical right shift on destination operand</p>
+<p>highest bit position is filled with a zero</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">80</span>       <span class="hljs-comment">;dl = 0101 0000 = 80</span>
+<span class="hljs-keyword">shr</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">1</span>        <span class="hljs-comment">;dl = 0010 1000 = 40</span>
+<span class="hljs-keyword">shr</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">2</span>        <span class="hljs-comment">;dl = 0000 1010 = 10</span>
+</div></code></pre>
+<h3 id="sal-and-sar">SAL and SAR</h3>
+<ul>
+<li>SAL (<strong>S</strong>hift <strong>A</strong>rithmetic <strong>L</strong>eft) is identical to SHL</li>
+<li>SAR (<strong>S</strong>hift <strong>A</strong>rithmetic <strong>R</strong>ight) performs right arithmetic shift on desination operand</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment">;arithmetic shift preserves the number's sign</span>
+
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span>,-<span class="hljs-number">80</span>      <span class="hljs-comment">;DL = -80</span>
+<span class="hljs-keyword">sar</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">1</span>        <span class="hljs-comment">;dl = -40</span>
+<span class="hljs-keyword">sar</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">2</span>        <span class="hljs-comment">;dl = -10</span>
+</div></code></pre>
+<h3 id="rol-instruction">ROL instruction</h3>
+<ul>
+<li>ROL(rotate left) shifts each bit to the left</li>
+<li>Highest bit is compied into both carry flag and lowest bit</li>
+<li>No Bits lost</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">11110000b</span>      <span class="hljs-comment">;al = 11110000b</span>
+rot <span class="hljs-built_in">al</span>,<span class="hljs-number">1</span>              <span class="hljs-comment">;al = 11100001b</span>
+rot <span class="hljs-built_in">al</span>,<span class="hljs-number">4</span>              <span class="hljs-comment">;al = 00011110b</span>
+
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">3Fh</span>            <span class="hljs-comment">;dl = 3Fh</span>
+rot <span class="hljs-built_in">dl</span>,<span class="hljs-number">4</span>              <span class="hljs-comment">;dl = F3h</span>
+</div></code></pre>
+<h3 id="ror-instruction">ROR Instruction</h3>
+<ul>
+<li>ROR (rotate right) shifts each bit to the right</li>
+<li>lowest bit copied to both carry flag and highest bit</li>
+<li>No bits lost</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">11110000b</span>      <span class="hljs-comment">;al = 11110000b</span>
+<span class="hljs-keyword">ror</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">1</span>              <span class="hljs-comment">;al = 01111000b</span>
+<span class="hljs-keyword">ror</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">4</span>              <span class="hljs-comment">;al = 10000111b</span>
+
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span> <span class="hljs-number">3Fh</span>            <span class="hljs-comment">;dl = 3Fh</span>
+<span class="hljs-keyword">ror</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">4</span>              <span class="hljs-comment">;dl = F3h</span>
+</div></code></pre>
+<h3 id="rcl-instruction">RCL Instruction</h3>
+<ul>
+<li>RCL (rotate carry left) shifts each bit to the left</li>
+<li>Copies the carry flag to least significant bit</li>
+<li>Copies most significant bit to carry flag</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">clc</span>           <span class="hljs-comment">;CF = 0; clear carry flag</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>,<span class="hljs-number">88h</span>    <span class="hljs-comment">;CF,BL = 0, 10001000b</span>
+<span class="hljs-keyword">rcl</span> <span class="hljs-built_in">bl</span>,<span class="hljs-number">1</span>      <span class="hljs-comment">;CF,BL = 1, 00010000b</span>
+<span class="hljs-keyword">rcl</span> <span class="hljs-built_in">bl</span>,<span class="hljs-number">1</span>      <span class="hljs-comment">;CF,BL = 0, 00100001b</span>
+</div></code></pre>
+<h3 id="rcr-instruction">RCR Instruction</h3>
+<ul>
+<li>RCR (rotate carry right) shifts each bit to the right</li>
+<li>Copies the carry flag to the most significant bit</li>
+<li>Copies least significant bit to carry flag</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">stc</span>           <span class="hljs-comment">;CF = 1; set carry flag</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>,<span class="hljs-number">10h</span>    <span class="hljs-comment">;CF,AH = 1 00010000b</span>
+<span class="hljs-keyword">rcr</span> <span class="hljs-number">ah</span>,<span class="hljs-number">1</span>      <span class="hljs-comment">;CF,AH = 0 10001000b</span>
+</div></code></pre>
+<h3 id="shld-instruction">SHLD Instruction</h3>
+<ul>
+<li>Shift destination operand a given no. of bits to the left</li>
+<li>Bit positions opened up by sihft are filled by most significant bit of source operand</li>
+<li>Source operand is not affected</li>
+<li>Syntax
+<ul>
+<li><code>SHLD destionation, source, count</code></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">11100000b</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>,<span class="hljs-number">10011101b</span>
+<span class="hljs-keyword">shld</span> <span class="hljs-built_in">al</span>,<span class="hljs-built_in">bl</span>,<span class="hljs-number">1</span>        <span class="hljs-comment">;CF,al = 1 11000001b</span>
+</div></code></pre>
+<h3 id="shrd-instruction">SHRD Instruction</h3>
+<ul>
+<li>Shift destination operand a given no. of bits to the right</li>
+<li>Bit positions opened up by sihft are filled by least significant bit of source operand</li>
+<li>Source operand is not affected</li>
+<li>Syntax
+<ul>
+<li><code>SHRD destionation, source, count</code></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">11000001b</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>,<span class="hljs-number">00011101b</span>
+<span class="hljs-keyword">shld</span> <span class="hljs-built_in">al</span>,<span class="hljs-built_in">bl</span>,<span class="hljs-number">1</span>        <span class="hljs-comment">;CF,al = 1 11100000b</span>
+</div></code></pre>
+<h2 id="shift-and-rotate-applications">Shift and Rotate Applications</h2>
+<pre class="hljs"><code><div><span class="hljs-comment">;Binary Multiplication</span>
+<span class="hljs-comment">;123 = 01111011b</span>
+<span class="hljs-comment">;36 =  00100100b</span>
+<span class="hljs-comment">;123 * 36</span>
+
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">123</span>
+<span class="hljs-keyword">shl</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">2</span>
+<span class="hljs-keyword">shl</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">5</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">;Isolate bit string</span>
+<span class="hljs-comment">;MS-DOS file date field packs year month day into 16 bits</span>
+<span class="hljs-comment">;day    = bit 0 to bit 4</span>
+<span class="hljs-comment">;month  = bit 5 to bit 8</span>
+<span class="hljs-comment">;year   = bit 9 to bit 15 </span>
+
+<span class="hljs-comment">;Isolate month field which is stored in dx</span>
+
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">dx</span>
+<span class="hljs-keyword">shr</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">5</span>          <span class="hljs-comment">;mov month to beginning of ax</span>
+<span class="hljs-keyword">and</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">00001111b</span>  <span class="hljs-comment">;clear bits 4-7</span>
+<span class="hljs-keyword">mov</span> month,<span class="hljs-built_in">al</span>      <span class="hljs-comment">;save month in variable</span>
+</div></code></pre>
+<h2 id="multiplication-and-division-instructions">Multiplication and division instructions</h2>
+<h3 id="mul-instruction">MUL Instruction</h3>
+<ul>
+<li>MUL(Unsigned multiply) instruction multiplies an 8,16,32 bit operand by AL,AX,EAX</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Multiplicand</th>
+<th style="text-align:center">Multiplier</th>
+<th style="text-align:center">Product</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AL</td>
+<td style="text-align:center">reg/mem8</td>
+<td style="text-align:center">AX</td>
+</tr>
+<tr>
+<td style="text-align:center">AX</td>
+<td style="text-align:center">reg/mem16</td>
+<td style="text-align:center">DX:AX</td>
+</tr>
+<tr>
+<td style="text-align:center">EAX</td>
+<td style="text-align:center">reg/mem32</td>
+<td style="text-align:center">EDX:EAX</td>
+</tr>
+</tbody>
+</table>
+<p>DX:AX refers to upper half is stored in DX and lower half is in AX.
+When this occurs <em>Carry flag</em> is set</p>
+<pre class="hljs"><code><div><span class="hljs-comment">;100h * 2000h using 16 bit operands</span>
+<span class="hljs-meta">.data</span>
+val1 <span class="hljs-built_in">WORD</span> <span class="hljs-number">2000h</span>
+val2 <span class="hljs-built_in">WORD</span> <span class="hljs-number">100h</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,val1
+<span class="hljs-keyword">mul</span> val2        <span class="hljs-comment">;DX:AX = 00200000h, CF = 1</span>
+
+<span class="hljs-comment">;12345h * 1000h using 32 bit operands</span>
+
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,<span class="hljs-number">12345h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ebx</span>,<span class="hljs-number">1000h</span>
+<span class="hljs-keyword">mul</span> <span class="hljs-built_in">ebx</span>           <span class="hljs-comment">;EDX:EAX = 0000000012345000h, CF = 0</span>
+</div></code></pre>
+<h3 id="imul-instruction">IMUL Instruction</h3>
+<ul>
+<li>IMUL(Signed Integer Multiply) multiplies 8,16,32 bit signed uperand by AL,AX,EAX</li>
+<li>Preserves the sign of product by sign-extending it into upper half of destionation register</li>
+</ul>
+<p>Overflow Flag is set when sign extention <em>does not</em> occur</p>
+<pre class="hljs"><code><div><span class="hljs-comment">;multiply 48*4 using 8-bit operands</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">48</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>,<span class="hljs-number">4</span>
+<span class="hljs-keyword">imul</span> <span class="hljs-built_in">bl</span>       <span class="hljs-comment">;AX = 00C0h, OF=1</span>
+</div></code></pre>
+<h3 id="div-instruction">DIV Instruction</h3>
+<ul>
+<li>DIV(Unsigned Divide) instruction performs 8,16,32 bit division on unsigned integers</li>
+<li>Single operand is supplied, which is assumed to be the divisor</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Diveident</th>
+<th style="text-align:center">Divisor</th>
+<th style="text-align:center">Quotient</th>
+<th style="text-align:center">Remainder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AX</td>
+<td style="text-align:center">reg/mem8</td>
+<td style="text-align:center">AL</td>
+<td style="text-align:center">AH</td>
+</tr>
+<tr>
+<td style="text-align:center">DX:AX</td>
+<td style="text-align:center">reg/mem16</td>
+<td style="text-align:center">AX</td>
+<td style="text-align:center">DX</td>
+</tr>
+<tr>
+<td style="text-align:center">EDX:EAX</td>
+<td style="text-align:center">reg/mem32</td>
+<td style="text-align:center">EAX</td>
+<td style="text-align:center">EDX</td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code><div><span class="hljs-comment">;Divide 8003h by 100h using 16 bit operands</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>,<span class="hljs-number">0</span>        <span class="hljs-comment">;clear divident, high</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">8003h</span>    <span class="hljs-comment">;set divident,   low</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>,<span class="hljs-number">100h</span>     <span class="hljs-comment">;divisor</span>
+<span class="hljs-keyword">div</span> <span class="hljs-built_in">cx</span>          <span class="hljs-comment">;ax = 0080h, dx = 3, ax is quotient, dx is remainder</span>
+
+<span class="hljs-comment">;Same as above, but using 32 bit operands</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">edx</span>,<span class="hljs-number">9</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,<span class="hljs-number">8003h</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>,<span class="hljs-number">100h</span>
+<span class="hljs-keyword">div</span> <span class="hljs-built_in">ecx</span>
+</div></code></pre>
+<h3 id="signed-integer-division-idiv">Signed Integer Division (IDIV)</h3>
+<ul>
+<li>Signed integers must be sign extended before division takes place
+<ul>
+<li>Fill high byte/word/doubleword with copy of low b/w/dw sign bit</li>
+</ul>
+</li>
+<li>EG: high byte contains copy of sign bit from low byte</li>
+</ul>
+<h3 id="cbw--cwd--cdq-instruction">CBW, CWD, CDQ Instruction</h3>
+<p>Before we do sign division, we need the help of these instructions</p>
+<ul>
+<li>CBW, CWD, CDQ instructionr provide important sign-extension operations
+<ul>
+<li>CBW (convert byte to word) extends AL into AH</li>
+<li>CWD (convert word to doubleword) extends AX into DX</li>
+<li>CDQ (convert doubleword to quadword) extends EAX to EDX</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">.data</span>
+dwordVal SDWORD -<span class="hljs-number">101</span>    <span class="hljs-comment">;FFFFFF9Bh</span>
+<span class="hljs-meta">.code</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,dWordVal
+<span class="hljs-keyword">cdq</span>                     <span class="hljs-comment">;EDX:EAX = FFFFFFFFFFFFFF9Bh</span>
+</div></code></pre>
+<h3 id="idiv-instruction">IDIV Instruction</h3>
+<ul>
+<li>IDIV (Signed Divide) performs signed integer division</li>
+<li>Same syntax and operands as DIV</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment">;8 bit division of -48 by 5</span>
+
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,-<span class="hljs-number">48</span>
+<span class="hljs-keyword">cbw</span>         <span class="hljs-comment">;extend AL into AH</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>,<span class="hljs-number">5</span>    <span class="hljs-comment">;divident</span>
+<span class="hljs-keyword">idiv</span> <span class="hljs-built_in">bl</span>     <span class="hljs-comment">;AL = -9, AH = -3</span>
+
+<span class="hljs-comment">;16 bit division of -48 by 5</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,-<span class="hljs-number">48</span>
+<span class="hljs-keyword">cwd</span>         <span class="hljs-comment">;extend AX into DX</span>
+<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">5</span>    <span class="hljs-comment">;divident</span>
+<span class="hljs-keyword">idiv</span> <span class="hljs-built_in">bx</span>     <span class="hljs-comment">;AX = -9, DX = -3</span>
 </div></code></pre>
 
     </body>

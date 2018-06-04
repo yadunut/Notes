@@ -383,6 +383,84 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </ul>
 <h2 id="ethernet">Ethernet</h2>
 <p>Too lazy to fill this up</p>
+<h1 id="chapter-3---static-routing-protocols">Chapter 3 - Static Routing Protocols</h1>
+<h2 id="router">Router</h2>
+<ul>
+<li>Router is internetworking device that connects 2 or more networks</li>
+<li>Performs forwarding / filtering of data at network layer</li>
+<li>decisions based on destination IP address</li>
+<li>routes from one network to another until it reaches its destination</li>
+</ul>
+<h3 id="benefits">Benefits</h3>
+<ul>
+<li>Seperate network logically into subnets making it more manageable</li>
+<li>Control trafic flow between different networks</li>
+<li>Firewall for broadcast traffic</li>
+<li>interface between LAN(Ethernet) and WAN(PPP) protocols</li>
+</ul>
+<h2 id="static-routing">Static Routing</h2>
+<ul>
+<li>entries in the routing table of router that are manually set to user defined specific paths</li>
+<li>Administrator must know entire network and manually configure all routes if all are static</li>
+<li>Useful in Stub Network(network that is accessible by only 1 path)</li>
+</ul>
+<h3 id="advantage">Advantage</h3>
+<ul>
+<li>Enhance Secutiry
+<ul>
+<li>Administrator might want to hide parts of intranetwork and specify only parts that need to be revealed</li>
+<li>Static route forces traffic to take specific, secure route instead of route determined dynamically which can change as network topology changes, making traffic travel over insecure route</li>
+</ul>
+</li>
+<li>Does not consume as much traffic - no routing updates are transmitted</li>
+</ul>
+<h3 id="disadvantage">Disadvantage</h3>
+<ul>
+<li>Not suitable for large networks - administrator must know <strong>entire</strong> network and <strong>manually configure</strong> all routes if all routers are static</li>
+<li>Any change to network means reconfiguring all routers to reflect change</li>
+<li>not able to reroute traffic if link fails</li>
+</ul>
+<h2 id="static-route-operation">Static route Operation</h2>
+<ol>
+<li>Network admin configures route in router</li>
+<li>Router installs route in routing table</li>
+<li>Packets are forwarded based on static route entries in routing table</li>
+</ol>
+<h2 id="defining-static-route">Defining Static Route</h2>
+<ul>
+<li>Specify <strong>Next Hop</strong> address for packet
+<ul>
+<li>Next hop address is the address of the next router to transmit data to</li>
+<li>Syntax - <code>ip route destination-network subnet-mask gateway</code>
+<ul>
+<li><code>ip route 172.16.1.0 255.255.255.0 172.16.2.1</code> - Transmit all data going to 172.16.1.0 to 172.16.2.1</li>
+<li><code>ip route 172.16.5.0 255.255.255.0 172.16.2.1</code> - transmit all data going to 172.16.5.0 to 172.16.2.1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Default Route
+<ul>
+<li>Special staitc route that follows format <code>ip route 0.0.0.0 0.0.0.0 next-hop-address</code></li>
+<li>Route packets with destinations that do not match other toutes</li>
+<li>Routers are typically configured with default route for internet-bound traffic - impractical and unnecessary to maintain routes to all networks in internet</li>
+</ul>
+</li>
+</ul>
+<h2 id="commands">Commands</h2>
+<ul>
+<li><code>show ip route</code>
+<ul>
+<li>shows ip routes present in routing table</li>
+</ul>
+</li>
+<li><code>traceroute &lt;ip&gt;</code>
+<ul>
+<li>displays route taken by packet and measuring transit delay of packets</li>
+</ul>
+</li>
+</ul>
+<h1 id="chapter-4---dynamic-routing-protocols">Chapter 4 - Dynamic Routing Protocols</h1>
 
     </body>
     </html>

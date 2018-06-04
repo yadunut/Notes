@@ -265,3 +265,65 @@ Installation of cables in building / campus in structured manner
 ## Ethernet
 
 Too lazy to fill this up
+
+# Chapter 3 - Static Routing Protocols
+
+## Router
+
+- Router is internetworking device that connects 2 or more networks
+- Performs forwarding / filtering of data at network layer
+- decisions based on destination IP address
+- routes from one network to another until it reaches its destination
+
+### Benefits
+
+- Seperate network logically into subnets making it more manageable
+- Control trafic flow between different networks
+- Firewall for broadcast traffic
+- interface between LAN(Ethernet) and WAN(PPP) protocols
+
+## Static Routing
+
+- entries in the routing table of router that are manually set to user defined specific paths
+- Administrator must know entire network and manually configure all routes if all are static
+- Useful in Stub Network(network that is accessible by only 1 path)
+
+### Advantage
+
+- Enhance Secutiry
+  - Administrator might want to hide parts of intranetwork and specify only parts that need to be revealed
+  - Static route forces traffic to take specific, secure route instead of route determined dynamically which can change as network topology changes, making traffic travel over insecure route
+- Does not consume as much traffic - no routing updates are transmitted
+
+### Disadvantage
+
+- Not suitable for large networks - administrator must know **entire** network and **manually configure** all routes if all routers are static
+- Any change to network means reconfiguring all routers to reflect change
+- not able to reroute traffic if link fails
+
+## Static route Operation
+
+1. Network admin configures route in router
+2. Router installs route in routing table
+3. Packets are forwarded based on static route entries in routing table
+
+## Defining Static Route
+
+- Specify **Next Hop** address for packet
+  - Next hop address is the address of the next router to transmit data to
+  - Syntax - `ip route destination-network subnet-mask gateway`
+    - `ip route 172.16.1.0 255.255.255.0 172.16.2.1` - Transmit all data going to 172.16.1.0 to 172.16.2.1
+    - `ip route 172.16.5.0 255.255.255.0 172.16.2.1` - transmit all data going to 172.16.5.0 to 172.16.2.1
+- Default Route
+  - Special staitc route that follows format `ip route 0.0.0.0 0.0.0.0 next-hop-address`
+  - Route packets with destinations that do not match other toutes
+  - Routers are typically configured with default route for internet-bound traffic - impractical and unnecessary to maintain routes to all networks in internet
+
+## Commands
+
+- `show ip route`
+  - shows ip routes present in routing table
+- `traceroute <ip>`
+  - displays route taken by packet and measuring transit delay of packets
+
+# Chapter 4 - Dynamic Routing Protocols

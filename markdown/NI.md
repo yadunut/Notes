@@ -38,6 +38,36 @@
     - [Switches](#switches)
     - [Algorithm](#algorithm)
   - [Ethernet](#ethernet)
+- [Chapter 3 - Static Routing Protocols](#chapter-3---static-routing-protocols)
+  - [Router](#router)
+    - [Benefits](#benefits)
+  - [Static Routing](#static-routing)
+    - [Advantage](#advantage)
+    - [Disadvantage](#disadvantage)
+  - [Static route Operation](#static-route-operation)
+  - [Defining Static Route](#defining-static-route)
+  - [Commands](#commands)
+- [Chapter 4 - Dynamic Routing Protocols](#chapter-4---dynamic-routing-protocols)
+  - [Protocols](#protocols)
+  - [Distance Vector Protocol](#distance-vector-protocol)
+    - [Advantage](#advantage)
+    - [Disadvantage](#disadvantage)
+    - [Routing Information Protocol (RIP)](#routing-information-protocol-rip)
+    - [RIP commands](#rip-commands)
+  - [Link State Protocol](#link-state-protocol)
+    - [Advantage](#advantage)
+    - [Disadvantage](#disadvantage)
+    - [Open Shortest Path First (OSPF)](#open-shortest-path-first-ospf)
+- [Chapter 5 - Network Troubleshooting Techniques](#chapter-5---network-troubleshooting-techniques)
+  - [ipconfig](#ipconfig)
+  - [ping](#ping)
+  - [Tracert](#tracert)
+  - [nslookup](#nslookup)
+  - [netstat](#netstat)
+  - [telnet](#telnet)
+  - [ssh](#ssh)
+  - [route print](#route-print)
+- [Chapter 6 - IP Subnetting](#chapter-6---ip-subnetting)
 
 # Chapter 1 - Overview
 
@@ -394,3 +424,52 @@ Too lazy to fill this up
     - Speed - speed of each link
     - Delay - Time required to move packet from source to destination
     - Reliability - Dependability of each network link
+
+# Chapter 5 - Network Troubleshooting Techniques
+
+## ipconfig
+
+- Used to display info about computers addressing and connectivity params
+
+## ping
+
+- Tests whether another host on TCP/IP network is reachable. 
+- Round trip times are reported
+
+## Tracert
+
+- Facilitates user to know route IP packet travelled from one router to another
+- Measures round trip time
+
+## nslookup
+
+- **N**ame **S**erver Lookup
+- Tool for querying DNS
+  - Obtain Domain anme
+  - IP address mapping
+  - Any DNS record
+
+## netstat
+
+- Displays network connectinos, routing tables, network interface stats
+
+## telnet
+
+- Application layer protocol used to access remote computers
+- Unencrypted
+
+## ssh
+
+- Secure Shell is network protocol to allow remote login and other network services 
+- Secure over unsecured network
+- Replacement for telnet
+
+## route print
+
+- Interface list
+- IPv4 route table
+- IPv4 persistent routes
+- IPv6 route table
+- IPv6 persistent routes
+
+# Chapter 6 - IP Subnetting

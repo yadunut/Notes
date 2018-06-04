@@ -654,6 +654,180 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <li>IPv6 persistent routes</li>
 </ul>
 <h1 id="chapter-6---ip-subnetting">Chapter 6 - IP Subnetting</h1>
+<h2 id="ip-address">IP Address</h2>
+<ul>
+<li>ICANN issues all IP addresses
+<ul>
+<li>Private and non government organisation</li>
+</ul>
+</li>
+</ul>
+<h2 id="mechanisms-to-overcome-limitations-in-ip-address-space">Mechanisms to overcome limitations in IP address space</h2>
+<ul>
+<li>Subnet Addressing</li>
+<li>Classless addressing - CIDR</li>
+</ul>
+<h2 id="classes">Classes</h2>
+<h3 id="class-a">Class A</h3>
+<ul>
+<li>First bit 0</li>
+<li>Next 7 bits are network ID</li>
+<li>Last 24 bits are host ID</li>
+</ul>
+<h3 id="class-b">Class B</h3>
+<ul>
+<li>First 2 bits 10</li>
+<li>Next 14 bits are network ID</li>
+<li>Last 16 bits are host ID</li>
+</ul>
+<h3 id="class-c">Class C</h3>
+<ul>
+<li>First 3 bits are 110</li>
+<li>Next 21 bits are network ID</li>
+<li>Last 8 bits are host ID</li>
+</ul>
+<h3 id="class-d">Class D</h3>
+<ul>
+<li>First 4 bits are 1110</li>
+<li>Next 28 bitsa are multicast group ID</li>
+</ul>
+<h3 id="class-e">Class E</h3>
+<ul>
+<li>First 5 bits are 11110</li>
+</ul>
+<h2 id="addressing-rules">Addressing Rules</h2>
+<ul>
+<li>host portion of IP addresss cannot be all 1 bits (broadcast addresss) or 0 bits (network ID)</li>
+<li>Class A network no 127 is assigned to loopback function</li>
+<li>certain addresss ranges are private / reserved</li>
+</ul>
+<h2 id="public-and-private-addresses">Public and Private Addresses</h2>
+<ul>
+<li>
+<p>Internet Assigned Numbers Authority (IANA) manages supply fo IP addresses</p>
+</li>
+<li>
+<p>Ensures no duplication</p>
+</li>
+<li>
+<p>All public IP addresses must be obtained from ISP or registry at some expense</p>
+</li>
+<li>
+<p>Private IP address are used within networks that are not connected to internet</p>
+<ul>
+<li>Class A 10.0.0.0    - 10.255.255.255</li>
+<li>Class B 172.16.0.0  - 172.31.255.255</li>
+<li>Class C 192.168.0.0 - 192.168.255.255</li>
+</ul>
+</li>
+</ul>
+<h2 id="subnetting">Subnetting</h2>
+<ul>
+<li>
+<p>Better manageability</p>
+</li>
+<li>
+<p>Better Security</p>
+</li>
+<li>
+<p>Interconnects LANs to form a WAN</p>
+</li>
+<li>
+<p>Reduce size of broadcast (collision) domain</p>
+</li>
+<li>
+<p>Based on structure, network admin needs to decide</p>
+<ul>
+<li>Number of subnets needed</li>
+<li>Number of hosts allowed on each subnet</li>
+<li>subnet mask is used to divide network into subnets</li>
+</ul>
+</li>
+</ul>
+<h3 id="subnetted-addresses">Subnetted Addresses</h3>
+<ul>
+<li>Divide address's host portion to 2 parts, host -&gt; subnet + host</li>
+<li>Host bits borrowed to become subnet. No. of bits to be borrowed is dependant on on of subnets to be created</li>
+</ul>
+<h3 id="creating-subnets">Creating Subnets</h3>
+<ul>
+<li>Subnet mask is modified net mask that extends into host portion of address</li>
+<li>subnet mask to determine which bits from address's host portion define subnet</li>
+<li>subnet portion becomes part of subnetted network address portion</li>
+</ul>
+<h3 id="establish-subnet-information">Establish Subnet Information</h3>
+<ul>
+<li>No of borrowed bits dependent on <strong>no of subnets required</strong> and <strong>max no of hosts per subnet</strong></li>
+<li>Formula to find <em>no of host bits to borrow</em> is
+<ul>
+<li>No of required subnets &lt; = <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mi>s</mi><mi>u</mi><mi>b</mi><mi>n</mi><mi>e</mi><mi>t</mi><mi>b</mi><mi>i</mi><mi>t</mi><mi>s</mi></mrow></msup></mrow><annotation encoding="application/x-tex">2^{subnet bits}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.849108em;"></span><span class="strut bottom" style="height:0.849108em;vertical-align:0em;"></span><span class="base"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathit mtight">s</span><span class="mord mathit mtight">u</span><span class="mord mathit mtight">b</span><span class="mord mathit mtight">n</span><span class="mord mathit mtight">e</span><span class="mord mathit mtight">t</span><span class="mord mathit mtight">b</span><span class="mord mathit mtight">i</span><span class="mord mathit mtight">t</span><span class="mord mathit mtight">s</span></span></span></span></span></span></span></span></span></span></span></span> - 2</li>
+</ul>
+</li>
+<li>Formula to find <em>no of usable hosts per subnet</em> is
+<ul>
+<li>Usable hosts per subnet = <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mi>h</mi></msup></mrow><annotation encoding="application/x-tex">2^h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.849108em;"></span><span class="strut bottom" style="height:0.849108em;vertical-align:0em;"></span><span class="base"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">h</span></span></span></span></span></span></span></span></span></span></span> - 2
+<ul>
+<li>h = remaining host bits</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ip-broadcast-address">IP Broadcast Address</h2>
+<h3 id="limited-broadcast">Limited Broadcast</h3>
+<ul>
+<li>Packet sent to IP 255.255.255.255 is <em>limited broadcast</em> packet</li>
+<li>Should never pass through router, only through MAC layer bridges</li>
+</ul>
+<h3 id="directed-broadcast">Directed Broadcast</h3>
+<ul>
+<li>Packet sent to destination IP address where only host portion of IP address is all 1 is <em>directed broadcast</em> packet</li>
+<li>May pass through router and will be broadcast to all hosts on network</li>
+<li>Can be network-directed or subnetwork-directed</li>
+</ul>
+<h2 id="classless-inter-domain-routing-cidr">Classless Inter-Domain Routing (CIDR)</h2>
+<h3 id="problems-with-class-based-addressing">Problems with Class-Based Addressing</h3>
+<ul>
+<li>Address allocation is difficult - does not match real needs
+<ul>
+<li>Class A - too few to give out</li>
+<li>Class C - 1 address block too small for most sites
+<ul>
+<li>Multiple class C blocks make routing table too big</li>
+</ul>
+</li>
+<li>Class B - what everyone wants but running out</li>
+</ul>
+</li>
+<li>Classful system of allocating IP addresses is wasteful
+<ul>
+<li>Anyone who needs more than 254 hosts are given class B - <strong>65533 host addresses!</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="classless">Classless</h3>
+<ul>
+<li>Eliminates traditional concept of class A, B, C, and enables efficient allocation of IP address - assigned address based on needs</li>
+<li>Developed to overcome exhaustion of class B address space and explosion of routing between many Class C addresses</li>
+<li>Allows companies to allocated exact number of networks they need.</li>
+</ul>
+<h3 id="address-notation">Address Notation</h3>
+<ul>
+<li>Rules of class <strong>do not</strong> apply</li>
+<li>Network numbers according to class are no longer valid</li>
+<li>Move from class to prefix</li>
+<li>CIDR notation
+<ul>
+<li>specify mask associated with address by appending slash and size of mask in decimal</li>
+<li>instead of being limited to network identifiers, CIDR uses varying network prefixes from 13 to 30 bits</li>
+</ul>
+</li>
+</ul>
+<h3 id="ip-prefix">IP Prefix</h3>
+<ul>
+<li>represent subnet mask as prefix rather than mask</li>
+<li>prefix represents no of network / subnet bits</li>
+</ul>
 
     </body>
     </html>

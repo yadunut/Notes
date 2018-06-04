@@ -473,3 +473,136 @@ Too lazy to fill this up
 - IPv6 persistent routes
 
 # Chapter 6 - IP Subnetting
+
+## IP Address
+
+- ICANN issues all IP addresses
+  - Private and non government organisation
+
+## Mechanisms to overcome limitations in IP address space
+
+- Subnet Addressing
+- Classless addressing - CIDR
+
+## Classes
+
+### Class A
+
+- First bit 0
+- Next 7 bits are network ID
+- Last 24 bits are host ID
+
+### Class B
+
+- First 2 bits 10
+- Next 14 bits are network ID
+- Last 16 bits are host ID
+
+### Class C
+
+- First 3 bits are 110
+- Next 21 bits are network ID
+- Last 8 bits are host ID
+
+### Class D
+
+- First 4 bits are 1110
+- Next 28 bitsa are multicast group ID
+
+### Class E
+
+- First 5 bits are 11110
+
+## Addressing Rules
+
+- host portion of IP addresss cannot be all 1 bits (broadcast addresss) or 0 bits (network ID)
+- Class A network no 127 is assigned to loopback function
+- certain addresss ranges are private / reserved
+
+## Public and Private Addresses
+
+- Internet Assigned Numbers Authority (IANA) manages supply fo IP addresses
+- Ensures no duplication
+
+- All public IP addresses must be obtained from ISP or registry at some expense
+- Private IP address are used within networks that are not connected to internet
+  - Class A 10.0.0.0    - 10.255.255.255
+  - Class B 172.16.0.0  - 172.31.255.255
+  - Class C 192.168.0.0 - 192.168.255.255
+
+## Subnetting
+
+  - Better manageability
+  - Better Security
+  - Interconnects LANs to form a WAN
+  - Reduce size of broadcast (collision) domain
+
+  - Based on structure, network admin needs to decide
+    - Number of subnets needed
+    - Number of hosts allowed on each subnet
+    - subnet mask is used to divide network into subnets
+
+### Subnetted Addresses
+
+- Divide address's host portion to 2 parts, host -> subnet + host
+- Host bits borrowed to become subnet. No. of bits to be borrowed is dependant on on of subnets to be created
+
+### Creating Subnets
+
+- Subnet mask is modified net mask that extends into host portion of address
+- subnet mask to determine which bits from address's host portion define subnet
+- subnet portion becomes part of subnetted network address portion
+
+### Establish Subnet Information
+
+- No of borrowed bits dependent on **no of subnets required** and **max no of hosts per subnet**
+- Formula to find *no of host bits to borrow* is
+  - No of required subnets < = $2^{subnet bits}$ - 2
+- Formula to find *no of usable hosts per subnet* is
+  - Usable hosts per subnet = $2^h$ - 2
+    - h = remaining host bits
+
+## IP Broadcast Address
+
+### Limited Broadcast
+
+- Packet sent to IP 255.255.255.255 is *limited broadcast* packet
+- Should never pass through router, only through MAC layer bridges
+
+### Directed Broadcast
+
+- Packet sent to destination IP address where only host portion of IP address is all 1 is *directed broadcast* packet
+- May pass through router and will be broadcast to all hosts on network
+- Can be network-directed or subnetwork-directed
+
+## Classless Inter-Domain Routing (CIDR)
+
+### Problems with Class-Based Addressing
+
+- Address allocation is difficult - does not match real needs
+  - Class A - too few to give out
+  - Class C - 1 address block too small for most sites
+    - Multiple class C blocks make routing table too big
+  - Class B - what everyone wants but running out
+- Classful system of allocating IP addresses is wasteful
+  - Anyone who needs more than 254 hosts are given class B - **65533 host addresses!**
+
+### Classless
+
+- Eliminates traditional concept of class A, B, C, and enables efficient allocation of IP address - assigned address based on needs
+- Developed to overcome exhaustion of class B address space and explosion of routing between many Class C addresses
+- Allows companies to allocated exact number of networks they need.
+
+### Address Notation
+
+- Rules of class **do not** apply
+- Network numbers according to class are no longer valid
+- Move from class to prefix
+- CIDR notation
+  - specify mask associated with address by appending slash and size of mask in decimal
+  - instead of being limited to network identifiers, CIDR uses varying network prefixes from 13 to 30 bits
+
+### IP Prefix
+
+- represent subnet mask as prefix rather than mask
+- prefix represents no of network / subnet bits

@@ -181,7 +181,7 @@ Installation of cables in building / campus in structured manner
 
 - Reads entire / complete frame into memory buffer & determine whether frame is valid / invalid
 - Determine whether port is available before it switches the valid frames to outgoing destination port / segment
-  - Frames are corrupted by checking CFC code field 
+  - Frames are corrupted by checking CFC code field
 - Advantage
   - Prevent wasting of bandwidth on destination by invalid / bad frames that can adversly affect network performance
 - Disadvantage
@@ -327,3 +327,70 @@ Too lazy to fill this up
   - displays route taken by packet and measuring transit delay of packets
 
 # Chapter 4 - Dynamic Routing Protocols
+
+- Minimum configuration and set-up required
+- Routes are automatically discovered and maintained by routers through exchange of information
+- Routing decisions made based on dynamically learned routes
+
+## Protocols
+
+- Distance Vector
+  - Routing Information Protocol (RIP)
+- Link State
+  - Open Shortest Path First (OSPF)
+
+## Distance Vector Protocol
+
+- Each router informs its neighbours of its entire routing table periodically
+- Routing information sent consists of destinations, costs, and next hop to get there
+- Will select neighbour advertising lowest cost / lowest hops
+- E.g. Router A learns that router B can get to D in 2 hops, A can assume that path from A to D is 3 hops
+- When all routers have full view of network, the network is said to have "converged"
+
+### Advantage
+
+- Consumes little memory and CPU
+
+### Disadvantage
+
+- Reacts slowly to any topology changes
+
+### Routing Information Protocol (RIP)
+
+- Uses hop count as routing metric to determine shortest route to destination
+- Does not take *speed, delay and reliability* into consideration
+- Max no of hops is 15
+  - Route with hop count of 16 is considered unreachable
+- Updates routing table to neighbours every 30s. **A lot** of overhead traffic
+
+### RIP commands
+
+- `show ip protocols`
+  - shows information about routing protocols and networks it is being used for
+- `router rip` 
+  - goes to RIP config mode and sets RIP as routing protocol
+- `network <network-address>`
+  - enables RIP for the given network
+
+## Link State Protocol
+
+- First discover who neighbouring routers are and will exchange packets called Link State Packets (LSP)
+- LSP contains info about networks the router is directly connected to
+- Require routers to only send updates to other routers when there are changes
+
+### Advantage
+
+- Easier to debug and less bandwith-intensive than distance-vectors
+- Faster convergence time (react quickly to topology changes
+
+### Disadvantage
+
+- more CPU and memory resources required
+
+### Open Shortest Path First (OSPF)
+
+- uses cost to calculate optimal route
+  - cost is dependent on speed, reliability, delay
+    - Speed - speed of each link
+    - Delay - Time required to move packet from source to destination
+    - Reliability - Dependability of each network link

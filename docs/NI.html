@@ -461,6 +461,98 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </li>
 </ul>
 <h1 id="chapter-4---dynamic-routing-protocols">Chapter 4 - Dynamic Routing Protocols</h1>
+<ul>
+<li>Minimum configuration and set-up required</li>
+<li>Routes are automatically discovered and maintained by routers through exchange of information</li>
+<li>Routing decisions made based on dynamically learned routes</li>
+</ul>
+<h2 id="protocols">Protocols</h2>
+<ul>
+<li>Distance Vector
+<ul>
+<li>Routing Information Protocol (RIP)</li>
+</ul>
+</li>
+<li>Link State
+<ul>
+<li>Open Shortest Path First (OSPF)</li>
+</ul>
+</li>
+</ul>
+<h2 id="distance-vector-protocol">Distance Vector Protocol</h2>
+<ul>
+<li>Each router informs its neighbours of its entire routing table periodically</li>
+<li>Routing information sent consists of destinations, costs, and next hop to get there</li>
+<li>Will select neighbour advertising lowest cost / lowest hops</li>
+<li>E.g. Router A learns that router B can get to D in 2 hops, A can assume that path from A to D is 3 hops</li>
+<li>When all routers have full view of network, the network is said to have &quot;converged&quot;</li>
+</ul>
+<h3 id="advantage">Advantage</h3>
+<ul>
+<li>Consumes little memory and CPU</li>
+</ul>
+<h3 id="disadvantage">Disadvantage</h3>
+<ul>
+<li>Reacts slowly to any topology changes</li>
+</ul>
+<h3 id="routing-information-protocol-rip">Routing Information Protocol (RIP)</h3>
+<ul>
+<li>Uses hop count as routing metric to determine shortest route to destination</li>
+<li>Does not take <em>speed, delay and reliability</em> into consideration</li>
+<li>Max no of hops is 15
+<ul>
+<li>Route with hop count of 16 is considered unreachable</li>
+</ul>
+</li>
+<li>Updates routing table to neighbours every 30s. <strong>A lot</strong> of overhead traffic</li>
+</ul>
+<h3 id="rip-commands">RIP commands</h3>
+<ul>
+<li><code>show ip protocols</code>
+<ul>
+<li>shows information about routing protocols and networks it is being used for</li>
+</ul>
+</li>
+<li><code>router rip</code>
+<ul>
+<li>goes to RIP config mode and sets RIP as routing protocol</li>
+</ul>
+</li>
+<li><code>network &lt;network-address&gt;</code>
+<ul>
+<li>enables RIP for the given network</li>
+</ul>
+</li>
+</ul>
+<h2 id="link-state-protocol">Link State Protocol</h2>
+<ul>
+<li>First discover who neighbouring routers are and will exchange packets called Link State Packets (LSP)</li>
+<li>LSP contains info about networks the router is directly connected to</li>
+<li>Require routers to only send updates to other routers when there are changes</li>
+</ul>
+<h3 id="advantage">Advantage</h3>
+<ul>
+<li>Easier to debug and less bandwith-intensive than distance-vectors</li>
+<li>Faster convergence time (react quickly to topology changes</li>
+</ul>
+<h3 id="disadvantage">Disadvantage</h3>
+<ul>
+<li>more CPU and memory resources required</li>
+</ul>
+<h3 id="open-shortest-path-first-ospf">Open Shortest Path First (OSPF)</h3>
+<ul>
+<li>uses cost to calculate optimal route
+<ul>
+<li>cost is dependent on speed, reliability, delay
+<ul>
+<li>Speed - speed of each link</li>
+<li>Delay - Time required to move packet from source to destination</li>
+<li>Reliability - Dependability of each network link</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
     </body>
     </html>

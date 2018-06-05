@@ -68,6 +68,28 @@
   - [ssh](#ssh)
   - [route print](#route-print)
 - [Chapter 6 - IP Subnetting](#chapter-6---ip-subnetting)
+  - [IP Address](#ip-address)
+  - [Mechanisms to overcome limitations in IP address space](#mechanisms-to-overcome-limitations-in-ip-address-space)
+  - [Classes](#classes)
+    - [Class A](#class-a)
+    - [Class B](#class-b)
+    - [Class C](#class-c)
+    - [Class D](#class-d)
+    - [Class E](#class-e)
+  - [Addressing Rules](#addressing-rules)
+  - [Public and Private Addresses](#public-and-private-addresses)
+  - [Subnetting](#subnetting)
+    - [Subnetted Addresses](#subnetted-addresses)
+    - [Creating Subnets](#creating-subnets)
+    - [Establish Subnet Information](#establish-subnet-information)
+  - [IP Broadcast Address](#ip-broadcast-address)
+    - [Limited Broadcast](#limited-broadcast)
+    - [Directed Broadcast](#directed-broadcast)
+  - [Classless Inter-Domain Routing (CIDR)](#classless-inter-domain-routing-cidr)
+    - [Problems with Class-Based Addressing](#problems-with-class-based-addressing)
+    - [Classless](#classless)
+    - [Address Notation](#address-notation)
+    - [IP Prefix](#ip-prefix)
 
 # Chapter 1 - Overview
 
@@ -95,7 +117,7 @@ Installation of cables in building / campus in structured manner
   - Point where telecom prover network ends and connects with on-premise wiring at customer premise
 - **Equipment Room**
   - Large Telecom room that may hourse servers, routers, switch, etc.
-- **Telecommunications Room*
+- **Telecommunications Room**
   - House Equipment and wiring consolidation points that serve users inside building
 - **Backbone / Vertical / Riser Wiring**
   - Connects between telecommunication rooms, as rooms are nomally on different floors

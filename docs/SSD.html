@@ -181,6 +181,12 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </li>
 </ul>
 </li>
+<li><a href="#chapter-5---web-application-vulnerabilities">Chapter 5 - Web Application Vulnerabilities</a></li>
+<li><a href="#chapter-6---secure-software-design-2">Chapter 6 - Secure Software Design 2</a>
+<ul>
+<li><a href="#threat-modeling">Threat Modeling</a></li>
+</ul>
+</li>
 </ul>
 <h1 id="chapter-1---secure-software-concepts">Chapter 1 - Secure Software Concepts</h1>
 <h2 id="iron-triangle-constraints">Iron Triangle Constraints</h2>
@@ -1258,6 +1264,106 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <h3 id="leveraging-existing-components">Leveraging Existing Components</h3>
 <ul>
 <li>focuses on ensuring that the attack surface is not increased and no new vulnerabilities are introduced by promoting the reuse of existing software components, code and functionality.h</li>
+</ul>
+<h1 id="chapter-5---web-application-vulnerabilities">Chapter 5 - Web Application Vulnerabilities</h1>
+<ul>
+<li>Injection</li>
+<li>Broken Authentication</li>
+<li>Sensitive Data Exposure</li>
+<li>XML External Entities</li>
+<li>Broken Access Control</li>
+<li>Security Misconfiguration</li>
+<li>Cross Site Scripting</li>
+<li>Insecure Deserialization</li>
+<li>Components with Known Vulnerabilities</li>
+<li>Insufficient Logging and Monitoring</li>
+</ul>
+<h1 id="chapter-6---secure-software-design-2">Chapter 6 - Secure Software Design 2</h1>
+<h2 id="threat-modeling">Threat Modeling</h2>
+<ul>
+<li>Extremely crucial for developing hack-resilient software</li>
+<li>provides software dev teem an attackers or hostile users PoV, as threat modeling exercise aims at identifying entry and exit points attacker can exploit</li>
+<li>Identify Entry Points
+<ul>
+<li>Items that take in user input</li>
+<li>can be a potential threat source and so all entry points must be explicitly identified and safeguarded</li>
+<li>web application could include any page that takes in user input.
+<ul>
+<li>Search page, Logon page, Registration page, Checkout page, Account Maintenance page, etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Identify Exit points
+<ul>
+<li>display information from within the system</li>
+<li>include processes that take data out of the system</li>
+<li>source of information leakage and need to be equally protected</li>
+<li>any page that displays data on the browser client
+<ul>
+<li>Search Results page, Product page, View Cart page, etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Determine Potential and Applicable Threats to these entry and exit points
+<ul>
+<li>Think like an attacker (brainstorming, attack trees)</li>
+<li>Categorized threat list
+<ul>
+<li>STRIDE is acronym for category of threats</li>
+<li>Using the STRIDE category threat list is a goal-based approach to threat modeling because the goals of the attacker are taken into consideration</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Goal</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>S</strong>poofing</td>
+<td style="text-align:left">Can an attacker impersonate another user or identity?</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>T</strong>ampering</td>
+<td style="text-align:left">Can the data be tampered with while it's in transit or in storage/archives?</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>R</strong>epudiation</td>
+<td style="text-align:left">Can the attacker (user / proecess) deny the attack?</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>I</strong>nformation Disclosure</td>
+<td style="text-align:left">Can information be disclosed to unauthorized users</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>D</strong>enial of Service</td>
+<td style="text-align:left">Is Denial of service a possibility</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>E</strong>levation of Privilege</td>
+<td style="text-align:left">Can the attacker bypass least privilege implementation and execute the software at elevated or admin privileges</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>For each
+<ul>
+<li>Entry Point / Exit Point / Feature / Sub-Feature</li>
+<li>Think like an attacker
+<ul>
+<li>Draw attack tree</li>
+</ul>
+</li>
+<li>Apply STRIDE</li>
+</ul>
+</li>
 </ul>
 
     </body>

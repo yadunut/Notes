@@ -105,6 +105,9 @@
     - [Psychological Acceptability](#psychological-acceptability)
     - [Weakest Link](#weakest-link)
     - [Leveraging Existing Components](#leveraging-existing-components)
+- [Chapter 5 - Web Application Vulnerabilities](#chapter-5---web-application-vulnerabilities)
+- [Chapter 6 - Secure Software Design 2](#chapter-6---secure-software-design-2)
+  - [Threat Modeling](#threat-modeling)
 
 # Chapter 1 - Secure Software Concepts
 
@@ -866,3 +869,53 @@ Refer to **PDFs**
 
 - focuses on ensuring that the attack surface is not increased and no new vulnerabilities are introduced by promoting the reuse of existing software components, code and functionality.h
 
+# Chapter 5 - Web Application Vulnerabilities
+
+- Injection
+- Broken Authentication
+- Sensitive Data Exposure
+- XML External Entities
+- Broken Access Control
+- Security Misconfiguration
+- Cross Site Scripting
+- Insecure Deserialization
+- Components with Known Vulnerabilities
+- Insufficient Logging and Monitoring
+
+# Chapter 6 - Secure Software Design 2
+
+## Threat Modeling
+
+- Extremely crucial for developing hack-resilient software
+- provides software dev teem an attackers or hostile users PoV, as threat modeling exercise aims at identifying entry and exit points attacker can exploit
+- Identify Entry Points
+  - Items that take in user input
+  - can be a potential threat source and so all entry points must be explicitly identified and safeguarded
+  - web application could include any page that takes in user input.
+    - Search page, Logon page, Registration page, Checkout page, Account Maintenance page, etc.
+- Identify Exit points
+  - display information from within the system
+  - include processes that take data out of the system
+  - source of information leakage and need to be equally protected
+  - any page that displays data on the browser client
+    - Search Results page, Product page, View Cart page, etc.
+- Determine Potential and Applicable Threats to these entry and exit points
+  - Think like an attacker (brainstorming, attack trees)
+  - Categorized threat list
+    - STRIDE is acronym for category of threats
+    - Using the STRIDE category threat list is a goal-based approach to threat modeling because the goals of the attacker are taken into consideration
+
+| Goal                       | Description                                                                                                     |
+| :------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| **S**poofing               | Can an attacker impersonate another user or identity?                                                           |
+| **T**ampering              | Can the data be tampered with while it's in transit or in storage/archives?                                     |
+| **R**epudiation            | Can the attacker (user / proecess) deny the attack?                                                             |
+| **I**nformation Disclosure | Can information be disclosed to unauthorized users                                                              |
+| **D**enial of Service      | Is Denial of service a possibility                                                                              |
+| **E**levation of Privilege | Can the attacker bypass least privilege implementation and execute the software at elevated or admin privileges |
+
+- For each
+  - Entry Point / Exit Point / Feature / Sub-Feature
+  - Think like an attacker
+    - Draw attack tree
+  - Apply STRIDE

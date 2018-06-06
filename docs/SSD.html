@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+        <style>
+/*--------------------------------------------------------------------------------------------- * Copyright (c) Microsoft Corporation. All rights reserved. * Licensed under the MIT License. See License.txt in the project root for license information. *--------------------------------------------------------------------------------------------*/ body { font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback"; font-size: 14px; padding: 0 12px; line-height: 22px; word-wrap: break-word; } body.scrollBeyondLastLine { margin-bottom: calc(100vh - 22px); } body.showEditorSelection .code-line { position: relative; } body.showEditorSelection .code-active-line:before, body.showEditorSelection .code-line:hover:before { content: ""; display: block; position: absolute; top: 0; left: -12px; height: 100%; } body.showEditorSelection li.code-active-line:before, body.showEditorSelection li.code-line:hover:before { left: -30px; } .vscode-light.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(0, 0, 0, 0.15); } .vscode-light.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(0, 0, 0, 0.40); } .vscode-dark.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 255, 255, 0.4); } .vscode-dark.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 255, 255, 0.60); } .vscode-high-contrast.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 160, 0, 0.7); } .vscode-high-contrast.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 160, 0, 1); } img { max-width: 100%; max-height: 100%; } a { color: #4080D0; text-decoration: none; } a:focus, input:focus, select:focus, textarea:focus { outline: 1px solid -webkit-focus-ring-color; outline-offset: -1px; } hr { border: 0; height: 2px; border-bottom: 2px solid; } h1 { padding-bottom: 0.3em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; } h1, h2, h3 { font-weight: normal; } h1 code, h2 code, h3 code, h4 code, h5 code, h6 code { font-size: inherit; line-height: auto; } a:hover { color: #4080D0; text-decoration: underline; } table { border-collapse: collapse; } table > thead > tr > th { text-align: left; border-bottom: 1px solid; } table > thead > tr > th, table > thead > tr > td, table > tbody > tr > th, table > tbody > tr > td { padding: 5px 10px; } table > tbody > tr + tr > td { border-top: 1px solid; } blockquote { margin: 0 7px 0 5px; padding: 0 16px 0 10px; border-left: 5px solid; } code { font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback"; font-size: 14px; line-height: 19px; } body.wordWrap pre { white-space: pre-wrap; } .mac code { font-size: 12px; line-height: 18px; } code > div { padding: 16px; border-radius: 3px; overflow: auto; } /** Theming */ .vscode-light { color: rgb(30, 30, 30); } .vscode-dark { color: #DDD; } .vscode-high-contrast { color: white; } .vscode-light code { color: #A31515; } .vscode-dark code { color: #D7BA7D; } .vscode-light code > div { background-color: rgba(220, 220, 220, 0.4); } .vscode-dark code > div { background-color: rgba(10, 10, 10, 0.4); } .vscode-high-contrast code > div { background-color: rgb(0, 0, 0); } .vscode-high-contrast h1 { border-color: rgb(0, 0, 0); } .vscode-light table > thead > tr > th { border-color: rgba(0, 0, 0, 0.69); } .vscode-dark table > thead > tr > th { border-color: rgba(255, 255, 255, 0.69); } .vscode-light h1, .vscode-light hr, .vscode-light table > tbody > tr + tr > td { border-color: rgba(0, 0, 0, 0.18); } .vscode-dark h1, .vscode-dark hr, .vscode-dark table > tbody > tr + tr > td { border-color: rgba(255, 255, 255, 0.18); } .vscode-light blockquote, .vscode-dark blockquote { background: rgba(127, 127, 127, 0.1); border-color: rgba(0, 122, 204, 0.5); } .vscode-high-contrast blockquote { background: transparent; border-color: #fff; }
+</style>
+<style>
+/* Tomorrow Theme */ /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */ /* Original theme - https://github.com/chriskempson/tomorrow-theme */ /* Tomorrow Comment */ .hljs-comment, .hljs-quote { color: #8e908c; } /* Tomorrow Red */ .hljs-variable, .hljs-template-variable, .hljs-tag, .hljs-name, .hljs-selector-id, .hljs-selector-class, .hljs-regexp, .hljs-deletion { color: #c82829; } /* Tomorrow Orange */ .hljs-number, .hljs-built_in, .hljs-builtin-name, .hljs-literal, .hljs-type, .hljs-params, .hljs-meta, .hljs-link { color: #f5871f; } /* Tomorrow Yellow */ .hljs-attribute { color: #eab700; } /* Tomorrow Green */ .hljs-string, .hljs-symbol, .hljs-bullet, .hljs-addition { color: #718c00; } /* Tomorrow Blue */ .hljs-title, .hljs-section { color: #4271ae; } /* Tomorrow Purple */ .hljs-keyword, .hljs-selector-tag { color: #8959a8; } .hljs { display: block; overflow-x: auto; color: #4d4d4c; padding: 0.5em; } .hljs-emphasis { font-style: italic; } .hljs-strong { font-weight: bold; }
+</style>
+<style>
+ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-left: 40px; } .task-list-item { list-style-type: none; } .task-list-item-checkbox { vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- markdownlint-disable MD025 MD033 MD024 MD006 MD029-->
+<h1 id="secure-software-development">Secure Software Development</h1>
+<ul>
+<li><a href="#secure-software-development">Secure Software Development</a></li>
+<li><a href="#chapter-1---secure-software-concepts">Chapter 1 - Secure Software Concepts</a>
+<ul>
+<li><a href="#iron-triangle-constraints">Iron Triangle Constraints</a></li>
+<li><a href="#security-as-an-afterthought">Security as an afterthought</a></li>
+<li><a href="#security-vs-usability">Security vs Usability</a></li>
+<li><a href="#attacker-vs-defender">Attacker Vs Defender</a>
+<ul>
+<li><a href="#defender">Defender</a></li>
+<li><a href="#attacker">Attacker</a></li>
+</ul>
+</li>
+<li><a href="#secure-software-concepts">Secure Software Concepts</a>
+<ul>
+<li><a href="#confidentiality">Confidentiality</a></li>
+<li><a href="#integrity">Integrity</a></li>
+<li><a href="#availability">Availability</a></li>
+<li><a href="#authentication">Authentication</a></li>
+<li><a href="#authorization">Authorization</a></li>
+<li><a href="#accountability">Accountability</a></li>
+<li><a href="#auditing">Auditing</a></li>
+<li><a href="#non-repudiation">Non-Repudiation</a></li>
+<li><a href="#data-privacy">Data Privacy</a></li>
+<li><a href="#data-anonymization">Data Anonymization</a></li>
+<li><a href="#pdpa">PDPA</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#chapter-2---secure-software-requirements-1">Chapter 2 - Secure Software Requirements 1</a>
+<ul>
+<li><a href="#quality-attributes-of-secure-software">Quality Attributes of Secure Software</a>
+<ul>
+<li><a href="#eg-of-explicit-software-security-requirement-vs-high-level-security-requirements">Eg of explicit software security requirement vs high level security requirements</a></li>
+</ul>
+</li>
+<li><a href="#types-of-software-security-requirements">Types of Software Security Requirements</a>
+<ul>
+<li><a href="#authentication-requirements">Authentication Requirements</a></li>
+<li><a href="#common-forms-of-authentication">Common Forms of authentication</a></li>
+<li><a href="#forms-authentication">Forms Authentication</a></li>
+<li><a href="#authorization-requirements">Authorization Requirements</a></li>
+<li><a href="#availability-requirements">Availability Requirements</a></li>
+<li><a href="#accountability-requirements">Accountability Requirements</a></li>
+<li><a href="#session-management-requirements">Session management requirements</a></li>
+<li><a href="#error-and-exception-management-requirements">Error and Exception Management Requirements</a></li>
+<li><a href="#confidentiality-requirements">Confidentiality Requirements</a></li>
+<li><a href="#integrity-requirements">Integrity Requirements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#chapter-3---secure-software-requirements-2">Chapter 3 - Secure Software Requirements 2</a>
+<ul>
+<li><a href="#protection-needs-elicitation-pne">Protection Needs Elicitation (PNE)</a></li>
+<li><a href="#surveys--questionnaires-and-interviews">Surveys, Questionnaires and Interviews</a></li>
+<li><a href="#data-classification">Data Classification</a>
+<ul>
+<li><a href="#types-of-data">Types of Data</a></li>
+<li><a href="#labeling">Labeling</a></li>
+<li><a href="#data-ownership">Data Ownership</a></li>
+<li><a href="#use-case-modeling">Use Case Modeling</a></li>
+<li><a href="#misuse-case-modeling">Misuse Case Modeling</a></li>
+<li><a href="#determining-misuse-case">Determining Misuse Case</a></li>
+<li><a href="#subject---object-matrix">Subject / Object Matrix</a>
+<ul>
+<li><a href="#role-vs-group">Role Vs Group</a></li>
+<li><a href="#subject-object-matrix">Subject-Object Matrix</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="chapter-1---secure-software-concepts">Chapter 1 - Secure Software Concepts</h1>
+<h2 id="iron-triangle-constraints">Iron Triangle Constraints</h2>
+<p>If projects <strong>scope</strong>, <strong>schedule</strong>, and <strong>budget</strong> are ridgidly defined, it gives little to no room to incorporate even basic security requirements into the software, and unfortunately, what is typically overlooked in security</p>
+<h2 id="security-as-an-afterthought">Security as an afterthought</h2>
+<ul>
+<li>Important that security features are built into the software, instead of being added later on</li>
+<li>Cost to fix insecure software earlier in the software development life cycle(SDLC) is insignificant when compared to having same issue addressed at a later stage</li>
+</ul>
+<h2 id="security-vs-usability">Security vs Usability</h2>
+<ul>
+<li>Incorporation of security features is viewed as making software complex, restrictive and unusable</li>
+<li>Incorporation of security comes at cost of performance and usability
+<ul>
+<li>Occurs when software design does not factor in psychological acceptability</li>
+</ul>
+</li>
+<li>Security must be balanced with usability and performance</li>
+</ul>
+<h2 id="attacker-vs-defender">Attacker Vs Defender</h2>
+<h3 id="defender">Defender</h3>
+<ul>
+<li>Play vigilante 24x7</li>
+<li>Guarding against all attacks</li>
+<li>Constrained to play by rules of engagement</li>
+</ul>
+<h3 id="attacker">Attacker</h3>
+<ul>
+<li>Can strike anytime</li>
+<li>Needs to be able to exploit just 1 weakness</li>
+<li>Need not play by rules</li>
+</ul>
+<h2 id="secure-software-concepts">Secure Software Concepts</h2>
+<h3 id="confidentiality">Confidentiality</h3>
+<ul>
+<li>Security concept to do with protection against unauthorized information disclosure</li>
+<li>Viewing of data</li>
+<li>Confidentiality assure secrecy of data, but also can help in maintaining data privacy</li>
+</ul>
+<h3 id="integrity">Integrity</h3>
+<ul>
+<li>Integrity is security concept that assures protection against unauthorized alterations / modifications of data</li>
+<li>2 Aspects
+<ul>
+<li>Ensure that data is transmitted, processed and stored is as accurate as original</li>
+<li>Software performs reliably as it was intended to</li>
+</ul>
+</li>
+</ul>
+<h3 id="availability">Availability</h3>
+<ul>
+<li>Related to access of the software / data / information it handles</li>
+<li>Assures protection against Denial of Service</li>
+<li>Ensures business continuity program(BCP), where system downtime is minimized and that impact upon business disruption is minimal</li>
+</ul>
+<h3 id="authentication">Authentication</h3>
+<ul>
+<li>Concept that verifies and validates identity of information supplied</li>
+<li>Answers qn - &quot;Are you who you claim to be&quot;</li>
+<li>Factors of Authentication
+<ul>
+<li>What you know? - Password, PIN(memory)</li>
+<li>What you have? - Security Token, Smartcard(physical)</li>
+<li>Who you are? - Fingerprint, Iris scanner (Biometrics)</li>
+</ul>
+</li>
+</ul>
+<h3 id="authorization">Authorization</h3>
+<ul>
+<li>Checking of a subjects rights and privileges before granting access to the objects that the subject requests</li>
+<li>Requestor is referred to as subject and requested resource is object</li>
+<li>Subject may be human or non human (process / another object)</li>
+<li>Categorized by privilege level - admin user, manager, anonymous user</li>
+<li>Object e.g. - table in a databse, file, view</li>
+<li>Eg of authorization based on privilege level of subject
+<ul>
+<li>admin user who may be able to create read update delete (CRUD) data</li>
+<li>anonymous user may only be allowed to read (R) the data</li>
+<li>manager may be allowed to create, read, update (CRU) data</li>
+</ul>
+</li>
+</ul>
+<h3 id="accountability">Accountability</h3>
+<ul>
+<li>Protects against repudiation threats</li>
+<li>Non-repudiation addresses deniability of actions taken by either user or software on behalf of user</li>
+<li>Accountability to ensure non-repudiation can be accomplished by auditing when used in conjunction with identification</li>
+</ul>
+<h3 id="auditing">Auditing</h3>
+<ul>
+<li>Addresses logging of transactions so that at a later time a history of transactions can be built, if needed</li>
+<li>Answers qn - &quot;Who <em>(subject)</em> did what <em>(action)</em> when <em>(timestamp)</em> and where <em>(object)</em> ?&quot;</li>
+<li>detective control and can be a deterrent control as well</li>
+</ul>
+<h3 id="non-repudiation">Non-Repudiation</h3>
+<ul>
+<li>Security control that addresses deniability of actions taken by software or user</li>
+<li>ensures that actions taken by software on behalf of user cannot be refuted or denied</li>
+</ul>
+<h3 id="data-privacy">Data Privacy</h3>
+<ul>
+<li>suitably defined as appropriate use of data</li>
+<li>When companies and merchants use data / information provided / entrused to them, the data should be used according to agreed purpose</li>
+<li>companies have sold, disclosed, rented vlues of consumer info that was entrused to other parties without prior approval</li>
+</ul>
+<h3 id="data-anonymization">Data Anonymization</h3>
+<ul>
+<li>Act of permanently and completely removing personal identifiers from data, such as converting personally identifiable information (PII) into aggregated data</li>
+<li>Anonymized data cannot be linked to any one individual account</li>
+<li>Anonymization techniques are useful to assure data privacy</li>
+<li>Techniques include
+<ul>
+<li>Replacement</li>
+<li>Suppression</li>
+<li>Generalization</li>
+<li>Pertubation</li>
+</ul>
+</li>
+</ul>
+<h3 id="pdpa">PDPA</h3>
+<h1 id="chapter-2---secure-software-requirements-1">Chapter 2 - Secure Software Requirements 1</h1>
+<h2 id="quality-attributes-of-secure-software">Quality Attributes of Secure Software</h2>
+<ul>
+<li>Reliability
+<ul>
+<li>Software functions as its expected to</li>
+</ul>
+</li>
+<li>Resiliency
+<ul>
+<li>Software does not violate any security policy and is able to withstand actions of threat agents that are posed intentionally (attacks and exploits) or accidentally (user errors)</li>
+</ul>
+</li>
+<li>Recoverability
+<ul>
+<li>Software is able to restore operations to what business expects by containing, limiting and remediating damage caused by threats that materialize</li>
+</ul>
+</li>
+</ul>
+<h3 id="eg-of-explicit-software-security-requirement-vs-high-level-security-requirements">Eg of explicit software security requirement vs high level security requirements</h3>
+<ul>
+<li>Explicit software requirement
+<ul>
+<li>User password will be needed to be protected against disclosure by masking it while it's input and hashed when it's stored</li>
+<li>Change in pricing information of a product needs to be tracked and audited, recording the timestamp and individual who performed that operation</li>
+<li>Usually <strong>not</strong> found within software requirements specification document</li>
+</ul>
+</li>
+<li>High-level security requirements
+<ul>
+<li>high level non testable implementation mechanisms</li>
+<li>listing of security features
+<ul>
+<li>passwords need to be protected</li>
+<li>Secure Socket Layer (SSL) needs to be inplace</li>
+<li>Web application firewall needs to be installed infront of public facing websites</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="types-of-software-security-requirements">Types of Software Security Requirements</h2>
+<h3 id="authentication-requirements">Authentication Requirements</h3>
+<ul>
+<li>Process of validating an entity's claim is authentication</li>
+<li>Entity may be person / process / hardware device</li>
+<li>Common mean by which authentication occurs - entity provides identity claims / credentials which are validated and verified against a trusted source holding those credentials</li>
+</ul>
+<h3 id="common-forms-of-authentication">Common Forms of authentication</h3>
+<ul>
+<li>Anonymous</li>
+<li>Basic</li>
+<li>Digest</li>
+<li>Integrated</li>
+<li>Client cerificates</li>
+<li>Forms</li>
+<li>Token</li>
+<li>Smart cards</li>
+<li>Biometrics</li>
+</ul>
+<h3 id="forms-authentication">Forms Authentication</h3>
+<ul>
+<li>Observed in web apps, require user to supply username and password for auth purposes, and these credentials are validated against directory store - active directory, database, configuration file</li>
+<li>Since credentials collected are supplied in clear text form, advised to first cryptographiaclly protect data being transmitted in addition to implementing Transport Layer Security (TLS) such as SSL or Network Layer Security such as IPSec</li>
+<li>E.g. of username and password - login box used in Forms authentication</li>
+</ul>
+<h3 id="authorization-requirements">Authorization Requirements</h3>
+<ul>
+<li>Role Based Access Control (RBAC)
+<ul>
+<li>Individuals <em>(subjects)</em> have access to a resource <em>(object)</em> based on their assigned role</li>
+<li>Permission to operate on objects such as CRUD are also defined and determined based on responsibilities and authority (permissions) within job function</li>
+</ul>
+</li>
+</ul>
+<h3 id="availability-requirements">Availability Requirements</h3>
+<ul>
+<li><em>Software shall ensure high availability of five 9's (99.999%) as defiend in the SLA</em></li>
+<li>No of users at any one given point of time who should be able to use software can be up to 300 users</li>
+<li>Software and data should be replicated across data centers to provide load balancing and redundancy</li>
+<li>Mission <em>Critical</em> functionality in software should be restored to normal operation within 1h of desruption</li>
+<li>Mission <em>Essential</em> functionality in software should be restored to normal operations within 4h of desruption</li>
+<li>Mission <em>Support</em> functionality in software should be restored to normal operations within 24h of disruption</li>
+</ul>
+<h3 id="accountability-requirements">Accountability Requirements</h3>
+<ul>
+<li>Accountability requirements are those that assist in building a historical record of user actions</li>
+<li>Audit trails can help detect when unauthorized user makes change / authorized user makes unauthorized change, both of which are cases of integrity violations</li>
+<li>Identity of subject (user or process) performing an action <em>(who)</em></li>
+<li>The action <em>(what)</em></li>
+<li>Object on which action was performed <em>(where)</em></li>
+<li>Timestamp of action <em>(when)</em></li>
+</ul>
+<h3 id="session-management-requirements">Session management requirements</h3>
+<ul>
+<li>Each user activity will need to be uniquely tracked</li>
+<li>User should not be required to provide user credential once authenticated with internet banking application</li>
+<li>Sessions must be explicitly abandoned when user logs off / closes browser window</li>
+<li>Session identifiers used to identify user sessions must not be passed in clear text / easily guessable</li>
+</ul>
+<h3 id="error-and-exception-management-requirements">Error and Exception Management Requirements</h3>
+<ul>
+<li>All exceptions are to be explicitly handled using try, catch, and finally blocks</li>
+<li>Error messages that are displayed to end user will reveal only needed information without disclosing any internal system error details</li>
+<li>Security exception details are to be audited and monitored periodically</li>
+</ul>
+<h3 id="confidentiality-requirements">Confidentiality Requirements</h3>
+<ul>
+<li>Requirements are those that address protection against unauthorized disclosure of data / information that are either private (non-public) or sensitive (public) in nature</li>
+<li>Need to be defined throughout the information life cycle from origin of data to its retirement</li>
+<li>Necessary to explicitly state confidentiality requirements for non-public data
+<ul>
+<li>In Transit - When data is transmitted over unprotected networks : Data in Motion</li>
+<li>In Procesing - When data is held in computer memory / media for processing</li>
+<li>In Storage - When data is at rest, within transactional systems including archives - data at rest</li>
+</ul>
+</li>
+<li>E.g.
+<ul>
+<li>Personal health information must be protected against disclosure using approved encryption mechanisms</li>
+<li>Password and other sensitive input fields need to be masked</li>
+<li>Passwords must not be stored in the clear in backend systems and when stored must be hashed with at least equivalent to the SHA-256 Hash function</li>
+<li>Transport Layer Security (TLS) such as Secure Socket Layer (SSL) must be in place to protect against insider man-in-the-middle(MITM) threats for all credit card information that is transmitted</li>
+<li>Log files must not store any sensitive information as defined by the business in humanly readable or easily decipherable form</li>
+</ul>
+</li>
+</ul>
+<h3 id="integrity-requirements">Integrity Requirements</h3>
+<ul>
+<li>security requirements that address 2 primary areas of software security
+<ul>
+<li>reliablity assurance</li>
+<li>protection / prevention against unauthorized modifications</li>
+</ul>
+</li>
+<li>refers not only to system / software modification protection (system integrity) but also data that system / software handles (data integrity)</li>
+<li>E.g.
+<ul>
+<li>All input forms and Query strings need to be validated against a set of alloable inputs before software accepts it for processing</li>
+<li>Software that is published should provide recipient with computed checksum and hash function used to compute checksum, so that recipient can validate its accuracy and completeness</li>
+</ul>
+</li>
+</ul>
+<h1 id="chapter-3---secure-software-requirements-2">Chapter 3 - Secure Software Requirements 2</h1>
+<h2 id="protection-needs-elicitation-pne">Protection Needs Elicitation (PNE)</h2>
+<p>Refer to <strong>PDFs</strong></p>
+<ul>
+<li>Process of eliciting security requirements
+<ul>
+<li>Sueveys and Questionnaires</li>
+<li>Brainstorming</li>
+<li>Policy Decomposition</li>
+<li>Data Classification</li>
+<li>Subject-Object Matrix</li>
+<li>Use Case and Misuse Case Modelling</li>
+</ul>
+</li>
+</ul>
+<h2 id="surveys--questionnaires-and-interviews">Surveys, Questionnaires and Interviews</h2>
+<ul>
+<li>What kind of data will be processed, transmitted or stored by software?</li>
+<li>Data highly sensitive or confidential in nature?</li>
+<li>Will software handle personally identifiable information / privacy replicated information?</li>
+<li>Who are all the users who will be allowed to make alterations and will they need to be audited and monitored?</li>
+<li>What is the max tolerable downtime for software?</li>
+<li>How quickly should software be able to recover and restore normal operations when disrupted</li>
+<li>Is there need for single sign-on authentication?</li>
+<li>What are roles of users that ened to be established and what privileges and rights (such as CRUD) will each role have?</li>
+</ul>
+<h2 id="data-classification">Data Classification</h2>
+<h3 id="types-of-data">Types of Data</h3>
+<ul>
+<li>Structured Data
+<ul>
+<li>Data organised into identifiable structure</li>
+<li>Database in which all information is stored in columns and rows</li>
+</ul>
+</li>
+<li>Unstructured Data
+<ul>
+<li>Data has no identifiable structure</li>
+<li>Unstructured data include images, videos, emails, documents and text</li>
+</ul>
+</li>
+</ul>
+<h3 id="labeling">Labeling</h3>
+<ul>
+<li>Not all data need same level of protection</li>
+<li>Public data require minimal to no protection against disclosure</li>
+<li>Main objective of data classification is to lower cost of data protection and maximuze return on investment when data is protected</li>
+<li>Accomplished by implementing only the needed levels of security controls on data assets based on categorization</li>
+</ul>
+<h3 id="data-ownership">Data Ownership</h3>
+<ul>
+<li>Business/data owner has responsibility for following
+<ul>
+<li>Ensure that information assets are appropriately classified</li>
+<li>Validate security controls are implemented as needed - reviewing classification periodically</li>
+<li>Define authorized list of users and access criteria based on information classifications
+<ul>
+<li>Supports Seperation of Duties principle of secure design</li>
+</ul>
+</li>
+<li>Ensure appropriate backup and recovery mechanisms are in place</li>
+<li>Delegate as needed the classification of responsibility, access approval authority, backup and recovery duties to data custodian</li>
+</ul>
+</li>
+</ul>
+<h3 id="use-case-modeling">Use Case Modeling</h3>
+<ul>
+<li>Use case models intended behavior of software or system</li>
+<li>This behavior describes the sequence of actions and events that are to be taken to address a business need</li>
+<li>Use case modeling and diagramming is very useful for specifying requirements</li>
+<li>Use case modeling includes identifying actors, intended system behavior (use cases), and requences and relationships between actors and the use cases</li>
+<li>Actors may be an individual, a role, or non-human in nature
+<ul>
+<li>As an example, the individual John, an administrator or a backend batch process can all be actors in a use case</li>
+</ul>
+</li>
+</ul>
+<h3 id="misuse-case-modeling">Misuse Case Modeling</h3>
+<ul>
+<li>Misuse cases, AKA abuse cases can help identify security requirements by modeling negative scenarios</li>
+<li>Negative scenario is an unintended behavior of the system, one that the system owner does not want to occur within the context of use case</li>
+<li>Misuse cases provide insight into the threats that can occur against the system or software</li>
+<li>Misuse case modeling is similar to use case modeling, except that in misuse case modeling, misactors and unintended scenarios or behavior are modeled</li>
+<li>Misuse cases may be intentional or accidental</li>
+</ul>
+<h3 id="determining-misuse-case">Determining Misuse Case</h3>
+<ul>
+<li>Negation (negate intended functionality)</li>
+<li>Inversion (change the actor)</li>
+<li>Example
+<ul>
+<li>Functionality - Administrators can create CC info</li>
+<li>Negation
+<ul>
+<li>Administrators <strong>CANNOT</strong> create CC info</li>
+</ul>
+</li>
+<li>Inversion
+<ul>
+<li>Non-Administrators CAN create CC info</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="subject---object-matrix">Subject / Object Matrix</h3>
+<ul>
+<li>When there are multiple subjects (roles) that require access to functionality within software, it is critical to understand what each subject is allowed to do</li>
+<li>Objects (Components) are those items that a subject can act upon</li>
+<li>Building blocks of software</li>
+<li>Higher level objects must be broken down into more granular objects for better accuracy of subject-object relationship representation</li>
+</ul>
+<h4 id="role-vs-group">Role Vs Group</h4>
+<ul>
+<li>Role
+<ul>
+<li>Collection of Permissions</li>
+<li>Permissions are assigned to roles, never directly to users
+<ul>
+<li>Access is granted through roles</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Group
+<ul>
+<li>Collection of Users</li>
+<li>Permission can be assigned to bboth users and groups</li>
+</ul>
+</li>
+</ul>
+<h4 id="subject-object-matrix">Subject-Object Matrix</h4>
+<ul>
+<li>2-dimentional matrix</li>
+<li>Subjects (roles) across the column</li>
+<li>Objects (components) down the row</li>
+<li>Shows wich subjects/roles can take what action (CRUD) on which object</li>
+</ul>
+
+    </body>
+    </html>

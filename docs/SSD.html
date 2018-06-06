@@ -98,6 +98,89 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </li>
 </ul>
 </li>
+<li><a href="#chapter-4---secure-software-design-1">Chapter 4 - Secure Software Design 1</a>
+<ul>
+<li><a href="#benefits-of-secure-design">Benefits of Secure Design</a></li>
+<li><a href="#designing-confidentiality-techniques">Designing Confidentiality Techniques</a>
+<ul>
+<li><a href="#symmetric-key-cryptosystem">Symmetric Key Cryptosystem</a></li>
+<li><a href="#goals">Goals</a></li>
+<li><a href="#popular-cryptosystems">Popular Cryptosystems</a></li>
+</ul>
+</li>
+<li><a href="#asymmtric-key-cryptosystem">Asymmtric Key Cryptosystem</a>
+<ul>
+<li><a href="#popular-asymmtric-key-cryptosystems">Popular Asymmtric Key Cryptosystems</a></li>
+<li><a href="#goals">Goals</a></li>
+<li><a href="#satisfies-confidentiality">Satisfies Confidentiality</a></li>
+<li><a href="#satisfies-authenticity-and-non-repudiation">Satisfies Authenticity and Non-Repudiation</a></li>
+<li><a href="#limitations">Limitations</a></li>
+</ul>
+</li>
+<li><a href="#symmetric-vs-asymmetric">Symmetric vs Asymmetric</a></li>
+<li><a href="#combining-symmetric-and-asymmetric">Combining Symmetric and Asymmetric</a></li>
+<li><a href="#digital-certificates-and-public-key-infrastructure-pki">Digital Certificates and Public Key Infrastructure (PKI)</a>
+<ul>
+<li><a href="#defining-digital-certificate">Defining Digital Certificate</a></li>
+<li><a href="#public-key-infrastructure-pki">Public Key Infrastructure (PKI)</a></li>
+<li><a href="#managing-digital-certificates">Managing Digital Certificates</a></li>
+<li><a href="#certificate-authority">Certificate Authority</a></li>
+<li><a href="#registration-authority-ra">Registration Authority (RA)</a></li>
+<li><a href="#certificate-revocation-list-crl">Certificate Revocation List (CRL)</a></li>
+<li><a href="#certificate-repository-cr">Certificate Repository (CR)</a></li>
+<li><a href="#managing-digital-certificates">Managing Digital Certificates</a></li>
+<li><a href="#tyoes-of-digital-certificates">Tyoes of Digital Certificates</a></li>
+<li><a href="#x509-digital-certificate-standard">X.509 Digital Certificate Standard</a></li>
+<li><a href="#public-key-cryptogtaphy-standards-pkcs">Public KEy Cryptogtaphy Standards (PKCS)</a></li>
+</ul>
+</li>
+<li><a href="#cryptographic-hash-functions">Cryptographic Hash Functions</a>
+<ul>
+<li><a href="#characteristics-of-cryptographic-hash-functions">Characteristics of Cryptographic Hash Functions</a></li>
+<li><a href="#example-of-hash-function">Example of Hash Function</a></li>
+<li><a href="#popular-hash-functions">Popular hash functions</a></li>
+</ul>
+</li>
+<li><a href="#digital-signature">Digital Signature</a>
+<ul>
+<li><a href="#how-to-digitally-sign-message">How to digitally sign message</a></li>
+<li><a href="#verify-digitally-signed-message">Verify digitally signed message</a></li>
+<li><a href="#code-signing">Code Signing</a></li>
+</ul>
+</li>
+<li><a href="#referential-integrity">Referential Integrity</a></li>
+<li><a href="#resource-locking">Resource Locking</a></li>
+<li><a href="#availability-techniques">Availability Techniques</a>
+<ul>
+<li><a href="#failover">Failover</a></li>
+<li><a href="#replication">Replication</a></li>
+<li><a href="#scalability">Scalability</a></li>
+</ul>
+</li>
+<li><a href="#authentication-design">Authentication Design</a>
+<ul>
+<li><a href="#multi-factor-authentication">Multi-Factor Authentication</a></li>
+<li><a href="#single-sign-on-sso">Single Sign On (SSO)</a></li>
+<li><a href="#federation">Federation</a></li>
+</ul>
+</li>
+<li><a href="#key-secure-design-principles">Key Secure Design Principles</a>
+<ul>
+<li><a href="#least-privilege">Least Privilege</a></li>
+<li><a href="#separation-of-duties">Separation of Duties</a></li>
+<li><a href="#defense-in-depth">Defense in Depth</a></li>
+<li><a href="#fail-safe">Fail Safe</a></li>
+<li><a href="#economy-of-mechanisms">Economy of Mechanisms</a></li>
+<li><a href="#complete-mediation">Complete Mediation</a></li>
+<li><a href="#open-design">Open Design</a></li>
+<li><a href="#least-common-mechanisms">Least Common Mechanisms</a></li>
+<li><a href="#psychological-acceptability">Psychological Acceptability</a></li>
+<li><a href="#weakest-link">Weakest Link</a></li>
+<li><a href="#leveraging-existing-components">Leveraging Existing Components</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h1 id="chapter-1---secure-software-concepts">Chapter 1 - Secure Software Concepts</h1>
 <h2 id="iron-triangle-constraints">Iron Triangle Constraints</h2>
@@ -498,6 +581,683 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <li>Subjects (roles) across the column</li>
 <li>Objects (components) down the row</li>
 <li>Shows wich subjects/roles can take what action (CRUD) on which object</li>
+</ul>
+<h1 id="chapter-4---secure-software-design-1">Chapter 4 - Secure Software Design 1</h1>
+<h2 id="benefits-of-secure-design">Benefits of Secure Design</h2>
+<ul>
+<li>Minimizes the time needed to fix identitied security issues</li>
+<li>Assures stakeholders trust because software is
+<ul>
+<li>Reliable - Functioning as expected and less prone to errors</li>
+<li>Resilient - Less likeyly to be successfully exploited</li>
+<li>Recoverable - More prone to be able to restore itself to normal business operations upon error or exploitation</li>
+</ul>
+</li>
+<li>Requires minimal redesign when software is designed with future threats in mind</li>
+<li>Designing software with security in mind, business logic flaws and other architectural design issues may be uncovered</li>
+</ul>
+<h2 id="designing-confidentiality-techniques">Designing Confidentiality Techniques</h2>
+<h3 id="symmetric-key-cryptosystem">Symmetric Key Cryptosystem</h3>
+<ul>
+<li>Same shared key used to encrypt and decrypt data</li>
+<li>AKA Secret-key cryptosystem/cryptography</li>
+<li>Longer key length, exponential increase in time to crack</li>
+<li>Advantages
+<ul>
+<li>Secure</li>
+<li>Fast
+<ul>
+<li>Due to simple substitution, permutation, and modular arithmetic operations</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Disadvantages
+<ul>
+<li>Key Distribution
+<ul>
+<li>Requires secure communication channel to share key between parties</li>
+</ul>
+</li>
+<li>Key management
+<ul>
+<li>Each party have to maintain a unique shared key with every other communicating party</li>
+</ul>
+</li>
+<li>If &quot;n&quot; is no of parties in a group whi want to use symmetric key cryptosystem
+<ul>
+<li>total no of keys = n * (n-1) / 2</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="goals">Goals</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Goals</th>
+<th style="text-align:left">Symmetric Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Confidentiality</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">Integrity</td>
+<td style="text-align:left">No</td>
+</tr>
+<tr>
+<td style="text-align:left">Availability</td>
+<td style="text-align:left">No</td>
+</tr>
+<tr>
+<td style="text-align:left">Authentication</td>
+<td style="text-align:left">No</td>
+</tr>
+<tr>
+<td style="text-align:left">Non-Repudiation</td>
+<td style="text-align:left">No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="popular-cryptosystems">Popular Cryptosystems</h3>
+<ul>
+<li>3DES</li>
+<li>AES</li>
+</ul>
+<h2 id="asymmtric-key-cryptosystem">Asymmtric Key Cryptosystem</h2>
+<ul>
+<li>Public key to encrypt and private key to decrypt</li>
+<li>AKA public key cryptosystem/cryptography</li>
+</ul>
+<h3 id="popular-asymmtric-key-cryptosystems">Popular Asymmtric Key Cryptosystems</h3>
+<ul>
+<li>RSA
+<ul>
+<li>Most common asymmtric cryptography algorithm</li>
+<li>Uses 2 large prime numbers</li>
+</ul>
+</li>
+<li>Elliptic Curve Cryptography(ECC)
+<ul>
+<li>Users share 1 elliptic curve and 1 point on curve</li>
+<li>Uses less computing power than prime number-based asymmetric cryptography
+<ul>
+<li>Key size smaller</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="goals">Goals</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Goals</th>
+<th style="text-align:left">Symmetric Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Confidentiality</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">Integrity</td>
+<td style="text-align:left">No</td>
+</tr>
+<tr>
+<td style="text-align:left">Availability</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">Authentication</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">Non-Repudiation</td>
+<td style="text-align:left">Yes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="satisfies-confidentiality">Satisfies Confidentiality</h3>
+<ul>
+<li>Alice's public-private key pair
+<ul>
+<li>Public key is shared publicly
+<ul>
+<li>Whoever wants to send alice secure message, encrypt message using public key</li>
+</ul>
+</li>
+<li>Private key secret with Alice
+<ul>
+<li>Alice is only one who can decrypt message</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Charlie may capture message for Alice, but he cannot decrypt them as he does not have alice private key</li>
+<li>Impossible for charlie to generate Alice's private key based on public key</li>
+</ul>
+<h3 id="satisfies-authenticity-and-non-repudiation">Satisfies Authenticity and Non-Repudiation</h3>
+<ul>
+<li>Public-private key pair are 2 mathamatically related keys
+<ul>
+<li>When alice wants to prove message is from her, alice encrypts it with her private key</li>
+<li>Whoever wants to verify it, would be able to decrypt message <strong>ONLY</strong> with Alice's public-key</li>
+<li>Since message could ONLY be decrypted by Alice's public-key, and also Alice <strong>ALONE</strong> hold private-key, it proves message came from Alice</li>
+</ul>
+</li>
+</ul>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>Longer Key Length
+<ul>
+<li>Uses longer key length than symmtric encryption</li>
+<li>Effectiveness depends on intractability of certain maths problems such as integer factorization</li>
+<li>Time consuming to solve, but faster than trying all possible keys</li>
+<li>Asymmetric algorithm keys must be longer for equivalent resistance to attack than symmetric algorithm keys
+<ul>
+<li>Symmetric Key - AES
+<ul>
+<li>128,192,256 bit key length</li>
+</ul>
+</li>
+<li>Asymmetric Key - RSA
+<ul>
+<li>1024, 2048, 3072, 15360 bit key length</li>
+<li>NIST key management guidelines state that 15360 bit RSA key == to 256-bit symmetric key</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Slower encryption speeds
+<ul>
+<li>Slower than symmetric encryption due to
+<ul>
+<li>Longer key length</li>
+<li>Complexity of algorithm used</li>
+</ul>
+</li>
+<li>Both these requirements du to fact that 1 key is public.
+<ul>
+<li>To maintain security, asymmetric encryption must make it too difficult for hacker to crack public key and discover private key</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Asymmetric Key Cryptosystems are slow.</li>
+<li>Not designed as a full-speed data transport cipher.</li>
+<li>Only encrypt &quot;messages&quot; of limited size
+<ul>
+<li>RSA - encrypt data as large as key length
+<ul>
+<li>For a 2048 bit RSA key, you can only encrypt messages up to 1960 bits (245 bytes) long</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="symmetric-vs-asymmetric">Symmetric vs Asymmetric</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Symmetric</th>
+<th style="text-align:left">Asymmetric</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Uses a secret key to encrypt and to decrypt messages.</td>
+<td style="text-align:left">Uses two keys, one by the sender and one by the receiver to encrypt and to decrypt messages respectively. The two keys are mathematically related</td>
+</tr>
+<tr>
+<td style="text-align:left">The secret key cannot be made public and known only to the sender and receiver</td>
+<td style="text-align:left">One of the keys, i.e. the public key can be made known to all parties concerned. While the sender keeps the other key, i.e. private key.</td>
+</tr>
+<tr>
+<td style="text-align:left">Secure channel to distribute the key</td>
+<td style="text-align:left">Public key can be exchanged in open over insecure communication channel</td>
+</tr>
+<tr>
+<td style="text-align:left">Perform faster</td>
+<td style="text-align:left">Perform slower</td>
+</tr>
+<tr>
+<td style="text-align:left">N(N-1)/2, where N is the number of users in the group</td>
+<td style="text-align:left">2N, where N is no of users in group</td>
+</tr>
+<tr>
+<td style="text-align:left">Only Confidentiality, Availability</td>
+<td style="text-align:left">Confidentiality, Availability, Authentication, Non-Repudiation</td>
+</tr>
+</tbody>
+</table>
+<h2 id="combining-symmetric-and-asymmetric">Combining Symmetric and Asymmetric</h2>
+<p><em>done by me</em></p>
+<ul>
+<li>Encrypt symmtric key with receiver's public key</li>
+<li>decriver decrypts symmetric key with his private key</li>
+<li>send messages by enctypting with shared private key</li>
+</ul>
+<h2 id="digital-certificates-and-public-key-infrastructure-pki">Digital Certificates and Public Key Infrastructure (PKI)</h2>
+<h3 id="defining-digital-certificate">Defining Digital Certificate</h3>
+<ul>
+<li>Trusted third party
+<ul>
+<li>Used to help solve the problem of verifying identity</li>
+<li>Verifies the owner and that the public key belongs to owner</li>
+<li>Helps prevent MITM attack that impersonates owner of public key</li>
+<li>Information in Digital Certificate
+<ul>
+<li>Owner's name / alias</li>
+<li>Owner's public key</li>
+<li>Issuer's Name</li>
+<li>Issuer's digital signature</li>
+<li>Digital Certificate's serial no</li>
+<li>Expiration date of public key</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="public-key-infrastructure-pki">Public Key Infrastructure (PKI)</h3>
+<h3 id="managing-digital-certificates">Managing Digital Certificates</h3>
+<ul>
+<li>Technologies used for managing digital certificates
+<ul>
+<li>Certificate Authority (CA)</li>
+<li>Registration Authority (RA)</li>
+<li>Certificate Revocation List (CRL)</li>
+<li>Certificate Repository (CR)</li>
+<li>Web Browser</li>
+</ul>
+</li>
+</ul>
+<h3 id="certificate-authority">Certificate Authority</h3>
+<ul>
+<li>Trusted Third Party</li>
+<li>Responsible for issuing digital certificates</li>
+<li>Can be internal or external organisation</li>
+<li>Duties
+<ul>
+<li>Generate, issue and distribute Public Key Certificates</li>
+<li>Distribute CA certificates</li>
+<li>Generate and Publish certificate status info</li>
+<li>Provide a means for subscribers to request revocation</li>
+<li>Revoke public-key certificates</li>
+<li>Maintain security, availabiloty, and continuity of certificate issuance signing functions</li>
+</ul>
+</li>
+<li>Subscriber requesting digital certificate
+<ul>
+<li>Generate public and private keys</li>
+<li>Send public key to CA</li>
+<li>CA may in some instance create keys</li>
+<li>CA inserts public key into certificate</li>
+<li>Certificates are digitally signed with private key of issuing CA</li>
+</ul>
+</li>
+</ul>
+<h3 id="registration-authority-ra">Registration Authority (RA)</h3>
+<ul>
+<li>Subordinate entity designed to handle specific CA tasks
+<ul>
+<li>offloading registration functions create improved workflow for CA</li>
+</ul>
+</li>
+<li>Duties
+<ul>
+<li>Receive, authenticate, process certificate revocation requests</li>
+<li>Identify and authenticate subscribers</li>
+</ul>
+</li>
+</ul>
+<h3 id="certificate-revocation-list-crl">Certificate Revocation List (CRL)</h3>
+<ul>
+<li>Lists digital certificates that have been revoked</li>
+<li>Reasons for revoke
+<ul>
+<li>Certificate no longer used</li>
+<li>Details of certificate changed, such as user's address</li>
+<li>Private key has been lost / exposed</li>
+</ul>
+</li>
+</ul>
+<h3 id="certificate-repository-cr">Certificate Repository (CR)</h3>
+<ul>
+<li>Publicly accessible centralized directory of digital certificates</li>
+<li>Used to view certificate status</li>
+<li>Can be managed locally as a storage area connected to CA server</li>
+<li>Can be made available through a web browser interface</li>
+</ul>
+<h3 id="managing-digital-certificates">Managing Digital Certificates</h3>
+<ul>
+<li>Web browser management
+<ul>
+<li>Modern web prosers preconfigured with default list of CAs</li>
+</ul>
+</li>
+<li>Advantages
+<ul>
+<li>Users can take advantage of digital certifcates without need ot manually load information</li>
+<li>Users do not need to install CRL manually
+<ul>
+<li>Automatic updates feature will install them automatically</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="tyoes-of-digital-certificates">Tyoes of Digital Certificates</h3>
+<ul>
+<li>DIfferent categories
+<ul>
+<li>Class 1-5
+<ul>
+<li>Class 1  - Personal Certificate</li>
+<li>Class 2  - Server Certificate</li>
+<li>Class 3  - Software publisher Certificate</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Other uses
+<ul>
+<li>Secure communication between clients and servers by encrypting channels</li>
+<li>Encrypt messages for secure internet email communication</li>
+<li>Verify identity of clients and servers on web</li>
+<li>Verify source and integrity of signed executable code</li>
+</ul>
+</li>
+</ul>
+<h3 id="x509-digital-certificate-standard">X.509 Digital Certificate Standard</h3>
+<ul>
+<li>Standard for most widely accepted format of digital certificate</li>
+</ul>
+<h3 id="public-key-cryptogtaphy-standards-pkcs">Public KEy Cryptogtaphy Standards (PKCS)</h3>
+<ul>
+<li>Numbered set of PKI standards defined by RSA corporation
+<ul>
+<li>Widely accepted in industry</li>
+<li>Based on RSA algorithm</li>
+</ul>
+</li>
+</ul>
+<h2 id="cryptographic-hash-functions">Cryptographic Hash Functions</h2>
+<ul>
+<li>Used for creating a unique digital fingerprint for set of data
+<ul>
+<li>Output of hash function cannot be used to reveal original data set</li>
+<li>Primarily used for comparison purposes</li>
+</ul>
+</li>
+<li>Data Integrity
+<ul>
+<li>Send message digest along with messsage</li>
+<li>If hash match, data is unaltered</li>
+</ul>
+</li>
+<li>Unsalted vs Salted
+<ul>
+<li>When salt is added, even if both people have same password, hash output is different</li>
+</ul>
+</li>
+</ul>
+<h3 id="characteristics-of-cryptographic-hash-functions">Characteristics of Cryptographic Hash Functions</h3>
+<ul>
+<li>Secure hashing algorithm characteristics
+<ul>
+<li>Fixed Size
+<ul>
+<li>Short and long data sets have same size hash</li>
+</ul>
+</li>
+<li>Unique
+<ul>
+<li>2 different data sets cannot produce same hash</li>
+</ul>
+</li>
+<li>Original
+<ul>
+<li>Dataset cannot be created to have predefined hash</li>
+</ul>
+</li>
+<li>Secure
+<ul>
+<li>Resulting hash cannot be reversed to determine original plaintext</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="example-of-hash-function">Example of Hash Function</h3>
+<ul>
+<li>ATM
+<ul>
+<li>Bank customer has PIN of 93542</li>
+<li>No is hashed and stored in magnetic stripe</li>
+<li>User inserts card and enters pin</li>
+<li>ATM hashes pin using same algorithm that was used to store PIN on card</li>
+<li>If values match, user may access ATM</li>
+</ul>
+</li>
+</ul>
+<h3 id="popular-hash-functions">Popular hash functions</h3>
+<ul>
+<li>Message Digest 5
+<ul>
+<li>Weakness on compression function could lead to collisions</li>
+</ul>
+</li>
+<li>Secure Hash Algorithm(SHA)
+<ul>
+<li>More secure than MD</li>
+<li>No Weakness identified</li>
+<li>SHA-1, 2, 3
+<ul>
+<li>SHA-1 to be phased out by 2017</li>
+</ul>
+</li>
+<li>SHA-2
+<ul>
+<li>Consists of 6 hash functions with digest (hash values) that are 224,256,384,512 bits</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="digital-signature">Digital Signature</h2>
+<ul>
+<li>Verifies the sender
+<ul>
+<li>Authentication</li>
+</ul>
+</li>
+<li>Prevents sender from disowning message
+<ul>
+<li>Non-Repudiation</li>
+</ul>
+</li>
+<li>Proves message integrity
+<ul>
+<li>Integrity</li>
+</ul>
+</li>
+</ul>
+<h3 id="how-to-digitally-sign-message">How to digitally sign message</h3>
+<p><em>done by me</em></p>
+<ul>
+<li>Message to hash algoritm</li>
+<li>Message digest to be encrypted by sender's private key --&gt; digital signature</li>
+<li>Attach Digital Signature to message --&gt; Digitally signed message</li>
+<li>Digitally signed message send to receiver</li>
+</ul>
+<h3 id="verify-digitally-signed-message">Verify digitally signed message</h3>
+<p><em>done by me</em></p>
+<ul>
+<li>Hash message and get the message digest --&gt; MD1</li>
+<li>Decrypt the digital signature with sender's public key --&gt; MD2</li>
+<li>Compare MD1 and MD2</li>
+</ul>
+<h3 id="code-signing">Code Signing</h3>
+<ul>
+<li>Process that software publishers use to publish code over internet</li>
+<li>Ensure that code is from authentic publisher and also ensure integrity of code after it was published</li>
+<li>Advantages
+<ul>
+<li>Authentication - Verify who author of software is</li>
+<li>Integrity - Verify software hasn't been tampered with</li>
+</ul>
+</li>
+<li>Provides ability to trust updates
+<ul>
+<li>If update is released and is signed using same key as original, update can be trusted as it couldn't have come from elsewhere</li>
+<li>All major operating systems and web browsers support code signing
+<ul>
+<li>use code signing to ensure malicious code cannot be distributed through patch system</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="referential-integrity">Referential Integrity</h2>
+<ul>
+<li>Integrity assurance of data, especially in relational database management system(RDBMS) is made possible by referential integrity - ensures data is not left in orphaned state</li>
+<li>uses primary keys and related foreign keys in the database to assure data integrity</li>
+<li>Eg: If customer orders are tied to a customer and the customer is deleted/updated from the database, the order records must be deleted/updated as well (cascading deletes/updates)</li>
+<li>Failure to have referential integrity would lead to order (child) records existing in the database without being tied to a customer (parent)</li>
+</ul>
+<h2 id="resource-locking">Resource Locking</h2>
+<ul>
+<li>Used to assure data or information integrity</li>
+<li>When 2 concurrent operations are not allowed on same object, because 1 of the operations locks that record from allowing any changes to it, until it completes its operation, it is known as resource locking</li>
+<li>If resource locking protection is not properly designed, it can lead to potential deadlocks and DoS</li>
+<li>Deadlock is condition where 2 operations are racing each other to change state of shared object and each is waiting for other to release object</li>
+</ul>
+<h2 id="availability-techniques">Availability Techniques</h2>
+<h3 id="failover">Failover</h3>
+<ul>
+<li>Automatic switching from active transactional software/server/system/hardware component to standby/redundant system</li>
+<li>To assure high availability using failover techniques, important that all potential single points of failure are addressed in the design of the software solution</li>
+<li>eliminate potential single point of failure by single database server in data tier by adding a server to the data tier and creating a failover cluster from existing database server, the new server, and shared storage device</li>
+</ul>
+<h3 id="replication">Replication</h3>
+<ul>
+<li>Single point of failure is characterized by having no redundancy capabilities and this can affect end-users when failure occurs</li>
+<li>By replicatint data, databases and software across multiple computer systems, a degree of redundancy is made possible</li>
+<li>Replication usually follows a master-slave or primary-secondary backup scheme in which there is one master or primary node and updates are propagated to the slaves or secondary node either actively or passively</li>
+<li>Active replication implies that updates are made to both the master and slave systems at the same time.</li>
+<li>In the case of Active/Passive replication, the updates are made to the master node first and then the replicas are pushed the changes subsequently.</li>
+<li>When replication of data is concerned, special considerations need to be given to address the integrity of data as well, especially in active/passive replication schemes.</li>
+</ul>
+<h3 id="scalability">Scalability</h3>
+<ul>
+<li>In computing, scalability is the ability of the system or software to handle increasing amount of work without degradation in its functionality or performance.</li>
+<li>Vertical Scaling
+<ul>
+<li>Additioal resources added to existing node
+<ul>
+<li>Adding additional memory and storage to existing application server</li>
+<li>Increase the cnonection pool settings to handle greater connections to backend Database</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Horizontal Scaling
+<ul>
+<li>Newer nodes are added to existing nodes
+<ul>
+<li>Installing additional copies of same software</li>
+<li>Add proxy cache server to existing deployment of application and web servers from 1 to 2 or more</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="authentication-design">Authentication Design</h2>
+<h3 id="multi-factor-authentication">Multi-Factor Authentication</h3>
+<ul>
+<li>Multi-factor or the use of more than one factor to authenticate a principal (user or resource) provides heightened security and is recommended.
+<ul>
+<li>Eg - Validate fingerprint (something u are) and pin code (something u know) before granting access provides more defense in depth than merely using username and password (something u know)</li>
+</ul>
+</li>
+</ul>
+<h3 id="single-sign-on-sso">Single Sign On (SSO)</h3>
+<ul>
+<li>principal’s asserted identity is verified once and the verified credentials are passed on to other systems or applications, usually using tokens, then it is crucial to factor into the design of the software both the performance impact and its security.</li>
+<li>SSO simplifies credential management and improves user experiences and performance because the principal’s credential is verified only once.</li>
+<li>Improper design of SSO can result in security breaches that have colossal consequences. A breach at any point in the application flow can lead to total compromise</li>
+</ul>
+<h3 id="federation">Federation</h3>
+<ul>
+<li>Extends SSO across enterprises</li>
+<li>In federated system, individual can log into 1 site and access services at another affiliated site without having to log in each time or re-establish identity</li>
+</ul>
+<h2 id="key-secure-design-principles">Key Secure Design Principles</h2>
+<h3 id="least-privilege">Least Privilege</h3>
+<ul>
+<li>Security principle in which a person or process is given only minimum level of access rights that is necessary for person / process to complete assigned operation. This right must be given only for a minimum amount of time that is necessary to complete the operation.</li>
+</ul>
+<h3 id="separation-of-duties">Separation of Duties</h3>
+<ul>
+<li>AKA compartmentalization principle / separation of privilege</li>
+<li>security principle which states that the successful completion of a single task is dependent upon two or more conditions that need to be met and just one of the conditions will be insufficient in completing the task by itself.</li>
+</ul>
+<h3 id="defense-in-depth">Defense in Depth</h3>
+<ul>
+<li>AKA layered defence</li>
+<li>security principle where single points of complete compromise are eliminated or mitigated by the incorporation of a series or multiple layers of security safeguards and risk-mitigation countermeasures.</li>
+</ul>
+<h3 id="fail-safe">Fail Safe</h3>
+<ul>
+<li>aims to maintain confidentiality, integrity and availability by defaulting to a secure state, rapid recovery of software resiliency upon design or implementation failure</li>
+<li>fail secure is commonly used interchangeably with fail safe, which comes from physical security terminology.</li>
+</ul>
+<h3 id="economy-of-mechanisms">Economy of Mechanisms</h3>
+<ul>
+<li>Keep it simple</li>
+<li>the likelihood of a greater number of vulnerabilities increases with the complexity of the software architectural design and code</li>
+<li>By keeping the software design and implementation details simple, the attackability or attack surface of the software is reduced</li>
+</ul>
+<h3 id="complete-mediation">Complete Mediation</h3>
+<ul>
+<li>Ensures that authority is not circumvented in subsequent requests of an object by a subject, by checking for authorization (rights and privileges) upon every request for the object</li>
+<li>The access requests by a subject for an object is completed mediated each time, every time.</li>
+</ul>
+<h3 id="open-design">Open Design</h3>
+<ul>
+<li>Implementation details of the design should be independent of the design itself, which can remain open</li>
+<li>unlike in the case of security by obscurity wherein the security of the software is dependent upon the obscuring of the design itself</li>
+<li>When software is architected using the open design concept, the review of the design itself will not result in the compromise of the safeguards in the software.</li>
+</ul>
+<h3 id="least-common-mechanisms">Least Common Mechanisms</h3>
+<ul>
+<li>disallows the sharing of mechanisms that are common to more than one user or process if the users and processes are at different levels of privilege</li>
+<li>Eg the use of the same function to retrieve the bonus amount of an exempt employee and a non-exempt employee will not be allowed.
+<ul>
+<li>calculation of the bonus is the common mechanism.</li>
+</ul>
+</li>
+</ul>
+<h3 id="psychological-acceptability">Psychological Acceptability</h3>
+<ul>
+<li>maximizing the usage and adoption of the security functionality in the software by ensuring that the security functionality is easy to use and at the same time transparent to the user</li>
+<li>Ease of use and transparency are essential requirements for this security principle to be effective</li>
+</ul>
+<h3 id="weakest-link">Weakest Link</h3>
+<ul>
+<li>resiliency of your software against hacker attempts will depend heavily on the protection of its weakest components, be it the code, service or an interface</li>
+</ul>
+<h3 id="leveraging-existing-components">Leveraging Existing Components</h3>
+<ul>
+<li>focuses on ensuring that the attack surface is not increased and no new vulnerabilities are introduced by promoting the reuse of existing software components, code and functionality.h</li>
 </ul>
 
     </body>

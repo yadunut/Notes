@@ -4,14 +4,14 @@
 
 - [Networking Infrastructure](#networking-infrastructure)
 - [Chapter 1 - Overview](#chapter-1---overview)
-  - [Transmission Media & Network Cables](#transmission-media-network-cables)
+  - [Transmission Media & Network Cables](#transmission-media--network-cables)
   - [OSI 7 Layers](#osi-7-layers)
   - [Structured Cabling](#structured-cabling)
     - [Demarcation Point](#demarcation-point)
     - [Equipment Room (ER)](#equipment-room-er)
     - [Telecommunications Room (TR)](#telecommunications-room-tr)
-    - [Backbone / Vertical Cabling](#backbone---vertical-cabling)
-    - [Distribution / Horizontal Cabling](#distribution---horizontal-cabling)
+    - [Backbone / Vertical Cabling](#backbone--vertical-cabling)
+    - [Distribution / Horizontal Cabling](#distribution--horizontal-cabling)
     - [Work Area](#work-area)
       - [Servicing Work Area](#servicing-work-area)
 - [Chapter 2 - Ethernet Switching](#chapter-2---ethernet-switching)
@@ -90,6 +90,24 @@
     - [Classless](#classless)
     - [Address Notation](#address-notation)
     - [IP Prefix](#ip-prefix)
+- [Chapter 7 - Virtual Lan](#chapter-7---virtual-lan)
+  - [VLANs and Broadcast Domains](#vlans-and-broadcast-domains)
+  - [LAN vs VLAN](#lan-vs-vlan)
+  - [VLAN Membership](#vlan-membership)
+  - [Create VLANs](#create-vlans)
+    - [Static VLAN](#static-vlan)
+    - [Dynamic VLAN](#dynamic-vlan)
+  - [Grouping User](#grouping-user)
+    - [Port-Based (Layer 1)](#port-based-layer-1)
+    - [MAC-Address (Layer 2)](#mac-address-layer-2)
+    - [Network Protocol Based (Layer 3)](#network-protocol-based-layer-3)
+    - [Application](#application)
+  - [VLAN across the backbone](#vlan-across-the-backbone)
+  - [Frame Tagging](#frame-tagging)
+    - [Tag](#tag)
+  - [Routers role in VLAN](#routers-role-in-vlan)
+  - [Layer 3 switch](#layer-3-switch)
+  - [Reasons for VLAN](#reasons-for-vlan)
 
 # Chapter 1 - Overview
 
@@ -419,7 +437,7 @@ Too lazy to fill this up
 
 - `show ip protocols`
   - shows information about routing protocols and networks it is being used for
-- `router rip` 
+- `router rip`
   - goes to RIP config mode and sets RIP as routing protocol
 - `network <network-address>`
   - enables RIP for the given network
@@ -455,7 +473,7 @@ Too lazy to fill this up
 
 ## ping
 
-- Tests whether another host on TCP/IP network is reachable. 
+- Tests whether another host on TCP/IP network is reachable.
 - Round trip times are reported
 
 ## Tracert
@@ -482,7 +500,7 @@ Too lazy to fill this up
 
 ## ssh
 
-- Secure Shell is network protocol to allow remote login and other network services 
+- Secure Shell is network protocol to allow remote login and other network services
 - Secure over unsecured network
 - Replacement for telnet
 
@@ -628,3 +646,153 @@ Too lazy to fill this up
 
 - represent subnet mask as prefix rather than mask
 - prefix represents no of network / subnet bits
+
+# Chapter 7 - Virtual Lan
+
+## VLANs and Broadcast Domains
+
+Switch can put some interfaces into 1 Broadcast domain(**LAN**) and some into another, creating multiple broadcast domains
+
+1 switch, multiple broadcast domains
+
+## LAN vs VLAN
+
+VLANS
+
+- Control network broadcast without routers
+- Allow Users to be assigned by network admin
+- Provide tighter network security by defining which node can communicate with each other
+
+## VLAN Membership
+
+VLANs are formed using switches that support VLAN
+
+- Users are grouped logically by function, department, or application in use
+- Configuration through Software
+- Membership defined by network admin
+
+## Create VLANs
+
+### Static VLAN
+
+Ports on a switch are manually assigned to a VLAN
+
+Benefits
+
+- Secure, easy to configure and monitor
+- Works well in networks where moves are configured
+
+### Dynamic VLAN
+
+- Switch ports can automatically determine a users VLAN based on
+  - MAC
+  - Logical Address
+  - Prototype Type
+- Move host from 1 port on 1 switch to a port on another switch in the same network, the switch dynamically assigns the new port to the proper VLAN for the host
+
+Benefits
+
+- Less administration when users are added or moved
+- Centralized notification of unauthorized user
+
+## Grouping User
+
+- Logically segment users into different subnets
+- Broadcast frames are only switched between ports on the switch with the same VLAN ID
+- Ussers can be logically grouped vis *Software* based on
+  - port no
+  - MAC addres
+  - Network protocol used
+  - Application being used
+
+### Port-Based (Layer 1)
+
+- Groups switch ports.
+- Can group together ports from different switches
+- Does not allow mobility
+- Need to reconfigure VLAN membership each time user moves from 1 port to another
+
+### MAC-Address (Layer 2)
+
+- Defined by list of MAC addresses
+- Group by MAC Address
+- User Mobility
+- Client & server always on same VLAN regardless of location
+- Problem
+  - Too many addresses need to be entered and managed in VLAN Management Policy Server
+  - Performance Degradatin
+
+### Network Protocol Based (Layer 3)
+
+- Take into consideration of Layer 3 protocol type
+  - E.g. IP (Type 0x80)
+- Known as virtual subnet
+- inspects packet's IP to determine VLAN membership
+- Stations do not belong to VLAN, packets do
+- User mobility
+- Problem
+  - Slow Performance due to inspection of packet
+
+### Application
+
+- Different VLAN for different application services
+  - E.g. FTP --> VLAN 1, SSH --> VLAN2
+- Service based VLANs
+  - All workstations using e-mail server are on email VLAN
+- Need high level of automated configuration features
+
+## VLAN across the backbone
+
+- VLAN config needs to support backbone(*trunk*) transport of data cross multiple switches
+- Trunk is used for inter switch communication
+- Trunk should be high speed links - 1000 Mbps or greater
+
+## Frame Tagging
+
+- Specified by IEEE 802.1Q stating frame tagging is preferred way to implement VLAN
+- Assigns VLAN ID to each frame before forwarded across backbone
+- Places a tag in the frame and thus, frame tagging
+- Removed by switch after frame exits backbone
+
+### Tag
+
+- Mofified Ethernet II frmae by adding 4 byte tag between source MAC address & Type field
+- First 2 of the 4 Bytes contain 8100(Hex) to indicate a tag frame. (TAG protocol ID)
+- Last 2 bytes contain the Tag Control Information
+  - Priority Code Point PCP, (3 bits) - Indicate priority of frame
+  - Canonical Format Indicator, CFI (1 bit) - 1 = Cannot be sent to ethernet ports that do not support tagging
+  - VLAN identifier, VID (12 bits) - 0 = does not belong to any VLAN, FFF is reserved, 4094 numbers for VLAN
+
+## Routers role in VLAN
+
+- Router provides connection between VLANs
+- Users on seperate VLANs cannot communicate with one another
+- Router is needed for communication
+
+## Layer 3 switch
+
+- Layer 2 switch that can perform routing functions
+
+## Reasons for VLAN
+
+- Control broadcasts
+  - Routers provide effective firewall against broadcasts
+  - VLAN can extend routers firewall capabilities to the switch level
+  - Smaller VLAN = smaller no of users affected by broadcasts
+- Allow flexible design
+  - Allow flexible designs that group users by department or by groups that work together, instead of by physical location
+- Make changes easier
+  - Travelling Users
+    - 20%-40% of work force moves every year
+    - VLANs provide way to control costs
+    - If user moved to new location but still need to belong to same VLAN
+      - Configure new switch port to the VLAN
+      - router config remains intact
+- Improves security
+  - Confining broadcast to users in same VLAN
+  - Restricting no of users in VLAN
+  - Prevent user access without authorization
+  - Control access by
+    - addresses
+    - protocol types
+    - application types

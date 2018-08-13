@@ -124,6 +124,20 @@
 - [Chapter 9 - Windows Server - Managing Users, Gruops, Computer](#chapter-9---windows-server---managing-users-gruops-computer)
   - [User Account](#user-account)
     - [Types of User Accounts](#types-of-user-accounts)
+    - [Create User account](#create-user-account)
+  - [Group Account](#group-account)
+    - [Group Types](#group-types)
+  - [Best Practices](#best-practices)
+- [Chapter 10 - Windows Server - Resource Management](#chapter-10---windows-server---resource-management)
+  - [NTFS Permissions](#ntfs-permissions)
+    - [NTFS Permission Inheritance](#ntfs-permission-inheritance)
+    - [Effective Permission](#effective-permission)
+    - [Best Practices for NTFS Permissions](#best-practices-for-ntfs-permissions)
+  - [Shared Folders](#shared-folders)
+    - [Share Permissions](#share-permissions)
+    - [Combining Share and NTFS Permissions](#combining-share-and-ntfs-permissions)
+- [Group Policy Management](#group-policy-management)
+  - [What](#what)
 
 # Chapter 1 - Overview
 
@@ -941,9 +955,9 @@ Benefits
 
 ### Types of User Accounts
 
-| Local                                           | Domain                                                        |
-| :---------------------------------------------: | :-----------------------------------------------------------: |
-| Maintained on Local system, not **distributed** | Created within DC in AD database, propagated to all other ADs |
+| Local                                                                                                | Domain                                                                                           |
+| :--------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: |
+| Maintained on Local system, not **distributed**                                                      | Created within DC in AD database, propagated to all other ADs                                    |
 | Authenticate user for only local macine access, access to resources on other computers not supported | Once authenticated against AD, user gets Access Token, which determines permissions to resources |
 
 ### Create User account
@@ -984,4 +998,67 @@ Benefits
   - Create groups that reflect organisation
 - Disable accounts that will not be used immediately
 - Require users to change passwords the first time they logon
+
+# Chapter 10 - Windows Server - Resource Management
+
+## NTFS Permissions
+
+- Affects files/folders on NTFS formatted drives
+- affects both local and remote users
+- permissions inherited by default
+- Can be set by owner, user with full control, or modify permission
+
+### NTFS Permission Inheritance
+
+- Explicit Permission
+  - Access Control rules that directly apply to object
+- Implicit Permission
+  - Access rules defined for parent object, propagated down to the object
+- Explicit permissions **override** implicit permissions
+
+### Effective Permission
+
+- User and Group NTFS are additive (combine for least restrictive) except when **Deny Override Allow**
+- When user belongs in multiple group, least restrictive wins, except when specifically denied. Then Deny override allow
+
+### Best Practices for NTFS Permissions
+
+- Grant permission to group instead of user
+  - Assign Sales users to "Sales" group, then assign permission to sales group
+  - Easily add to or remove members from group without making security changes
+- Use understandable names for resources
+- Create logical hierarchy of folders based on business requirements
+- Grant Users only the permission they require
+
+## Shared Folders
+
+- Provide access to files / folders over network
+- Place $ sign after share name to hide it
+  - E.g. hiddenshare$
+
+### Share Permissions
+
+- Apply only to user accessing resource over network
+- When accessing locally, only NTFS permissions apply
+- All files and subfolders within shared folder are shared with same permissions
+
+### Combining Share and NTFS Permissions
+
+- When combining share and NTFS permissions, always choose most restrictive combination
+  - E.g. 
+    - James has Read share permission
+    - James has modify NTFS permission at file system level
+    - Effective Permission: Only able to read the file
+
+# Group Policy Management
+
+## What
+
+- Allows administrators to manage and apply configuration settings centrally
+
+Benefits
+
+- Reduce admin effort for IT staff
+- Admins can configure settings once, then group policy settings apply continuously to users / computers
+- Good policy will give greater productivity for users and reduce time spent solving problems
 

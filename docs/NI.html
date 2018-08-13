@@ -2,15 +2,15 @@
     <html>
     <head>
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-alpha/dist/katex.min.css" integrity="sha384-BTL0nVi8DnMrNdMQZG1Ww6yasK9ZGnUxL1ZWukXQ7fygA1py52yPp9W4wrR00VML" crossorigin="anonymous">
         <style>
-/*--------------------------------------------------------------------------------------------- * Copyright (c) Microsoft Corporation. All rights reserved. * Licensed under the MIT License. See License.txt in the project root for license information. *--------------------------------------------------------------------------------------------*/ body { font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback"; font-size: 14px; padding: 0 12px; line-height: 22px; word-wrap: break-word; } body.scrollBeyondLastLine { margin-bottom: calc(100vh - 22px); } body.showEditorSelection .code-line { position: relative; } body.showEditorSelection .code-active-line:before, body.showEditorSelection .code-line:hover:before { content: ""; display: block; position: absolute; top: 0; left: -12px; height: 100%; } body.showEditorSelection li.code-active-line:before, body.showEditorSelection li.code-line:hover:before { left: -30px; } .vscode-light.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(0, 0, 0, 0.15); } .vscode-light.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(0, 0, 0, 0.40); } .vscode-dark.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 255, 255, 0.4); } .vscode-dark.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 255, 255, 0.60); } .vscode-high-contrast.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 160, 0, 0.7); } .vscode-high-contrast.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 160, 0, 1); } img { max-width: 100%; max-height: 100%; } a { color: #4080D0; text-decoration: none; } a:focus, input:focus, select:focus, textarea:focus { outline: 1px solid -webkit-focus-ring-color; outline-offset: -1px; } hr { border: 0; height: 2px; border-bottom: 2px solid; } h1 { padding-bottom: 0.3em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; } h1, h2, h3 { font-weight: normal; } h1 code, h2 code, h3 code, h4 code, h5 code, h6 code { font-size: inherit; line-height: auto; } a:hover { color: #4080D0; text-decoration: underline; } table { border-collapse: collapse; } table > thead > tr > th { text-align: left; border-bottom: 1px solid; } table > thead > tr > th, table > thead > tr > td, table > tbody > tr > th, table > tbody > tr > td { padding: 5px 10px; } table > tbody > tr + tr > td { border-top: 1px solid; } blockquote { margin: 0 7px 0 5px; padding: 0 16px 0 10px; border-left: 5px solid; } code { font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback"; font-size: 14px; line-height: 19px; } body.wordWrap pre { white-space: pre-wrap; } .mac code { font-size: 12px; line-height: 18px; } code > div { padding: 16px; border-radius: 3px; overflow: auto; } /** Theming */ .vscode-light { color: rgb(30, 30, 30); } .vscode-dark { color: #DDD; } .vscode-high-contrast { color: white; } .vscode-light code { color: #A31515; } .vscode-dark code { color: #D7BA7D; } .vscode-light code > div { background-color: rgba(220, 220, 220, 0.4); } .vscode-dark code > div { background-color: rgba(10, 10, 10, 0.4); } .vscode-high-contrast code > div { background-color: rgb(0, 0, 0); } .vscode-high-contrast h1 { border-color: rgb(0, 0, 0); } .vscode-light table > thead > tr > th { border-color: rgba(0, 0, 0, 0.69); } .vscode-dark table > thead > tr > th { border-color: rgba(255, 255, 255, 0.69); } .vscode-light h1, .vscode-light hr, .vscode-light table > tbody > tr + tr > td { border-color: rgba(0, 0, 0, 0.18); } .vscode-dark h1, .vscode-dark hr, .vscode-dark table > tbody > tr + tr > td { border-color: rgba(255, 255, 255, 0.18); } .vscode-light blockquote, .vscode-dark blockquote { background: rgba(127, 127, 127, 0.1); border-color: rgba(0, 122, 204, 0.5); } .vscode-high-contrast blockquote { background: transparent; border-color: #fff; }
+/*--------------------------------------------------------------------------------------------- * Copyright (c) Microsoft Corporation. All rights reserved. * Licensed under the MIT License. See License.txt in the project root for license information. *--------------------------------------------------------------------------------------------*/ body { font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback"; font-size: 14px; padding: 0 26px; line-height: 22px; word-wrap: break-word; } #code-csp-warning { position: fixed; top: 0; right: 0; color: white; margin: 16px; text-align: center; font-size: 12px; font-family: sans-serif; background-color:#444444; cursor: pointer; padding: 6px; box-shadow: 1px 1px 1px rgba(0,0,0,.25); } #code-csp-warning:hover { text-decoration: none; background-color:#007acc; box-shadow: 2px 2px 2px rgba(0,0,0,.25); } body.scrollBeyondLastLine { margin-bottom: calc(100vh - 22px); } body.showEditorSelection .code-line { position: relative; } body.showEditorSelection .code-active-line:before, body.showEditorSelection .code-line:hover:before { content: ""; display: block; position: absolute; top: 0; left: -12px; height: 100%; } body.showEditorSelection li.code-active-line:before, body.showEditorSelection li.code-line:hover:before { left: -30px; } .vscode-light.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(0, 0, 0, 0.15); } .vscode-light.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(0, 0, 0, 0.40); } .vscode-light.showEditorSelection .code-line .code-line:hover:before { border-left: none; } .vscode-dark.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 255, 255, 0.4); } .vscode-dark.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 255, 255, 0.60); } .vscode-dark.showEditorSelection .code-line .code-line:hover:before { border-left: none; } .vscode-high-contrast.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 160, 0, 0.7); } .vscode-high-contrast.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 160, 0, 1); } .vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before { border-left: none; } img { max-width: 100%; max-height: 100%; } a { text-decoration: none; } a:hover { text-decoration: underline; } a:focus, input:focus, select:focus, textarea:focus { outline: 1px solid -webkit-focus-ring-color; outline-offset: -1px; } hr { border: 0; height: 2px; border-bottom: 2px solid; } h1 { padding-bottom: 0.3em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; } h1, h2, h3 { font-weight: normal; } h1 code, h2 code, h3 code, h4 code, h5 code, h6 code { font-size: inherit; line-height: auto; } table { border-collapse: collapse; } table > thead > tr > th { text-align: left; border-bottom: 1px solid; } table > thead > tr > th, table > thead > tr > td, table > tbody > tr > th, table > tbody > tr > td { padding: 5px 10px; } table > tbody > tr + tr > td { border-top: 1px solid; } blockquote { margin: 0 7px 0 5px; padding: 0 16px 0 10px; border-left-width: 5px; border-left-style: solid; } code { font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback"; font-size: 14px; line-height: 19px; } body.wordWrap pre { white-space: pre-wrap; } .mac code { font-size: 12px; line-height: 18px; } pre:not(.hljs), pre.hljs code > div { padding: 16px; border-radius: 3px; overflow: auto; } /** Theming */ pre code { color: var(--vscode-editor-foreground); } .vscode-light pre:not(.hljs), .vscode-light code > div { background-color: rgba(220, 220, 220, 0.4); } .vscode-dark pre:not(.hljs), .vscode-dark code > div { background-color: rgba(10, 10, 10, 0.4); } .vscode-high-contrast pre:not(.hljs), .vscode-high-contrast code > div { background-color: rgb(0, 0, 0); } .vscode-high-contrast h1 { border-color: rgb(0, 0, 0); } .vscode-light table > thead > tr > th { border-color: rgba(0, 0, 0, 0.69); } .vscode-dark table > thead > tr > th { border-color: rgba(255, 255, 255, 0.69); } .vscode-light h1, .vscode-light hr, .vscode-light table > tbody > tr + tr > td { border-color: rgba(0, 0, 0, 0.18); } .vscode-dark h1, .vscode-dark hr, .vscode-dark table > tbody > tr + tr > td { border-color: rgba(255, 255, 255, 0.18); } 
 </style>
 <style>
 /* Tomorrow Theme */ /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */ /* Original theme - https://github.com/chriskempson/tomorrow-theme */ /* Tomorrow Comment */ .hljs-comment, .hljs-quote { color: #8e908c; } /* Tomorrow Red */ .hljs-variable, .hljs-template-variable, .hljs-tag, .hljs-name, .hljs-selector-id, .hljs-selector-class, .hljs-regexp, .hljs-deletion { color: #c82829; } /* Tomorrow Orange */ .hljs-number, .hljs-built_in, .hljs-builtin-name, .hljs-literal, .hljs-type, .hljs-params, .hljs-meta, .hljs-link { color: #f5871f; } /* Tomorrow Yellow */ .hljs-attribute { color: #eab700; } /* Tomorrow Green */ .hljs-string, .hljs-symbol, .hljs-bullet, .hljs-addition { color: #718c00; } /* Tomorrow Blue */ .hljs-title, .hljs-section { color: #4271ae; } /* Tomorrow Purple */ .hljs-keyword, .hljs-selector-tag { color: #8959a8; } .hljs { display: block; overflow-x: auto; color: #4d4d4c; padding: 0.5em; } .hljs-emphasis { font-style: italic; } .hljs-strong { font-weight: bold; }
 </style>
 <style>
-ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-left: 40px; } .task-list-item { list-style-type: none; } .task-list-item-checkbox { vertical-align: middle; }
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
 </style>
         <style>
             body {
@@ -27,15 +27,15 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <li><a href="#networking-infrastructure">Networking Infrastructure</a></li>
 <li><a href="#chapter-1---overview">Chapter 1 - Overview</a>
 <ul>
-<li><a href="#transmission-media-network-cables">Transmission Media &amp; Network Cables</a></li>
+<li><a href="#transmission-media--network-cables">Transmission Media &amp; Network Cables</a></li>
 <li><a href="#osi-7-layers">OSI 7 Layers</a></li>
 <li><a href="#structured-cabling">Structured Cabling</a>
 <ul>
 <li><a href="#demarcation-point">Demarcation Point</a></li>
 <li><a href="#equipment-room-er">Equipment Room (ER)</a></li>
 <li><a href="#telecommunications-room-tr">Telecommunications Room (TR)</a></li>
-<li><a href="#backbone---vertical-cabling">Backbone / Vertical Cabling</a></li>
-<li><a href="#distribution---horizontal-cabling">Distribution / Horizontal Cabling</a></li>
+<li><a href="#backbone--vertical-cabling">Backbone / Vertical Cabling</a></li>
+<li><a href="#distribution--horizontal-cabling">Distribution / Horizontal Cabling</a></li>
 <li><a href="#work-area">Work Area</a>
 <ul>
 <li><a href="#servicing-work-area">Servicing Work Area</a></li>
@@ -175,9 +175,96 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </li>
 </ul>
 </li>
+<li><a href="#chapter-7---virtual-lan">Chapter 7 - Virtual Lan</a>
+<ul>
+<li><a href="#vlans-and-broadcast-domains">VLANs and Broadcast Domains</a></li>
+<li><a href="#lan-vs-vlan">LAN vs VLAN</a></li>
+<li><a href="#vlan-membership">VLAN Membership</a></li>
+<li><a href="#create-vlans">Create VLANs</a>
+<ul>
+<li><a href="#static-vlan">Static VLAN</a></li>
+<li><a href="#dynamic-vlan">Dynamic VLAN</a></li>
+</ul>
+</li>
+<li><a href="#grouping-user">Grouping User</a>
+<ul>
+<li><a href="#port-based-layer-1">Port-Based (Layer 1)</a></li>
+<li><a href="#mac-address-layer-2">MAC-Address (Layer 2)</a></li>
+<li><a href="#network-protocol-based-layer-3">Network Protocol Based (Layer 3)</a></li>
+<li><a href="#application">Application</a></li>
+</ul>
+</li>
+<li><a href="#vlan-across-the-backbone">VLAN across the backbone</a></li>
+<li><a href="#frame-tagging">Frame Tagging</a>
+<ul>
+<li><a href="#tag">Tag</a></li>
+</ul>
+</li>
+<li><a href="#routers-role-in-vlan">Routers role in VLAN</a></li>
+<li><a href="#layer-3-switch">Layer 3 switch</a></li>
+<li><a href="#reasons-for-vlan">Reasons for VLAN</a></li>
+</ul>
+</li>
+<li><a href="#chapter-8---active-directory-ad">Chapter 8 - Active Directory (AD)</a>
+<ul>
+<li><a href="#ad-as-a-database">AD as a Database</a>
+<ul>
+<li><a href="#objects-and-object-classes">Objects and Object Classes</a></li>
+</ul>
+</li>
+<li><a href="#containers">Containers</a></li>
+<li><a href="#domain">Domain</a></li>
+<li><a href="#domain-controller-dc">Domain Controller (DC)</a></li>
+<li><a href="#tree">Tree</a></li>
+<li><a href="#forest">Forest</a></li>
+<li><a href="#organisational-unitsous">Organisational Units(OUs)</a></li>
+<li><a href="#ad-and-internet">AD and Internet</a></li>
+<li><a href="#ad-technology">AD Technology</a></li>
+<li><a href="#ad-and-windows-servers">AD and Windows Servers</a></li>
+<li><a href="#ad-relication-advantages-and-disadvantages">AD Relication Advantages and Disadvantages</a></li>
+</ul>
+</li>
+<li><a href="#chapter-9---windows-server---managing-users-gruops-computer">Chapter 9 - Windows Server - Managing Users, Gruops, Computer</a>
+<ul>
+<li><a href="#user-account">User Account</a>
+<ul>
+<li><a href="#types-of-user-accounts">Types of User Accounts</a></li>
+<li><a href="#create-user-account">Create User account</a></li>
+</ul>
+</li>
+<li><a href="#group-account">Group Account</a>
+<ul>
+<li><a href="#group-types">Group Types</a></li>
+</ul>
+</li>
+<li><a href="#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li><a href="#chapter-10---windows-server---resource-management">Chapter 10 - Windows Server - Resource Management</a>
+<ul>
+<li><a href="#ntfs-permissions">NTFS Permissions</a>
+<ul>
+<li><a href="#ntfs-permission-inheritance">NTFS Permission Inheritance</a></li>
+<li><a href="#effective-permission">Effective Permission</a></li>
+<li><a href="#best-practices-for-ntfs-permissions">Best Practices for NTFS Permissions</a></li>
+</ul>
+</li>
+<li><a href="#shared-folders">Shared Folders</a>
+<ul>
+<li><a href="#share-permissions">Share Permissions</a></li>
+<li><a href="#combining-share-and-ntfs-permissions">Combining Share and NTFS Permissions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#group-policy-management">Group Policy Management</a>
+<ul>
+<li><a href="#what">What</a></li>
+</ul>
+</li>
 </ul>
 <h1 id="chapter-1---overview">Chapter 1 - Overview</h1>
-<h2 id="transmission-media-network-cables">Transmission Media &amp; Network Cables</h2>
+<h2 id="transmission-media--network-cables">Transmission Media &amp; Network Cables</h2>
 <ul>
 <li>Twisted Pair</li>
 <li>Optical Fibre</li>
@@ -244,7 +331,7 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <li>ER feeds to one or more TRs</li>
 <li>TRs are where backbone cabling transitions to horizontal cabling</li>
 </ul>
-<h3 id="backbone---vertical-cabling">Backbone / Vertical Cabling</h3>
+<h3 id="backbone--vertical-cabling">Backbone / Vertical Cabling</h3>
 <ul>
 <li>Any cabling between ER and another TR throughout the facility
 <ul>
@@ -255,7 +342,7 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </li>
 <li>Usually Fibre Optic cables</li>
 </ul>
-<h3 id="distribution---horizontal-cabling">Distribution / Horizontal Cabling</h3>
+<h3 id="distribution--horizontal-cabling">Distribution / Horizontal Cabling</h3>
 <ul>
 <li>Distributes cables from TR to work areas
 <ul>
@@ -620,7 +707,7 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 </ul>
 <h3 id="advantage">Advantage</h3>
 <ul>
-<li>Easier to debug and less bandwith-intensive than distance-vectors</li>
+<li>Easier to debug and less bandwidth-intensive than distance-vectors</li>
 <li>Faster convergence time (react quickly to topology changes</li>
 </ul>
 <h3 id="disadvantage">Disadvantage</h3>
@@ -797,12 +884,12 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <li>No of borrowed bits dependent on <strong>no of subnets required</strong> and <strong>max no of hosts per subnet</strong></li>
 <li>Formula to find <em>no of host bits to borrow</em> is
 <ul>
-<li>No of required subnets &lt; = <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mi>s</mi><mi>u</mi><mi>b</mi><mi>n</mi><mi>e</mi><mi>t</mi><mi>b</mi><mi>i</mi><mi>t</mi><mi>s</mi></mrow></msup></mrow><annotation encoding="application/x-tex">2^{subnet bits}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.849108em;"></span><span class="strut bottom" style="height:0.849108em;vertical-align:0em;"></span><span class="base"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathit mtight">s</span><span class="mord mathit mtight">u</span><span class="mord mathit mtight">b</span><span class="mord mathit mtight">n</span><span class="mord mathit mtight">e</span><span class="mord mathit mtight">t</span><span class="mord mathit mtight">b</span><span class="mord mathit mtight">i</span><span class="mord mathit mtight">t</span><span class="mord mathit mtight">s</span></span></span></span></span></span></span></span></span></span></span></span> - 2</li>
+<li>No of required subnets &lt; = <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mi>s</mi><mi>u</mi><mi>b</mi><mi>n</mi><mi>e</mi><mi>t</mi><mi>b</mi><mi>i</mi><mi>t</mi><mi>s</mi></mrow></msup></mrow><annotation encoding="application/x-tex">2^{subnet bits}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathit mtight">s</span><span class="mord mathit mtight">u</span><span class="mord mathit mtight">b</span><span class="mord mathit mtight">n</span><span class="mord mathit mtight">e</span><span class="mord mathit mtight">t</span><span class="mord mathit mtight">b</span><span class="mord mathit mtight">i</span><span class="mord mathit mtight">t</span><span class="mord mathit mtight">s</span></span></span></span></span></span></span></span></span></span></span></span> - 2</li>
 </ul>
 </li>
 <li>Formula to find <em>no of usable hosts per subnet</em> is
 <ul>
-<li>Usable hosts per subnet = <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mi>h</mi></msup></mrow><annotation encoding="application/x-tex">2^h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.849108em;"></span><span class="strut bottom" style="height:0.849108em;vertical-align:0em;"></span><span class="base"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">h</span></span></span></span></span></span></span></span></span></span></span> - 2
+<li>Usable hosts per subnet = <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mi>h</mi></msup></mrow><annotation encoding="application/x-tex">2^h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">h</span></span></span></span></span></span></span></span></span></span></span> - 2
 <ul>
 <li>h = remaining host bits</li>
 </ul>
@@ -864,6 +951,543 @@ ul.contains-task-list { padding-left: 0; } ul ul.contains-task-list { padding-le
 <ul>
 <li>represent subnet mask as prefix rather than mask</li>
 <li>prefix represents no of network / subnet bits</li>
+</ul>
+<h1 id="chapter-7---virtual-lan">Chapter 7 - Virtual Lan</h1>
+<h2 id="vlans-and-broadcast-domains">VLANs and Broadcast Domains</h2>
+<p>Switch can put some interfaces into 1 Broadcast domain(<strong>LAN</strong>) and some into another, creating multiple broadcast domains</p>
+<p>1 switch, multiple broadcast domains</p>
+<h2 id="lan-vs-vlan">LAN vs VLAN</h2>
+<p>VLANS</p>
+<ul>
+<li>Control network broadcast without routers</li>
+<li>Allow Users to be assigned by network admin</li>
+<li>Provide tighter network security by defining which node can communicate with each other</li>
+</ul>
+<h2 id="vlan-membership">VLAN Membership</h2>
+<p>VLANs are formed using switches that support VLAN</p>
+<ul>
+<li>Users are grouped logically by function, department, or application in use</li>
+<li>Configuration through Software</li>
+<li>Membership defined by network admin</li>
+</ul>
+<h2 id="create-vlans">Create VLANs</h2>
+<h3 id="static-vlan">Static VLAN</h3>
+<p>Ports on a switch are manually assigned to a VLAN</p>
+<p>Benefits</p>
+<ul>
+<li>Secure, easy to configure and monitor</li>
+<li>Works well in networks where moves are configured</li>
+</ul>
+<h3 id="dynamic-vlan">Dynamic VLAN</h3>
+<ul>
+<li>Switch ports can automatically determine a users VLAN based on
+<ul>
+<li>MAC</li>
+<li>Logical Address</li>
+<li>Prototype Type</li>
+</ul>
+</li>
+<li>Move host from 1 port on 1 switch to a port on another switch in the same network, the switch dynamically assigns the new port to the proper VLAN for the host</li>
+</ul>
+<p>Benefits</p>
+<ul>
+<li>Less administration when users are added or moved</li>
+<li>Centralized notification of unauthorized user</li>
+</ul>
+<h2 id="grouping-user">Grouping User</h2>
+<ul>
+<li>Logically segment users into different subnets</li>
+<li>Broadcast frames are only switched between ports on the switch with the same VLAN ID</li>
+<li>Ussers can be logically grouped vis <em>Software</em> based on
+<ul>
+<li>port no</li>
+<li>MAC addres</li>
+<li>Network protocol used</li>
+<li>Application being used</li>
+</ul>
+</li>
+</ul>
+<h3 id="port-based-layer-1">Port-Based (Layer 1)</h3>
+<ul>
+<li>Groups switch ports.</li>
+<li>Can group together ports from different switches</li>
+<li>Does not allow mobility</li>
+<li>Need to reconfigure VLAN membership each time user moves from 1 port to another</li>
+</ul>
+<h3 id="mac-address-layer-2">MAC-Address (Layer 2)</h3>
+<ul>
+<li>Defined by list of MAC addresses</li>
+<li>Group by MAC Address</li>
+<li>User Mobility</li>
+<li>Client &amp; server always on same VLAN regardless of location</li>
+<li>Problem
+<ul>
+<li>Too many addresses need to be entered and managed in VLAN Management Policy Server</li>
+<li>Performance Degradatin</li>
+</ul>
+</li>
+</ul>
+<h3 id="network-protocol-based-layer-3">Network Protocol Based (Layer 3)</h3>
+<ul>
+<li>Take into consideration of Layer 3 protocol type
+<ul>
+<li>E.g. IP (Type 0x80)</li>
+</ul>
+</li>
+<li>Known as virtual subnet</li>
+<li>inspects packet's IP to determine VLAN membership</li>
+<li>Stations do not belong to VLAN, packets do</li>
+<li>User mobility</li>
+<li>Problem
+<ul>
+<li>Slow Performance due to inspection of packet</li>
+</ul>
+</li>
+</ul>
+<h3 id="application">Application</h3>
+<ul>
+<li>Different VLAN for different application services
+<ul>
+<li>E.g. FTP --&gt; VLAN 1, SSH --&gt; VLAN2</li>
+</ul>
+</li>
+<li>Service based VLANs
+<ul>
+<li>All workstations using e-mail server are on email VLAN</li>
+</ul>
+</li>
+<li>Need high level of automated configuration features</li>
+</ul>
+<h2 id="vlan-across-the-backbone">VLAN across the backbone</h2>
+<ul>
+<li>VLAN config needs to support backbone(<em>trunk</em>) transport of data cross multiple switches</li>
+<li>Trunk is used for inter switch communication</li>
+<li>Trunk should be high speed links - 1000 Mbps or greater</li>
+</ul>
+<h2 id="frame-tagging">Frame Tagging</h2>
+<ul>
+<li>Specified by IEEE 802.1Q stating frame tagging is preferred way to implement VLAN</li>
+<li>Assigns VLAN ID to each frame before forwarded across backbone</li>
+<li>Places a tag in the frame and thus, frame tagging</li>
+<li>Removed by switch after frame exits backbone</li>
+</ul>
+<h3 id="tag">Tag</h3>
+<ul>
+<li>Mofified Ethernet II frmae by adding 4 byte tag between source MAC address &amp; Type field</li>
+<li>First 2 of the 4 Bytes contain 8100(Hex) to indicate a tag frame. (TAG protocol ID)</li>
+<li>Last 2 bytes contain the Tag Control Information
+<ul>
+<li>Priority Code Point PCP, (3 bits) - Indicate priority of frame</li>
+<li>Canonical Format Indicator, CFI (1 bit) - 1 = Cannot be sent to ethernet ports that do not support tagging</li>
+<li>VLAN identifier, VID (12 bits) - 0 = does not belong to any VLAN, FFF is reserved, 4094 numbers for VLAN</li>
+</ul>
+</li>
+</ul>
+<h2 id="routers-role-in-vlan">Routers role in VLAN</h2>
+<ul>
+<li>Router provides connection between VLANs</li>
+<li>Users on seperate VLANs cannot communicate with one another</li>
+<li>Router is needed for communication</li>
+</ul>
+<h2 id="layer-3-switch">Layer 3 switch</h2>
+<ul>
+<li>Layer 2 switch that can perform routing functions</li>
+</ul>
+<h2 id="reasons-for-vlan">Reasons for VLAN</h2>
+<ul>
+<li>Control broadcasts
+<ul>
+<li>Routers provide effective firewall against broadcasts</li>
+<li>VLAN can extend routers firewall capabilities to the switch level</li>
+<li>Smaller VLAN = smaller no of users affected by broadcasts</li>
+</ul>
+</li>
+<li>Allow flexible design
+<ul>
+<li>Allow flexible designs that group users by department or by groups that work together, instead of by physical location</li>
+</ul>
+</li>
+<li>Make changes easier
+<ul>
+<li>Travelling Users
+<ul>
+<li>20%-40% of work force moves every year</li>
+<li>VLANs provide way to control costs</li>
+<li>If user moved to new location but still need to belong to same VLAN
+<ul>
+<li>Configure new switch port to the VLAN</li>
+<li>router config remains intact</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Improves security
+<ul>
+<li>Confining broadcast to users in same VLAN</li>
+<li>Restricting no of users in VLAN</li>
+<li>Prevent user access without authorization</li>
+<li>Control access by
+<ul>
+<li>addresses</li>
+<li>protocol types</li>
+<li>application types</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="chapter-8---active-directory-ad">Chapter 8 - Active Directory (AD)</h1>
+<ul>
+<li>Provides directory service infrastructure - help organizations manage resources through the network</li>
+<li>Contains objects and resources like users, groups, computer accounts,</li>
+<li>Requires DNS</li>
+<li>Provides
+<ul>
+<li>Authorization &amp; Authentication</li>
+<li>Queries &amp; Update of directory</li>
+<li>distribution of directory access across multiple servers</li>
+<li>Partitioning directory</li>
+<li>Replicating directory</li>
+</ul>
+</li>
+</ul>
+<h2 id="ad-as-a-database">AD as a Database</h2>
+<ul>
+<li>Maintains physical data store</li>
+<li>Client-server model</li>
+<li>Service level interface, enables users and processes to query and update data</li>
+<li>Objects and Classes</li>
+<li>Schema</li>
+</ul>
+<h3 id="objects-and-object-classes">Objects and Object Classes</h3>
+<ul>
+<li>AD contains info about objects</li>
+<li>Each object is instance of object class
+<ul>
+<li>Computer</li>
+<li>User</li>
+<li>Group</li>
+<li>Shared Files / Directory</li>
+<li>Policies</li>
+</ul>
+</li>
+<li>Each object class has properties</li>
+</ul>
+<h2 id="containers">Containers</h2>
+<ul>
+<li>Every object is either a container or leaf object</li>
+<li>Leaf Object
+<ul>
+<li>Users</li>
+<li>Computer</li>
+<li>Printer</li>
+</ul>
+</li>
+<li>Container object contains other leaf / containers</li>
+</ul>
+<h2 id="domain">Domain</h2>
+<ul>
+<li>Container object</li>
+<li>Independent unit of security</li>
+<li>Distinct Database</li>
+<li>Internet name</li>
+<li>1 or more Domain Controllers</li>
+</ul>
+<h2 id="domain-controller-dc">Domain Controller (DC)</h2>
+<ul>
+<li>Maintains local AD copy</li>
+<li>Authentication and Authorization</li>
+<li>Shares info with other domain controllers</li>
+</ul>
+<h2 id="tree">Tree</h2>
+<ul>
+<li>Array of DCs that share contiguous namespace</li>
+<li>Made up of 1 or more domains</li>
+</ul>
+<h2 id="forest">Forest</h2>
+<ul>
+<li>Collection of trees</li>
+<li>Hirarchy of domains forming contiguous or disjoint namespace</li>
+</ul>
+<h2 id="organisational-unitsous">Organisational Units(OUs)</h2>
+<ul>
+<li>
+<p>Domain contains OUs</p>
+</li>
+<li>
+<p>AD objects that serve as containers for objects</p>
+</li>
+<li>
+<p>Created to reflect business and technical needs</p>
+</li>
+<li>
+<p>Benefit</p>
+<ul>
+<li>Allow administrators to easily organize and manage AD objects</li>
+</ul>
+</li>
+<li>
+<p>Main use of OUs</p>
+<ul>
+<li>Delegation - Delegate user in OU to do specific task</li>
+<li>Group Policy - Can apply policies to group of users</li>
+</ul>
+</li>
+</ul>
+<h2 id="ad-and-internet">AD and Internet</h2>
+<ul>
+<li>Each AD must have internet name
+<ul>
+<li>Client access AD servers via Internet standard names</li>
+<li>TCP/IP is standard internet protocol, also the standard Windows Server protocol</li>
+</ul>
+</li>
+</ul>
+<h2 id="ad-technology">AD Technology</h2>
+<ul>
+<li>LDAP - Lightweight Directory Access Protocol
+<ul>
+<li>Internet standard for directory access</li>
+</ul>
+</li>
+<li>X.500
+<ul>
+<li>Internet standard for directory structure, content and access</li>
+<li>AD Follows standard for structure and content, but not for access</li>
+</ul>
+</li>
+<li>DNS - Domain Name System
+<ul>
+<li>Internet standard for object naming</li>
+<li>All AD Domains are DNS host names</li>
+</ul>
+</li>
+</ul>
+<h2 id="ad-and-windows-servers">AD and Windows Servers</h2>
+<ul>
+<li>Stand-alone Server
+<ul>
+<li>No relationship to AD server, has only local machine accounts and resources. - Secure, not scalable</li>
+</ul>
+</li>
+<li>Member Server
+<ul>
+<li>Member of AD, but no local copies of AD service - Typically manages specific resource(Website / DB) in multiple server environment</li>
+</ul>
+</li>
+<li>Domain Controller
+<ul>
+<li>Stores a local copy of the AD database</li>
+<li>Syncs changes with other DCs</li>
+</ul>
+</li>
+</ul>
+<h2 id="ad-relication-advantages-and-disadvantages">AD Relication Advantages and Disadvantages</h2>
+<ul>
+<li>Advantage
+<ul>
+<li>Fault Tolerance</li>
+<li>Improved Performance in widely distrobuted networks</li>
+<li>Scalable</li>
+</ul>
+</li>
+<li>Disadvantage
+<ul>
+<li>Cost - Hardware, License</li>
+<li>Sync delays</li>
+<li>Sync bandwidth</li>
+</ul>
+</li>
+</ul>
+<h1 id="chapter-9---windows-server---managing-users-gruops-computer">Chapter 9 - Windows Server - Managing Users, Gruops, Computer</h1>
+<h2 id="user-account">User Account</h2>
+<ul>
+<li>To access Windows Server, user needs account</li>
+<li>Account determine 3 factors
+<ul>
+<li>When user can logon</li>
+<li>where within the domain</li>
+<li>Priviledge level a user is assigned</li>
+</ul>
+</li>
+<li>Each account has a <strong>SID</strong>(Secure ID)</li>
+<li>Any object accessing resource must do through user account</li>
+</ul>
+<h3 id="types-of-user-accounts">Types of User Accounts</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Local</th>
+<th style="text-align:center">Domain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Maintained on Local system, not <strong>distributed</strong></td>
+<td style="text-align:center">Created within DC in AD database, propagated to all other ADs</td>
+</tr>
+<tr>
+<td style="text-align:center">Authenticate user for only local macine access, access to resources on other computers not supported</td>
+<td style="text-align:center">Once authenticated against AD, user gets Access Token, which determines permissions to resources</td>
+</tr>
+</tbody>
+</table>
+<h3 id="create-user-account">Create User account</h3>
+<ul>
+<li>User Active Directory Users and Computers (ADUC) Tool</li>
+</ul>
+<h2 id="group-account">Group Account</h2>
+<ul>
+<li>
+<p>AD object that contains users, and other containers</p>
+</li>
+<li>
+<p>Have SID</p>
+</li>
+<li>
+<p>Using groups, administrators can quickly and easily make changes that can affect many users</p>
+</li>
+<li>
+<p>Simplify Administration by assigning permissions for resources</p>
+</li>
+<li>
+<p>User can belong to multiple groups</p>
+</li>
+<li>
+<p>Groups can contain other groups</p>
+</li>
+<li>
+<p>Users rights and privileges are cumulative</p>
+</li>
+<li>
+<p>Combination of all permissions that are assigned to user account and any permission to the groups</p>
+</li>
+<li>
+<p>Recommended practice</p>
+<ul>
+<li>Assign users to groups and give permission to the group</li>
+</ul>
+</li>
+</ul>
+<h3 id="group-types">Group Types</h3>
+<ul>
+<li>Security Group
+<ul>
+<li>Assign permission or user rights to group that need access to resourcse</li>
+</ul>
+</li>
+<li>Distribution group
+<ul>
+<li>For Email Messaging. Cannot be assigned permission or user rights</li>
+</ul>
+</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<ul>
+<li>Create Naming Convention
+<ul>
+<li>Use First initial and last full name of employee as username</li>
+<li>Group for temporary users begin with &quot;temp-sales&quot;</li>
+</ul>
+</li>
+<li>Rename Administrator account
+<ul>
+<li>Everyone knows administrator account name is administrator</li>
+</ul>
+</li>
+<li>Assign users to groups and assign permissions to group
+<ul>
+<li>Reduce effort required to grant permission to group</li>
+</ul>
+</li>
+<li>Design group structure and assign permission to groups
+<ul>
+<li>Create groups that reflect organisation</li>
+</ul>
+</li>
+<li>Disable accounts that will not be used immediately</li>
+<li>Require users to change passwords the first time they logon</li>
+</ul>
+<h1 id="chapter-10---windows-server---resource-management">Chapter 10 - Windows Server - Resource Management</h1>
+<h2 id="ntfs-permissions">NTFS Permissions</h2>
+<ul>
+<li>Affects files/folders on NTFS formatted drives</li>
+<li>affects both local and remote users</li>
+<li>permissions inherited by default</li>
+<li>Can be set by owner, user with full control, or modify permission</li>
+</ul>
+<h3 id="ntfs-permission-inheritance">NTFS Permission Inheritance</h3>
+<ul>
+<li>Explicit Permission
+<ul>
+<li>Access Control rules that directly apply to object</li>
+</ul>
+</li>
+<li>Implicit Permission
+<ul>
+<li>Access rules defined for parent object, propagated down to the object</li>
+</ul>
+</li>
+<li>Explicit permissions <strong>override</strong> implicit permissions</li>
+</ul>
+<h3 id="effective-permission">Effective Permission</h3>
+<ul>
+<li>User and Group NTFS are additive (combine for least restrictive) except when <strong>Deny Override Allow</strong></li>
+<li>When user belongs in multiple group, least restrictive wins, except when specifically denied. Then Deny override allow</li>
+</ul>
+<h3 id="best-practices-for-ntfs-permissions">Best Practices for NTFS Permissions</h3>
+<ul>
+<li>Grant permission to group instead of user
+<ul>
+<li>Assign Sales users to &quot;Sales&quot; group, then assign permission to sales group</li>
+<li>Easily add to or remove members from group without making security changes</li>
+</ul>
+</li>
+<li>Use understandable names for resources</li>
+<li>Create logical hierarchy of folders based on business requirements</li>
+<li>Grant Users only the permission they require</li>
+</ul>
+<h2 id="shared-folders">Shared Folders</h2>
+<ul>
+<li>Provide access to files / folders over network</li>
+<li>Place $ sign after share name to hide it
+<ul>
+<li>E.g. hiddenshare$</li>
+</ul>
+</li>
+</ul>
+<h3 id="share-permissions">Share Permissions</h3>
+<ul>
+<li>Apply only to user accessing resource over network</li>
+<li>When accessing locally, only NTFS permissions apply</li>
+<li>All files and subfolders within shared folder are shared with same permissions</li>
+</ul>
+<h3 id="combining-share-and-ntfs-permissions">Combining Share and NTFS Permissions</h3>
+<ul>
+<li>When combining share and NTFS permissions, always choose most restrictive combination
+<ul>
+<li>E.g.
+<ul>
+<li>James has Read share permission</li>
+<li>James has modify NTFS permission at file system level</li>
+<li>Effective Permission: Only able to read the file</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="group-policy-management">Group Policy Management</h1>
+<h2 id="what">What</h2>
+<ul>
+<li>Allows administrators to manage and apply configuration settings centrally</li>
+</ul>
+<p>Benefits</p>
+<ul>
+<li>Reduce admin effort for IT staff</li>
+<li>Admins can configure settings once, then group policy settings apply continuously to users / computers</li>
+<li>Good policy will give greater productivity for users and reduce time spent solving problems</li>
 </ul>
 
     </body>

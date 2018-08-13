@@ -108,8 +108,22 @@
   - [Routers role in VLAN](#routers-role-in-vlan)
   - [Layer 3 switch](#layer-3-switch)
   - [Reasons for VLAN](#reasons-for-vlan)
-- [Chapter 7 - Active Directory](#chapter-7---active-directory)
+- [Chapter 8 - Active Directory (AD)](#chapter-8---active-directory-ad)
   - [AD as a Database](#ad-as-a-database)
+    - [Objects and Object Classes](#objects-and-object-classes)
+  - [Containers](#containers)
+  - [Domain](#domain)
+  - [Domain Controller (DC)](#domain-controller-dc)
+  - [Tree](#tree)
+  - [Forest](#forest)
+  - [Organisational Units(OUs)](#organisational-unitsous)
+  - [AD and Internet](#ad-and-internet)
+  - [AD Technology](#ad-technology)
+  - [AD and Windows Servers](#ad-and-windows-servers)
+  - [AD Relication Advantages and Disadvantages](#ad-relication-advantages-and-disadvantages)
+- [Chapter 9 - Windows Server - Managing Users, Gruops, Computer](#chapter-9---windows-server---managing-users-gruops-computer)
+  - [User Account](#user-account)
+    - [Types of User Accounts](#types-of-user-accounts)
 
 # Chapter 1 - Overview
 
@@ -912,3 +926,62 @@ Benefits
   - Cost - Hardware, License
   - Sync delays
   - Sync bandwidth
+
+# Chapter 9 - Windows Server - Managing Users, Gruops, Computer
+
+## User Account
+
+- To access Windows Server, user needs account
+- Account determine 3 factors
+  - When user can logon
+  - where within the domain
+  - Priviledge level a user is assigned
+- Each account has a **SID**(Secure ID)
+- Any object accessing resource must do through user account
+
+### Types of User Accounts
+
+| Local                                           | Domain                                                        |
+| :---------------------------------------------: | :-----------------------------------------------------------: |
+| Maintained on Local system, not **distributed** | Created within DC in AD database, propagated to all other ADs |
+| Authenticate user for only local macine access, access to resources on other computers not supported | Once authenticated against AD, user gets Access Token, which determines permissions to resources |
+
+### Create User account
+
+- User Active Directory Users and Computers (ADUC) Tool
+
+## Group Account
+
+- AD object that contains users, and other containers
+- Have SID
+- Using groups, administrators can quickly and easily make changes that can affect many users
+- Simplify Administration by assigning permissions for resources
+- User can belong to multiple groups
+- Groups can contain other groups
+
+- Users rights and privileges are cumulative
+- Combination of all permissions that are assigned to user account and any permission to the groups
+- Recommended practice
+  - Assign users to groups and give permission to the group
+
+### Group Types
+
+- Security Group
+  - Assign permission or user rights to group that need access to resourcse
+- Distribution group
+  - For Email Messaging. Cannot be assigned permission or user rights
+
+## Best Practices
+
+- Create Naming Convention
+  - Use First initial and last full name of employee as username
+  - Group for temporary users begin with "temp-sales"
+- Rename Administrator account
+  - Everyone knows administrator account name is administrator
+- Assign users to groups and assign permissions to group
+  - Reduce effort required to grant permission to group
+- Design group structure and assign permission to groups
+  - Create groups that reflect organisation
+- Disable accounts that will not be used immediately
+- Require users to change passwords the first time they logon
+

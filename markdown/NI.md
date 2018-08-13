@@ -799,7 +799,7 @@ Benefits
     - protocol types
     - application types
 
-# Chapter 7 - Active Directory (AD)
+# Chapter 8 - Active Directory (AD)
 
 - Provides directory service infrastructure - help organizations manage resources through the network
 - Contains objects and resources like users, groups, computer accounts,

@@ -108,6 +108,8 @@
   - [Routers role in VLAN](#routers-role-in-vlan)
   - [Layer 3 switch](#layer-3-switch)
   - [Reasons for VLAN](#reasons-for-vlan)
+- [Chapter 7 - Active Directory](#chapter-7---active-directory)
+  - [AD as a Database](#ad-as-a-database)
 
 # Chapter 1 - Overview
 
@@ -450,7 +452,7 @@ Too lazy to fill this up
 
 ### Advantage
 
-- Easier to debug and less bandwith-intensive than distance-vectors
+- Easier to debug and less bandwidth-intensive than distance-vectors
 - Faster convergence time (react quickly to topology changes
 
 ### Disadvantage
@@ -796,3 +798,117 @@ Benefits
     - addresses
     - protocol types
     - application types
+
+# Chapter 7 - Active Directory (AD)
+
+- Provides directory service infrastructure - help organizations manage resources through the network
+- Contains objects and resources like users, groups, computer accounts,
+- Requires DNS
+- Provides
+  - Authorization & Authentication
+  - Queries & Update of directory
+  - distribution of directory access across multiple servers
+  - Partitioning directory
+  - Replicating directory
+
+## AD as a Database
+
+- Maintains physical data store
+- Client-server model
+- Service level interface, enables users and processes to query and update data
+- Objects and Classes
+- Schema
+
+### Objects and Object Classes
+
+- AD contains info about objects
+- Each object is instance of object class
+  - Computer
+  - User
+  - Group
+  - Shared Files / Directory
+  - Policies
+- Each object class has properties
+
+## Containers
+
+- Every object is either a container or leaf object
+- Leaf Object
+  - Users
+  - Computer
+  - Printer
+- Container object contains other leaf / containers
+
+## Domain
+
+- Container object
+- Independent unit of security
+- Distinct Database
+- Internet name
+- 1 or more Domain Controllers
+
+## Domain Controller (DC)
+
+- Maintains local AD copy
+- Authentication and Authorization
+- Shares info with other domain controllers
+
+## Tree
+
+- Array of DCs that share contiguous namespace
+- Made up of 1 or more domains
+
+## Forest
+
+- Collection of trees
+- Hirarchy of domains forming contiguous or disjoint namespace
+
+## Organisational Units(OUs)
+
+- Domain contains OUs
+- AD objects that serve as containers for objects
+- Created to reflect business and technical needs
+
+- Benefit
+  - Allow administrators to easily organize and manage AD objects
+- Main use of OUs
+  - Delegation - Delegate user in OU to do specific task
+  - Group Policy - Can apply policies to group of users
+
+## AD and Internet
+
+- Each AD must have internet name
+  - Client access AD servers via Internet standard names
+  - TCP/IP is standard internet protocol, also the standard Windows Server protocol
+
+## AD Technology
+
+- LDAP - Lightweight Directory Access Protocol
+  - Internet standard for directory access
+- X.500
+  - Internet standard for directory structure, content and access
+  - AD Follows standard for structure and content, but not for access
+- DNS - Domain Name System
+  - Internet standard for object naming
+  - All AD Domains are DNS host names
+
+## AD and Windows Servers
+
+- Stand-alone Server
+  - No relationship to AD server, has only local machine accounts and resources. - Secure, not scalable
+- Member Server
+  - Member of AD, but no local copies of AD service - Typically manages specific resource(Website / DB) in multiple server environment
+- Domain Controller
+  - Stores a local copy of the AD database
+  - Syncs changes with other DCs
+
+## AD Relication Advantages and Disadvantages
+
+- Advantage
+  - Fault Tolerance
+  - Improved Performance in widely distrobuted networks
+  - Scalable
+- Disadvantage
+  - Cost - Hardware, License
+  - Sync delays
+  - Sync bandwidth

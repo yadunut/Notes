@@ -245,14 +245,63 @@ echo "$name's current record is ${time%./*} seconds and ${time#*.}milliseconds
 echo "PATH currently contains ${PATH//:/, }"
 ```
 
-For the examples below, `url=https://ctf.yadunut.com/page.html`
+For the examples below, `url='https://ctf.yadunut.com/page.html'`
 
-| Operator                                                                                                                | Example         | Result                                                                              |
-| :---------------------------------------------------------------------------------------------------------------------- | :-------------- | :---------------------------------------------------------------------------------- |
-| `${parameter#pattern}`<br>Remove the **shortest** string that matches the `pattern` from the **beginning** of the value | `"${url#*/}"`   | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"/ctf.yadunut.com/page.html"`        |
-| `${parameter##pattern}`<br>Remove the **longest** string that matches the `pattern` from the **beginning** of the value | `"${url##*/}"`  | `"https://ctf.yadunut.com_age.html"<`br>↓<br>`"page.html"`                          |
-| `${parameter%pattern}`<br>Remove the **shortest** string that matches the `pattern` from the **end** of the value       | `"${url%/*}"`   | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https://ctf.yadunut.com"`           |
-| `${parameter%%pattern}`<br>Remove the **longest** string that matches the `pattern` from the **end** of the value       | `"${url%%/*}"`  | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https:"`                            |
-| `${parameter/pattern/replacement}`<br>Replace the **first** string that matches `pattern` with `replacement`            | `"${url/./-}"`  | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https://ctf-yadunut.com/page.html"` |
-| `${parameter//pattern/replacement}`<br>Replace the **each** string that matches `pattern` with `replacement`            | `"${url//./-}"` | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https://ctf-yadunut-com/page-html"` |
-| `${parameter//pattern/replacement}`<br>Replace the **each** string that matches `pattern` with `replacement`            | `"${url//./-}"` | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https://ctf-yadunut-com/page-html"` |
+| Operator                                                                                                                             | Example                | Result                                                                              |
+| :----------------------------------------------------------------------------------------------------------------------------------- | :--------------------- | :---------------------------------------------------------------------------------- |
+| `${parameter#pattern}`<br>Remove the **shortest** string that matches the `pattern` from the **beginning** of the value              | `"${url#*/}"`          | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"/ctf.yadunut.com/page.html"`        |
+| `${parameter##pattern}`<br>Remove the **longest** string that matches the `pattern` from the **beginning** of the value              | `"${url##*/}"`         | `"https://ctf.yadunut.com_age.html"<`br>↓<br>`"page.html"`                          |
+| `${parameter%pattern}`<br>Remove the **shortest** string that matches the `pattern` from the **end** of the value                    | `"${url%/*}"`          | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https://ctf.yadunut.com"`           |
+| `${parameter%%pattern}`<br>Remove the **longest** string that matches the `pattern` from the **end** of the value                    | `"${url%%/*}"`         | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https:"`                            |
+| `${parameter/pattern/replacement}`<br>Replace the **first** string that matches `pattern` with `replacement`                         | `"${url/./-}"`         | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https://ctf-yadunut.com/page.html"` |
+| `${parameter//pattern/replacement}`<br>Replace the **each** string that matches `pattern` with `replacement`                         | `"${url//./-}"`        | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https://ctf-yadunut-com/page-html"` |
+| `${parameter/#pattern/replacement}`<br>Replace the string that matches `pattern` from the **beginning** with `replacement`           | `"${url/#:/http:}"`    | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"http://ctf-yadunut-com/page.html"`  |
+| `${parameter/%pattern/replacement}`<br>Replace the string that matches `pattern` from the **end** with `replacement`                 | `"${url/%.html/.jpg}"` | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"https://ctf-yadunut-com/page.jpg"`  |
+| `${#parameter}`<br> Expand length of value in bytes                                                                                  | `"${#url}"`            | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"33"`                                |
+| `${parameter:start[:length]}`<br> Expand from `start`, to `length` bytes long. Start from end using a **negative value** for `start` | `"${#url:8}"`          | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"ctf.yadunut.com/page.html"`         |
+| `${parameter[^|^^|,|,,][pattern]}`<br> Uppercase/Lowercase first/all characters that match `pattern`.                                | `"${url^^[t]}"`        | `"https://ctf.yadunut.com/page.html"`<br>↓<br>`"hTTps://cTf.yadunuT.com/page.hTml"` |
+
+## Special Parameters
+
+| Parameter | Example                                     | Description                                                                                              |
+| :-------- | :------------------------------------------ | :------------------------------------------------------------------------------------------------------- |
+| `"$*"`    | `echo "Arguments $*"`                       | Expands to a single string, joining all positional params into 1, seperated by `$IFS`(space by default)  |
+| `"$@"`    | `rm "$@"`                                   | Expands positional params into a list of seperate arguments                                              |
+| `"$#"`    | `rm "$@"`                                   | Expands to the number of params available                                                                |
+| `"$?"`    | `(( $? == 0 )) || echo "Error: $?"`         | Expands to exit code of last command that just finished. 0 == sucess, others indicate failure            |
+| `"$-"`    | `[[ $- = *i* ]]`                            | Expands to option flags available in the shell. The example tests whether the i flag exists(Interactive) |
+| `"$-"`    | `[[ $- = *i* ]]`                            | Expands to option flags available in the shell. The example tests whether the i flag exists(Interactive) |
+| `"$$"`    | `echo "$$" > /var/run/myscript.pid`         | Expands to PID of process                                                                                |
+| `"$!"`    | `kill "$!"`                                 | Expands to PID of last process that was started in background                                            |
+| `"$_"`    | `mkdir -p ~/directory/directory && cd "$_"` | Expands to last argument of previous command                                                             |
+
+
+# Arrays
+
+```bash
+files=( "file1" "file2" "file3" )
+rm -v "${files[@]}"
+```
+
+Arrays use the `=( )` assignment operator, with spaces seperating each element in the array
+
+Array Manipulation
+
+```bash
+files=( "file 1" "file 2" "file 3" )
+files+=( "file 4" )  # items can be appended to the array with +=
+files=( *.txt )     # Glob patterns work with arrays too
+echo "${files[1]}" # => file 2
+echo "${files}" # => file 1. If no expansion is given, returns first element
+unset "files[3]" # Unset sets the value of that element to empty. THIS DOES NOT DELETE THE ELEMENT FROM ARRAY
+# Do not use $ in unset as the value is not being expanded. The variable is being accessed
+
+( IFS=','; echo "files are <${files[*]}>." )  # returns the list of files seperated by commas
+# The code is in braces to create a scope where IFS = ','
+
+echo "${files[@]/ /_}" # Changes spaces to underscore for all elements
+
+echo "${#files[@]}" # returns the number of elements in the array
+
+echo "${files[@]:1:2}" # returns the slice
+```

@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <title>Malware Analysis Tools and Techniques</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+        <style>
+/*--------------------------------------------------------------------------------------------- * Copyright (c) Microsoft Corporation. All rights reserved. * Licensed under the MIT License. See License.txt in the project root for license information. *--------------------------------------------------------------------------------------------*/ body { font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback"; font-size: 14px; padding: 0 26px; line-height: 22px; word-wrap: break-word; } #code-csp-warning { position: fixed; top: 0; right: 0; color: white; margin: 16px; text-align: center; font-size: 12px; font-family: sans-serif; background-color:#444444; cursor: pointer; padding: 6px; box-shadow: 1px 1px 1px rgba(0,0,0,.25); } #code-csp-warning:hover { text-decoration: none; background-color:#007acc; box-shadow: 2px 2px 2px rgba(0,0,0,.25); } body.scrollBeyondLastLine { margin-bottom: calc(100vh - 22px); } body.showEditorSelection .code-line { position: relative; } body.showEditorSelection .code-active-line:before, body.showEditorSelection .code-line:hover:before { content: ""; display: block; position: absolute; top: 0; left: -12px; height: 100%; } body.showEditorSelection li.code-active-line:before, body.showEditorSelection li.code-line:hover:before { left: -30px; } .vscode-light.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(0, 0, 0, 0.15); } .vscode-light.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(0, 0, 0, 0.40); } .vscode-light.showEditorSelection .code-line .code-line:hover:before { border-left: none; } .vscode-dark.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 255, 255, 0.4); } .vscode-dark.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 255, 255, 0.60); } .vscode-dark.showEditorSelection .code-line .code-line:hover:before { border-left: none; } .vscode-high-contrast.showEditorSelection .code-active-line:before { border-left: 3px solid rgba(255, 160, 0, 0.7); } .vscode-high-contrast.showEditorSelection .code-line:hover:before { border-left: 3px solid rgba(255, 160, 0, 1); } .vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before { border-left: none; } img { max-width: 100%; max-height: 100%; } a { text-decoration: none; } a:hover { text-decoration: underline; } a:focus, input:focus, select:focus, textarea:focus { outline: 1px solid -webkit-focus-ring-color; outline-offset: -1px; } hr { border: 0; height: 2px; border-bottom: 2px solid; } h1 { padding-bottom: 0.3em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; } h1, h2, h3 { font-weight: normal; } h1 code, h2 code, h3 code, h4 code, h5 code, h6 code { font-size: inherit; line-height: auto; } table { border-collapse: collapse; } table > thead > tr > th { text-align: left; border-bottom: 1px solid; } table > thead > tr > th, table > thead > tr > td, table > tbody > tr > th, table > tbody > tr > td { padding: 5px 10px; } table > tbody > tr + tr > td { border-top: 1px solid; } blockquote { margin: 0 7px 0 5px; padding: 0 16px 0 10px; border-left-width: 5px; border-left-style: solid; } code { font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback"; font-size: 14px; line-height: 19px; } body.wordWrap pre { white-space: pre-wrap; } .mac code { font-size: 12px; line-height: 18px; } pre:not(.hljs), pre.hljs code > div { padding: 16px; border-radius: 3px; overflow: auto; } /** Theming */ pre code { color: var(--vscode-editor-foreground); } .vscode-light pre { background-color: rgba(220, 220, 220, 0.4); } .vscode-dark pre { background-color: rgba(10, 10, 10, 0.4); } .vscode-high-contrast pre { background-color: rgb(0, 0, 0); } .vscode-high-contrast h1 { border-color: rgb(0, 0, 0); } .vscode-light table > thead > tr > th { border-color: rgba(0, 0, 0, 0.69); } .vscode-dark table > thead > tr > th { border-color: rgba(255, 255, 255, 0.69); } .vscode-light h1, .vscode-light hr, .vscode-light table > tbody > tr + tr > td { border-color: rgba(0, 0, 0, 0.18); } .vscode-dark h1, .vscode-dark hr, .vscode-dark table > tbody > tr + tr > td { border-color: rgba(255, 255, 255, 0.18); } 
+</style>
+<style>
+/* https://raw.githubusercontent.com/isagalaev/highlight.js/master/src/styles/vs2015.css */ /* * Visual Studio 2015 dark style * Author: Nicolas LLOBERA <nllobera@gmail.com> */ .hljs-keyword, .hljs-literal, .hljs-symbol, .hljs-name { color: #569CD6; } .hljs-link { color: #569CD6; text-decoration: underline; } .hljs-built_in, .hljs-type { color: #4EC9B0; } .hljs-number, .hljs-class { color: #B8D7A3; } .hljs-string, .hljs-meta-string { color: #D69D85; } .hljs-regexp, .hljs-template-tag { color: #9A5334; } .hljs-subst, .hljs-function, .hljs-title, .hljs-params, .hljs-formula { color: #DCDCDC; } .hljs-comment, .hljs-quote { color: #57A64A; font-style: italic; } .hljs-doctag { color: #608B4E; } .hljs-meta, .hljs-meta-keyword, .hljs-tag { color: #9B9B9B; } .hljs-variable, .hljs-template-variable { color: #BD63C5; } .hljs-attr, .hljs-attribute, .hljs-builtin-name { color: #9CDCFE; } .hljs-section { color: gold; } .hljs-emphasis { font-style: italic; } .hljs-strong { font-weight: bold; } /*.hljs-code { font-family:'Monospace'; }*/ .hljs-bullet, .hljs-selector-tag, .hljs-selector-id, .hljs-selector-class, .hljs-selector-attr, .hljs-selector-pseudo { color: #D7BA7D; } .hljs-addition { background-color: #144212; display: inline-block; width: 100%; } .hljs-deletion { background-color: #600; display: inline-block; width: 100%; } /* From https://raw.githubusercontent.com/isagalaev/highlight.js/master/src/styles/vs.css */ /* Visual Studio-like style based on original C# coloring by Jason Diamond <jason@diamond.name> */ .vscode-light .hljs-function, .vscode-light .hljs-params { color: inherit; } .vscode-light .hljs-comment, .vscode-light .hljs-quote, .vscode-light .hljs-variable { color: #008000; } .vscode-light .hljs-keyword, .vscode-light .hljs-selector-tag, .vscode-light .hljs-built_in, .vscode-light .hljs-name, .vscode-light .hljs-tag { color: #00f; } .vscode-light .hljs-string, .vscode-light .hljs-title, .vscode-light .hljs-section, .vscode-light .hljs-attribute, .vscode-light .hljs-literal, .vscode-light .hljs-template-tag, .vscode-light .hljs-template-variable, .vscode-light .hljs-type, .vscode-light .hljs-addition { color: #a31515; } .vscode-light .hljs-deletion, .vscode-light .hljs-selector-attr, .vscode-light .hljs-selector-pseudo, .vscode-light .hljs-meta { color: #2b91af; } .vscode-light .hljs-doctag { color: #808080; } .vscode-light .hljs-attr { color: #f00; } .vscode-light .hljs-symbol, .vscode-light .hljs-bullet, .vscode-light .hljs-link { color: #00b0e8; } .vscode-light .hljs-emphasis { font-style: italic; } .vscode-light .hljs-strong { font-weight: bold; }
+</style>
+<style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <!-- markdownlint-disable MD025 -->
+<h1 id="malware-analysis-tools-and-techniques">Malware Analysis Tools and Techniques</h1>
+<h1 id="introduction">Introduction</h1>
+<h2 id="malware">Malware</h2>
+<ul>
+<li>Malicious Software
+<ul>
+<li>Used to compromise computer functions</li>
+<li>Steal data</li>
+<li>bypass access controls</li>
+<li>cause harm to host computer</li>
+</ul>
+</li>
+<li>Adware
+<ul>
+<li>Malware that delivers advertisements</li>
+<li>Pop up ads on websites that are displayed by software</li>
+</ul>
+</li>
+<li>Bots
+<ul>
+<li>Programs created to automatically perform specific operations</li>
+</ul>
+</li>
+<li>Bugs
+<ul>
+<li>Flaw that produces undesired outcome</li>
+<li>Security bugs allow attackers to</li>
+<li>Bypass user auth</li>
+<li>Override access privileges</li>
+<li>Steal data</li>
+</ul>
+</li>
+<li>Ransomware
+<ul>
+<li>Holds computer system captive while demanding ransom</li>
+</ul>
+</li>
+<li>Rootkits
+<ul>
+<li>Remotely access/control computer without being detected</li>
+</ul>
+</li>
+<li>Spyware
+<ul>
+<li>Spy on user activity without knowledge</li>
+<li>Activity Monitoring, Keystroke Collection, Data harvesting</li>
+</ul>
+</li>
+<li>Trojan Horses
+<ul>
+<li>Malware which disguises itself as normal program/file to trick users into downloading and installing it</li>
+</ul>
+</li>
+<li>Viruses
+<ul>
+<li>Capable of copying itself and spreading to other computers</li>
+<li>Spread to other computers by attaching to programs and executing code when launched</li>
+</ul>
+</li>
+<li>Worms
+<ul>
+<li>Most common type</li>
+<li>Spread over computer network</li>
+<li>Exploit OS vulnerabilities</li>
+<li>Cause harm by consuming bandwidth and overload web servers</li>
+</ul>
+</li>
+</ul>
+<h2 id="symptoms">Symptoms</h2>
+<ul>
+<li>Increased CPU usage</li>
+<li>Slow computer/web browser speeds</li>
+<li>Problems connecting to networks</li>
+<li>Freezing or crashing</li>
+<li>Modified/Deleted files</li>
+<li>Appearance of strange files/programs/desktop icons</li>
+<li>Progrms running/turning off/reconfiguring themselves</li>
+<li>Stange behaviour</li>
+<li>Emails/messages sent automatically without user knowledge</li>
+</ul>
+<h2 id="malware-analysis-techniques">Malware Analysis Techniques</h2>
+<ul>
+<li>Basic Static Analysis
+<ul>
+<li>Examining executable file without viewing actual instructions</li>
+<li>confirms whether file is malicious, provide info on functionality</li>
+<li>Provide info to produce simple network signatures</li>
+<li>Straightforward and quick, but ineffective against complex malware</li>
+</ul>
+</li>
+<li>Basic Dynamic Analysis
+<ul>
+<li>Involve running malware and observing behaviour on system</li>
+<li>To remove infection</li>
+<li>Produce effective signatures</li>
+<li>Needs safe environment to run (VM)</li>
+</ul>
+</li>
+<li>Advanced Static Analysis
+<ul>
+<li>Reverse Engineering malware internals by loading into disassembler</li>
+<li>Looking at program instructions to discover what program does</li>
+<li>Tells you exactly what program does</li>
+<li>Stepper learning curve than basic static and requires specialized knowledge of disassembly, code constructs, windows OS concepts</li>
+</ul>
+</li>
+<li>Advanced Dynamic Analysis
+<ul>
+<li>Uses debugger to examine internal state of running malicious executable</li>
+<li>Provide another way to extract info from executable</li>
+<li>Most useful when obtaining information that is difficult from other techniques</li>
+</ul>
+</li>
+</ul>
+<h1 id="analysing-windows-malware">Analysing Windows Malware</h1>
+<ul>
+<li>Windows is most popular OS</li>
+<li>Malware interacts with OS via API to exectute code</li>
+<li>Uses its own name to represent C types</li>
+<li>Word(w)
+<ul>
+<li>16 bits</li>
+</ul>
+</li>
+<li>DWord(dw)
+<ul>
+<li>32 Bit</li>
+</ul>
+</li>
+<li>Handles(H)
+<ul>
+<li>Reference to object. Information stored in handles is not documented and should be manipulated only by Windows API</li>
+<li>Items that have been opened by OS such as windows, process, module, file</li>
+<li>Pointers and point to location in memory</li>
+<li>Can only be stored. Arithmetic operations cannot be performed</li>
+<li>E.g CreateWindowEx returns handle to window: HWND</li>
+<li>E.g HModule, HInstance, HKey</li>
+</ul>
+</li>
+<li>Long Pointer(LP)
+<ul>
+<li>Pointer to another type</li>
+<li>E.g LPByte is pointer to byte</li>
+<li>LPCStr pointer to cstring</li>
+</ul>
+</li>
+<li>Callback
+<ul>
+<li>Function that will be called by windows API</li>
+<li>E.g InternetSetStatusCallback passes a pointer to function that is called when system has update of internet status.</li>
+</ul>
+</li>
+</ul>
+<h2 id="file-system-functions">File System Functions</h2>
+<ul>
+<li>CreateFile
+<ul>
+<li>Creates or Opens files</li>
+<li>Open existing files/pipes/streams/IO devices</li>
+</ul>
+</li>
+<li>ReadFile/WriteFile
+<ul>
+<li>Read/write to files</li>
+<li>Operate on files as a stream</li>
+<li>First time ReadFile is called, first n bytes is read</li>
+<li>Next call, next n bytes read</li>
+</ul>
+</li>
+<li>CreateFileMapping and MapViewOfFile
+<ul>
+<li>Allow file to be loaded in memory to be manipulated</li>
+<li>Commonly used in malware as it allows for easy manipulation</li>
+<li>CreateFileMapping - Loads file from disk to memory</li>
+<li>MapViewOfFile returns pointer to base addr of mapping which is used to access file</li>
+<li>Pointer to the base addr can be used to read/write file and jump around easily</li>
+<li>Useful for parsing files</li>
+</ul>
+</li>
+</ul>
+<h2 id="special-files">Special Files</h2>
+<ul>
+<li>Can be accessed like regular files but without drive letters/folders</li>
+<li>Stealthier than regular files as they dont show up in directory listings</li>
+<li>Shared Files
+<ul>
+<li>\serverName\share</li>
+</ul>
+</li>
+<li>Files accessed via Namespace
+<ul>
+<li>\.\PhysicalDisk1(where \.\ is namespace for win32 device)</li>
+<li>Allows direct access to disk bypassing the file system</li>
+<li>Malware can write to unallocated space on disk</li>
+</ul>
+</li>
+<li>Alternate Data Streams(ADS) allow additional data to be added to NTFS file
+<ul>
+<li>Can add one file to another as a alternate stream</li>
+<li>Additional stream does not show up in directory listing</li>
+<li>ADS is named according to convention normalFile.txt:Strean:$DATA</li>
+<li>Allows program to read and write to a stream</li>
+<li>ADS can be used to hide data.</li>
+</ul>
+</li>
+</ul>
+<h2 id="windows-registry">Windows Registry</h2>
+<ul>
+<li>Used to store OS and program config info such as settings and options</li>
+<li>Good source of host-based indicators</li>
+<li>hierarchical database of info to improve performance</li>
+<li>Nearly all windows configs are in the registries
+<ul>
+<li>Networking, drivers, startup, user accounts</li>
+</ul>
+</li>
+<li>Malware uses registry for
+<ul>
+<li>Persistence</li>
+<li>Configuration</li>
+</ul>
+</li>
+</ul>
+<h2 id="registry-terms">Registry Terms</h2>
+<ul>
+<li>Root Key
+<ul>
+<li>Registry is divided into 5 top level sections called root key/hives</li>
+<li>term HKEY</li>
+</ul>
+</li>
+<li>Sub Key
+<ul>
+<li>Like a Subfolder</li>
+</ul>
+</li>
+<li>Key
+<ul>
+<li>It's folder that can contain other folder</li>
+<li>Root key and sub keys are both keys</li>
+</ul>
+</li>
+<li>Value entry
+<ul>
+<li>Ordered pair with a name and value</li>
+</ul>
+</li>
+<li>Value/data
+<ul>
+<li>Value/data is stored in the registry entry</li>
+</ul>
+</li>
+</ul>
+<h2 id="root-keys">Root Keys</h2>
+<ul>
+<li>HKEY_LOCAL_MACHINE (HKLM)
+<ul>
+<li>Stores settings which are global to local machine</li>
+</ul>
+</li>
+<li>HKEY_CURRENT_USER (HKCU)
+<ul>
+<li>Stores settings specific to current user</li>
+</ul>
+</li>
+<li>HKEY_CLASSES_ROOT
+<ul>
+<li>Stores information defining types</li>
+</ul>
+</li>
+<li>HKEY_CURRENT_CONFIG
+<ul>
+<li>Stores settings on current hardware config</li>
+</ul>
+</li>
+<li>HKEY_USERS
+<ul>
+<li>Defines settings for current user/new user/default user</li>
+</ul>
+</li>
+</ul>
+<h2 id="common-registry-functions">Common Registry Functions</h2>
+<ul>
+<li>RegOpenKeyEx
+<ul>
+<li>Opens registry for querying / editing</li>
+</ul>
+</li>
+<li>RegSetValueEX
+<ul>
+<li>Add value to registry and sets its data</li>
+</ul>
+</li>
+<li>RegGetValue
+<ul>
+<li>Returns data for value entry</li>
+</ul>
+</li>
+</ul>
+<h2 id="registry-tools">Registry Tools</h2>
+<ul>
+<li>Regedit
+<ul>
+<li>Edit registry entries</li>
+</ul>
+</li>
+<li>Autoruns
+<ul>
+<li>Parses registry to find entries that start applications upon booting the OS</li>
+</ul>
+</li>
+<li>Regshot
+<ul>
+<li>Captures registry before and after</li>
+</ul>
+</li>
+</ul>
+<h2 id="networking-api">Networking API</h2>
+<ul>
+<li>socket
+<ul>
+<li>Create a socket</li>
+</ul>
+</li>
+<li>bind
+<ul>
+<li>Attaches a socket to a particular port, prior to the accept call</li>
+</ul>
+</li>
+<li>listen
+<ul>
+<li>Indicates that a socket will be listening for incoming connections</li>
+</ul>
+</li>
+<li>accept
+<ul>
+<li>Opens connection to remote socket and accepts connection</li>
+</ul>
+</li>
+<li>connect
+<ul>
+<li>Opens connection to remote socket;remote socket must be waiting for connection</li>
+</ul>
+</li>
+<li>recv
+<ul>
+<li>Receives data from remote socket</li>
+</ul>
+</li>
+<li>send
+<ul>
+<li>Sends data to remote socket</li>
+</ul>
+</li>
+</ul>
+<h3 id="sniffers">Sniffers</h3>
+<ul>
+<li>Create a RAW Socket
+<ul>
+<li>WSASocket() / socket()</li>
+</ul>
+</li>
+<li>Bind socket to Interface
+<ul>
+<li>Bind()</li>
+</ul>
+</li>
+<li>Put interface to promiscuous mode
+<ul>
+<li>WSAloctl() / ioctlsocket()</li>
+<li>promiscuous mode is mode for NIC to cause controller to pass all traffic to CPU</li>
+<li>Instead of passing only frames controller is intended to receive</li>
+</ul>
+</li>
+</ul>
+<h3 id="wininet-api">WinINET API</h3>
+<ul>
+<li>
+<p>Higher level API that implements higher level protocols</p>
+</li>
+<li>
+<p><code>InternetOpen</code></p>
+<ul>
+<li>Initialise a connection to internet</li>
+</ul>
+</li>
+<li>
+<p><code>InternetOpenURL</code></p>
+<ul>
+<li>Connect to a URL</li>
+</ul>
+</li>
+<li>
+<p><code>URLDownloadToFileA</code></p>
+<ul>
+<li>Downloads file from the internet</li>
+</ul>
+</li>
+<li>
+<p><code>InternetReadFile</code></p>
+<ul>
+<li>Reads file off the internet</li>
+</ul>
+</li>
+<li>
+<p>Downloaders usually consists of 2 steps</p>
+<ul>
+<li><code>URLDownloadToFile()</code></li>
+<li>Execute newly downloaded file</li>
+<li><code>ShellExecute()</code> / <code>WinExec()</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="process-manipulation">Process Manipulation</h2>
+<ul>
+<li>
+<p>creates new process to by-pass host-based firewalls / hide from user</p>
+<ul>
+<li><code>CreateProcess</code> is used to create a new process</li>
+<li>Param <code>STARTUPINFO</code> includes handle to stdin, stdout and error messages</li>
+</ul>
+</li>
+<li>
+<p>Malicious programs can set these to a socket, allowing attacker to execute remote shell</p>
+</li>
+<li>
+<p>Parent process can specify properties associated with main window of child process</p>
+</li>
+<li>
+<p>CreateProcess takes a pointer to STARTUPINFO struct as one of its params</p>
+<ul>
+<li>Use members of this struct to specify characteristics of child process's main window</li>
+</ul>
+</li>
+</ul>
+<h2 id="keyloggers">Keyloggers</h2>
+<ul>
+<li>Monitors user key strokes</li>
+<li>Many bots use this method to spy on user and collect user info</li>
+<li>2 common methods:
+<ul>
+<li>Install hook for keyboard events</li>
+<li>Poll keyboard state with <code>GetAsyncKeyState()</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="hooking-the-keyboard">Hooking the keyboard</h3>
+<ul>
+<li>
+<p>Mechanism which application can intercept events such as messages, mouse actions, keystrokes</p>
+</li>
+<li>
+<p>Hook Procedure is function that intercepts particular type of event</p>
+<ul>
+<li>Can act on each event it receives and modify/discard event</li>
+</ul>
+</li>
+<li>
+<p><code>SetWindowsHookExA</code> with <code>WH_KEYBOARD</code> param</p>
+<ul>
+<li>Every time key pressed, event is relayed to malicious function which records key pressed</li>
+</ul>
+</li>
+<li>
+<p><code>SetWindowsHookExA</code> with <code>WH_MOUSE</code> param</p>
+<ul>
+<li>Intercepts mouse messages such as left-click/right-click</li>
+</ul>
+</li>
+</ul>
+<h3 id="polling-keyboard">Polling Keyboard</h3>
+<ul>
+<li>Malware goes in a loop and poll state of every key</li>
+<li><code>GetAsyncKeyState</code> called to get state of specific key</li>
+<li>Param is key being pressed</li>
+</ul>
+<h1 id="basic-static-analysis">Basic Static Analysis</h1>
+<h2 id="malware-fingerprint">Malware Fingerprint</h2>
+<h3 id="av-scanning">AV Scanning</h3>
+<ul>
+<li>1st step to analyze a suspicious file is to scan using Antivirus Scanner</li>
+<li>AV Scanners
+<ul>
+<li>File signature
+<ul>
+<li>Identifies pieces of suspicious code</li>
+</ul>
+</li>
+<li>Heuristics
+<ul>
+<li>Behavioral and pattern-matching analysis</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="virus-total">Virus Total</h3>
+<ul>
+<li>AVs are not perfect
+<ul>
+<li>Malicious file identified by AV may not be identified by another AV</li>
+</ul>
+</li>
+<li>VirusTotal
+<ul>
+<li>Scans suspicious file using different AV engines</li>
+<li>Generates report</li>
+<li>Total no of AV which detected file as suspicious</li>
+<li>Acquired by Google</li>
+</ul>
+</li>
+</ul>
+<h3 id="hashing">Hashing</h3>
+<ul>
+<li>
+<p>Hashing is common way of fingerprinting malware</p>
+</li>
+<li>
+<p>HASH is a string generated by hashing algorithm given an input</p>
+</li>
+<li>
+<p>1 way function</p>
+<ul>
+<li>Input cannot be recovered from hash</li>
+</ul>
+</li>
+<li>
+<p>Hashing Programs</p>
+<ul>
+<li>MD5Deep</li>
+<li>MD5 Calculator</li>
+</ul>
+</li>
+</ul>
+<h2 id="strings-in-malware">Strings in malware</h2>
+<ul>
+<li>
+<p>String is sequence of characters terminate with a NULL character</p>
+</li>
+<li>
+<p>Strings in program can reveal some info about what program does</p>
+</li>
+<li>
+<p>Can reveal</p>
+<ul>
+<li>URLs</li>
+<li>Filenames</li>
+<li>Windows Function calls</li>
+</ul>
+</li>
+<li>
+<p>Represented in 2 ways</p>
+<ul>
+<li>ASCII
+<ul>
+<li>1 byte per character</li>
+<li>Representation is in hex format</li>
+</ul>
+</li>
+<li>Unicode</li>
+</ul>
+</li>
+<li>
+<p>2 bytes per character</p>
+</li>
+<li>
+<p><strong>Bintext</strong> can be used to find strings in a executable</p>
+</li>
+</ul>
+<h2 id="portable-executable-format">Portable Executable Format</h2>
+<ul>
+<li>
+<p>Used by Windows executables, object code, DLLs</p>
+</li>
+<li>
+<p>Datastructure that contains info for Windows OS Loader to execute compiled codes</p>
+</li>
+<li>
+<p>Begins with Header</p>
+<ul>
+<li>Info on code</li>
+<li>Type of application</li>
+<li>Required libraries</li>
+<li>Space requirements</li>
+</ul>
+</li>
+<li>
+<p>Source Code --&gt; Compiler --&gt; Object File --&gt; Linker --&gt; Binary PE</p>
+</li>
+<li>
+<p>Binary PE --&gt; Loader (&lt;-- Libraries) --&gt; Running Program</p>
+</li>
+<li>
+<p>PE File starts with DOS Header</p>
+<ul>
+<li>Signature (&quot;MZ&quot;)</li>
+<li>Offset to the PE Header</li>
+</ul>
+</li>
+<li>
+<p>Followed by a PE Header</p>
+<ul>
+<li>Machine type</li>
+<li>No of sections</li>
+<li>Timestamp</li>
+<li>Data Directory
+<ul>
+<li>Table where in the image is stored</li>
+<li>Export, import, resource, exception, security, base, relocation,debug</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Section Table</p>
+<ul>
+<li>Named list of sections in PE File
+<ul>
+<li>.text
+<ul>
+<li>Executable Code</li>
+</ul>
+</li>
+<li>.data
+<ul>
+<li>Reda/write initialized data</li>
+</ul>
+</li>
+<li>.rdata
+<ul>
+<li>Read only data</li>
+</ul>
+</li>
+<li>.edata
+<ul>
+<li>to run image that requires calling a dll, the loader needs to be able to find entry points into dll.</li>
+<li>Conceptually associated with dll is list of addresses(RVAs) that other modules can call</li>
+<li>Each exported entry is assigned unique ordinal value</li>
+<li>Module that wants to call an entry point only needs to know dll's name and ordinal value</li>
+<li>Export table assists by specifying ordinal value and their names</li>
+</ul>
+</li>
+<li>.resrc
+<ul>
+<li>Resources for image such as icons, bitmaps</li>
+<li>Organized like file system</li>
+</ul>
+</li>
+<li>.debug
+<ul>
+<li>Debug info</li>
+</ul>
+</li>
+<li>.idata, .edata, .reloc, etc.</li>
+<li>Module linker combines text and data from various object modules to form executable image</li>
+<li>Compilers can append &quot;$...&quot; to end of names to dictate order within section
+<ul>
+<li>'text<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>X</mi><mo mathvariant="normal">′</mo></msup><mi>i</mi><mi>s</mi><mi>b</mi><mi>e</mi><mi>f</mi><mi>o</mi><mi>r</mi><msup><mi>e</mi><mo mathvariant="normal">′</mo></msup><mi mathvariant="normal">.</mi><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">X&#x27; is before &#x27;.text</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.946332em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathit" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mord mathit">i</span><span class="mord mathit">s</span><span class="mord mathit">b</span><span class="mord mathit">e</span><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mord"><span class="mord mathit">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mord">.</span><span class="mord mathit">t</span><span class="mord mathit">e</span><span class="mord mathit">x</span><span class="mord mathit">t</span></span></span></span>Y'</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="source-to-execution">Source to Execution</h3>
+<ul>
+<li>Programmer writes Source File
+<ul>
+<li>Helloworld.c</li>
+</ul>
+</li>
+<li>Compiler translates to Object module
+<ul>
+<li>helloworld.obj</li>
+</ul>
+</li>
+<li>Linker combines various object modules to a Executable Image
+<ul>
+<li>helloworld.exe</li>
+</ul>
+</li>
+<li>Loader does final work in getting image executing on system</li>
+</ul>
+<h3 id="loading-a-pe">Loading a PE</h3>
+<ul>
+<li>
+<p>Absolute Loading</p>
+<ul>
+<li>Loads program at same address (Virtual/Physical) every time</li>
+</ul>
+</li>
+<li>
+<p>Relocatable Loading</p>
+<ul>
+<li>Load program at different addresses based on what is available</li>
+</ul>
+</li>
+<li>
+<p>Dynamic run-time loading</p>
+<ul>
+<li>Load and reload the program at different addresses while program is running</li>
+</ul>
+</li>
+<li>
+<p>Address Binding</p>
+<ul>
+<li>Program to be executed must be brought to main memory</li>
+<li>Insstructions that use address in program must be bound to address space in main memory</li>
+<li>Address binding is a scheme that performs this task</li>
+<li>Mapping one address space to another</li>
+<li>Symbolic label/name is translated to actual address</li>
+<li>Actual binding can be specified in program, resolved at compile/link/load/run time</li>
+</ul>
+</li>
+</ul>
+<h3 id="static-linking">Static Linking</h3>
+<ul>
+<li>When library is statically linked to binary, all executable code from library is copied to executable</li>
+<li>Difficult to differentiate which code belongs to statically linked code and which belongs to EXE</li>
+<li>PE Headers does not contain such info</li>
+</ul>
+<h3 id="dynamic-linking">Dynamic linking</h3>
+<ul>
+<li>Exe connect to libraries only when function is needed and not when Exe is loaded</li>
+<li>Exe searches and loads correct library at runtime</li>
+<li>Address of library function to connect to is resolved at runtime</li>
+<li>Information to resolve this address is stored in .idata section (Import section)</li>
+</ul>
+<h3 id="relative-virtual-addresses-rva">Relative Virtual Addresses (RVA)</h3>
+<ul>
+<li>Address where program runs may not be known at link time</li>
+<li>Any addersses stored in the code by the linker need to all be relative</li>
+<li>Virtual address that is relative to base address of executable program</li>
+</ul>
+<h3 id="importing-functions">Importing Functions</h3>
+<ul>
+<li>PE contains table of imported modules</li>
+<li>Each entry identifies the module and lists functions that need to be imported
+<ul>
+<li>Virtual Address</li>
+<li>Ordinal Value</li>
+<li>Function Name</li>
+</ul>
+</li>
+<li>Stored in Import Address Table(IAT) and Import Name Table(INT)
+<ul>
+<li>Array of dwords(4 bytes)</li>
+<li>Each dword is either function addr, ordinal, pointer to function name</li>
+<li>Loader changes IAT value at load time to function addresses</li>
+<li>For faster image startup, images can be bound
+<ul>
+<li>Resolving and overwriting IAT table in actual PE file</li>
+<li>If imported DLL changes, binding needs to be redone. INT used for this purpose</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="base-relocation">Base Relocation</h3>
+<ul>
+<li>Each module has preferred load address</li>
+<li>Loader may not be able to always honor request</li>
+<li>If module is relocated, loader must fix up addresses</li>
+<li>.reloc section specifies each location that needs to be fixed if modules is moved</li>
+</ul>
+<h3 id="dependency-walker">Dependency Walker</h3>
+<ul>
+<li>Shows dependencies</li>
+</ul>
+<h2 id="packing-executable">Packing Executable</h2>
+<ul>
+<li>Obfuscate / pack malware to make it hard to analyse</li>
+<li>means &quot;making it unclear&quot;. Aim is to hide functionality of malware</li>
+<li>Packing executable is one way of achieving obfuscation
+<ul>
+<li>Compression</li>
+<li>Encryption
+<ul>
+<li>EXE on disk is not as readable</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>When packed, a small wrapper stub is used to decompress / decrypt the original executable before loading it in memory</li>
+<li>When a packed program is analysed, only the stub can be analysed</li>
+</ul>
+<h3 id="detecting-packers">Detecting Packers</h3>
+<ul>
+<li>PEiD is software that can detect Packers</li>
+<li>Once packer is detected, UnPackers can be used to unpack the PE</li>
+<li>Popular packers
+<ul>
+<li>UPX, ASPack, PELock, Themida</li>
+</ul>
+</li>
+</ul>
+<h1 id="basic-dynamic-analysis">Basic Dynamic Analysis</h1>
+<ul>
+<li>Any examination performed after executing malware</li>
+<li>Performed after static analysis has reached dead end</li>
+<li>Allows you to observe malware true functionality</li>
+<li>Put your system/network at risk. Use VM</li>
+</ul>
+<h2 id="running-the-malware">Running the Malware</h2>
+<ul>
+<li>
+<p>Many popular sandbox that automatically analyze malware and produce report</p>
+</li>
+<li>
+<p>GFI Sandbox, Anubis, Joe Sandbox</p>
+</li>
+<li>
+<p>Easy to understand output and good for initial triage</p>
+</li>
+<li>
+<p>Similar in approach</p>
+</li>
+<li>
+<p>Sandbox Overview</p>
+<ol>
+<li>Malware submitted to repository Via manual submission / scripted submission(honeypot/email/cron)</li>
+<li>Malware inserted into Repository</li>
+<li>Samples are retrieved by sandbox based on queue and priority</li>
+<li>Analysis results are sent back to repository</li>
+<li>User views analysis via web interface</li>
+</ol>
+</li>
+<li>
+<p>Provides basic static analysis</p>
+</li>
+<li>
+<p>High level Dynamis analysis results</p>
+</li>
+<li>
+<p>Provides list of files that have been opened / read / created / deleted</p>
+</li>
+<li>
+<p>Mutexes created by malware</p>
+</li>
+<li>
+<p>Registry Activity</p>
+</li>
+<li>
+<p>Network activity</p>
+</li>
+<li>
+<p>Drawbacks</p>
+<ul>
+<li>Command Line options</li>
+<li>Waiting for Command-and-control instructions</li>
+<li>Not all events may be recorded - Sandbox did not wait long enough</li>
+<li>Malware may not detect it running in Sandbox</li>
+<li>Conditions not met for malware to run properly</li>
+<li>Sandbox OS may not be correct for malware to run properly</li>
+</ul>
+</li>
+</ul>
+<h2 id="process-monitoring">Process Monitoring</h2>
+<h3 id="procmon">Procmon</h3>
+<ul>
+<li>Combines filemon and regmon</li>
+<li>Monitors
+<ul>
+<li>Registry activity</li>
+<li>File activity</li>
+<li>Process Activity</li>
+<li>Network Activity</li>
+</ul>
+</li>
+<li>Procmon monitors all system calls for all processes</li>
+<li>Filter events</li>
+</ul>
+<h3 id="process-explorer">Process Explorer</h3>
+<ul>
+<li>
+<p>Provides insight to running processes</p>
+</li>
+<li>
+<p>Features</p>
+<ul>
+<li>List active processes</li>
+<li>DLLs loaded for each process</li>
+<li>Process properties</li>
+<li>Active TCP connection</li>
+<li>Create/kill/validate process</li>
+</ul>
+</li>
+<li>
+<p>Verify Option</p>
+<ul>
+<li>Many malware has same name as legitimate windows processes</li>
+<li>Verify allows you to verify whether a process has been digitally signed by Microsoft</li>
+<li>Only applies to process on disk, not in RAM</li>
+</ul>
+</li>
+</ul>
+<h2 id="file-monitoring">File Monitoring</h2>
+<h2 id="registry-monitoring">Registry Monitoring</h2>
+<h3 id="regshot">Regshot</h3>
+<ul>
+<li>Regshot is open source registry comparison tool</li>
+<li>Compares 2 registry snapshots and reports on differences</li>
+</ul>
+<h3 id="capturebat">CaptureBat</h3>
+<ul>
+<li>Behavioural analysis tool for WIN32 Apps</li>
+<li>Monitors state of system during execution of apps and processing of documents</li>
+<li>Performed at low kernel level</li>
+<li>Good tool to exclude event noise that natually occur in system</li>
+</ul>
+<h2 id="network-monitoring">Network Monitoring</h2>
+<ul>
+<li>Often sends out information to another server</li>
+<li>Tries to connect to Command-and-control server to wait for instructions</li>
+<li>Fake a network - malware does not know that it is in a virtualized environment</li>
+<li>Can reveal most / all functions of malware</li>
+</ul>
+<h3 id="apatedns">ApateDNS</h3>
+<ul>
+<li>Free tool</li>
+<li>Able to listen to DNS requests made by malware</li>
+<li>Spoof DNS responses</li>
+<li>NXDomain</li>
+</ul>
+<h3 id="netcat">Netcat</h3>
+<ul>
+<li>Can be used for inbound/outbound connections
+<ul>
+<li>Port scanning</li>
+<li>Tunneling</li>
+<li>Proxying</li>
+<li>Port forwarding</li>
+</ul>
+</li>
+</ul>
+<h3 id="wireshark">Wireshark</h3>
+<ul>
+<li>Network sniffer that captures network packet</li>
+<li>Visualisation of network packets</li>
+<li>Packet stream analysis</li>
+<li>Indepth packet analysis</li>
+</ul>
+<h1 id="malicious-web-pages-and-documents">Malicious Web Pages and Documents</h1>
+<ul>
+<li>Malware may propagate through browser</li>
+<li>Browser based attacks
+<ul>
+<li>Misusing the browser</li>
+<li>Privilege escalation</li>
+<li>Social Engineering</li>
+</ul>
+</li>
+</ul>
+<h2 id="browser-based-attack">Browser Based Attack</h2>
+<ul>
+<li>
+<p>User directe to malicious website via link in email</p>
+</li>
+<li>
+<p>Website displayed annoying javascript base animation</p>
+</li>
+<li>
+<p>New window displayed an annoying Javascirpt based animation</p>
+</li>
+<li>
+<p>Popped up whenever the user closes one of the windows</p>
+</li>
+<li>
+<p>Could not close windows fast enough and ended up turning off PC</p>
+</li>
+<li>
+<p>Use virus total to check for malicious websites online</p>
+</li>
+</ul>
+<h2 id="deobfuscating-javascript">Deobfuscating Javascript</h2>
+<ul>
+<li>
+<p>Stunnix Obfuscator</p>
+<ul>
+<li>Obfuscating only layout of JS code</li>
+<li>It removes spaces, comments, new lines</li>
+<li>Renames user defined names with random srtings</li>
+<li>Replace print strings with hex values</li>
+<li>Replaces integers with complex equations</li>
+</ul>
+</li>
+<li>
+<p>Manual Deobfuscation</p>
+<ul>
+<li>Javascript contains 3 Key elements</li>
+<li>Variable, For loop, alert</li>
+</ul>
+</li>
+</ul>
+
+    </body>
+    </html>

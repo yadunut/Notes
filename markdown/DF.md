@@ -136,7 +136,7 @@
   - Data that can be seen
     - Files, programs, data used by OS
 - Latent Data
-  - Data that exists despite bbeing deleted
+  - Data that exists despite being deleted
     - Data that was partially overwritten / stored in slack space
     - Specialized tools required for recovering this data
 - Archival Data
@@ -165,7 +165,7 @@
   - Memory Dump
   - Copies of removable media
 
-- FI should create 2 bbit stream copies of evidence
+- FI should create 2 bit stream copies of evidence
 
 - Types of images
   - Complete disk
@@ -225,12 +225,6 @@
 
 1. Crime suspected
 2. Preliminary assessment
-   - FI should determine occurence of incident and impact
-      - Know what to look out for
-      - List steps to be taken during investigation
-   - Evidence should be relevant and admissible
-      - Evidence that proves / disprove facts in case
-      - Admissible evidence that conforms to all regulations, states governing nature and manner in which it was obtained
 3. Obtain search warrant for seizure
 4. Perform first response procedures at crime scene
 5. Forensic duplication / imaging at forensic lab
@@ -410,7 +404,7 @@
 - Acquired in a manner that protects and preserves integrity of evidence
 
 1. Document hardware and software config of examiner system
-2. Disassembble case of computer to be examined
+2. Disassemble case of computer to be examined
 3. Identify storage devices that need to be acquired
 4. Document Internal storage devices and hardware config
 5. Disconnect storage device to prevent destruction / damage / alteration of data
@@ -722,13 +716,13 @@
 
 ### MBR Structure
 
-| Address | Description            | Size              |
+| Address |      Description       |       Size        |
 | :-----: | :--------------------: | :---------------: |
-| 0       | Code Area              | 440 (446 usually) |
-| 440     | Disk Signature         | 4                 |
-| 444     | Nulls                  | 2                 |
-| 446     | Primary Partitions     | 64                |
-| 510     | MBR Signature (0x55AA) | 2                 |
+|    0    |       Code Area        | 440 (446 usually) |
+|   440   |     Disk Signature     |         4         |
+|   444   |         Nulls          |         2         |
+|   446   |   Primary Partitions   |        64         |
+|   510   | MBR Signature (0x55AA) |         2         |
 
 ## Partition Table
 
@@ -738,13 +732,13 @@
 
 ### Partition Table Structure
 
-| Address | Description                  | Size  | Value                         |
+| Address |         Description          | Size  |             Value             |
 | :-----: | :--------------------------: | :---: | :---------------------------: |
-| 0x0     | Boot Indicator               | 1     | 0x0 (inactive), 0x80 (active) |
-| 0x1     | CHS address of first sector  | 3     | -                             |
-| 0x4     | System ID                    | 1     | 0x07 (NTFS)                   |
-| 0x5     | CHS of last sector           | 3     | -                             |
-| 0x8     | Size of partition in sectors | 4     | -                             |
+|   0x0   |        Boot Indicator        |   1   | 0x0 (inactive), 0x80 (active) |
+|   0x1   | CHS address of first sector  |   3   |               -               |
+|   0x4   |          System ID           |   1   |          0x07 (NTFS)          |
+|   0x5   |      CHS of last sector      |   3   |               -               |
+|   0x8   | Size of partition in sectors |   4   |               -               |
 
 ### Windows 7+ Partition Layout
 
@@ -752,7 +746,7 @@
   - Starts at Sector 2048
   - Part of boot process
   - ~1200MB
-- 2nd partition is `C:`
+- 2nd partition is `C:\ `
 
 # NTFS Analysis
 
@@ -768,16 +762,16 @@
 
 ### PBR Structure
 
-| Address | Description              | Size  |
+| Address |       Description        | Size  |
 | :-----: | :----------------------: | :---: |
-| 0       | Jump instruction         | 3     |
-| 3       | OEM ID                   | 8     |
-| 11      | bytes per sector         | 2     |
-| 13      | Sectors per cluster      | 1     |
-| 28      | Hidden Sectors           | 4     |
-| 40      | Total Sectors            | 8     |
-| 48      | Logical cluster for $MFT | 8     |
-| 56      | $MFT Mirror              | 8     |
+|    0    |     Jump instruction     |   3   |
+|    3    |          OEM ID          |   8   |
+|   11    |     bytes per sector     |   2   |
+|   13    |   Sectors per cluster    |   1   |
+|   28    |      Hidden Sectors      |   4   |
+|   40    |      Total Sectors       |   8   |
+|   48    | Logical cluster for $MFT |   8   |
+|   56    |       $MFT Mirror        |   8   |
 
 ## NTFS Master File Table (MFT)
 
@@ -837,14 +831,14 @@
 
 ### Attribute Header
 
-| Address | Description         | Size  |
+| Address |     Description     | Size  |
 | :-----: | :-----------------: | :---: |
-| 0       | Attribute Type      | 4     |
-| 4       | Length of Attribute | 4     |
-| 8       | Non Resident Flag   | 1     |
-| 9       | Name Length         | 1     |
-| 9       | Offset to name      | 1     |
-| xxx     | Others              | xxx}  |
+|    0    |   Attribute Type    |   4   |
+|    4    | Length of Attribute |   4   |
+|    8    |  Non Resident Flag  |   1   |
+|    9    |     Name Length     |   1   |
+|    9    |   Offset to name    |   1   |
+|   xxx   |       Others        | xxx}  |
 
 ### Typical File Record
 
